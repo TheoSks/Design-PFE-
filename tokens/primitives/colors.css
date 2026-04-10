@@ -1,0 +1,148 @@
+/**
+ * Design System PFE — Primitive Color Tokens
+ * Source: Figma › _primitives-color
+ * Auto-generated from Figma variables — do not edit manually
+ */
+
+:root {
+  /* ─── Base ─────────────────────────────────────────────── */
+  --color-base-white: #ffffff;
+  --color-base-black: #000000;
+
+  /* ─── Neutral ───────────────────────────────────────────── */
+  --color-neutral-050: #fafafa;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-300: #d4d4d4;
+  --color-neutral-400: #a1a1a1;
+  --color-neutral-500: #737373;
+  --color-neutral-600: #525252;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #262626;
+  --color-neutral-900: #171717;
+  --color-neutral-950: #0a0a0a;
+
+  /* ─── Brand (Blue) ──────────────────────────────────────── */
+  --color-brand-050: #eff6ff;
+  --color-brand-100: #dbebff;
+  --color-brand-200: #bedbff;
+  --color-brand-300: #8ec5ff;
+  --color-brand-400: #50a2ff;
+  --color-brand-500: #2b7fff;
+  --color-brand-600: #155dfc;
+  --color-brand-700: #1447e6;
+  --color-brand-800: #1a3bba;
+  --color-brand-900: #1c3888;
+  --color-brand-950: #162255;
+
+  /* ─── Success (Green) ───────────────────────────────────── */
+  --color-success-050: #f0fdf4;
+  --color-success-100: #dcfce7;
+  --color-success-200: #b9f8cf;
+  --color-success-300: #7bf1a8;
+  --color-success-400: #00de73;
+  --color-success-500: #00c950;
+  --color-success-600: #00a63e;
+  --color-success-700: #008236;
+  --color-success-800: #016630;
+  --color-success-900: #0d532b;
+  --color-success-950: #022c15;
+
+  /* ─── Danger (Red) ──────────────────────────────────────── */
+  --color-danger-050: #fff2f2;
+  --color-danger-100: #ffe1e1;
+  --color-danger-200: #ffc9c9;
+  --color-danger-300: #ffa2a2;
+  --color-danger-400: #ff6467;
+  --color-danger-500: #fb2c36;
+  --color-danger-600: #e70010;
+  --color-danger-700: #c10007;
+  --color-danger-800: #9f0712;
+  --color-danger-900: #821019;
+  --color-danger-950: #470009;
+
+  /* ─── Warning (Orange) ──────────────────────────────────── */
+  --color-warning-050: #fff9eb;
+  --color-warning-100: #ffefc6;
+  --color-warning-200: #ffdc88;
+  --color-warning-300: #ffb91a;
+  --color-warning-400: #ff8900;
+  --color-warning-500: #ff6900;
+  --color-warning-600: #f54a00;
+  --color-warning-700: #ca3500;
+  --color-warning-800: #a02b00;
+  --color-warning-900: #7e2a0c;
+  --color-warning-950: #441207;
+
+  /* ─── Opacity / Neutral (rgba #0a0a0a) ──────────────────── */
+  --color-opacity-neutral-050: rgba(10, 10, 10, 0.02);
+  --color-opacity-neutral-100: rgba(10, 10, 10, 0.03);
+  --color-opacity-neutral-200: rgba(10, 10, 10, 0.05);
+  --color-opacity-neutral-300: rgba(10, 10, 10, 0.08);
+  --color-opacity-neutral-400: rgba(10, 10, 10, 0.13);
+  --color-opacity-neutral-500: rgba(10, 10, 10, 0.21);
+  --color-opacity-neutral-600: rgba(10, 10, 10, 0.34);
+  --color-opacity-neutral-700: rgba(10, 10, 10, 0.55);
+  --color-opacity-neutral-800: rgba(10, 10, 10, 0.89);
+  --color-opacity-neutral-900: rgba(10, 10, 10, 1);
+
+  /* ─── Opacity / Inverse (rgba #fafafa) ──────────────────── */
+  --color-opacity-inverse-050: rgba(250, 250, 250, 0.02);
+  --color-opacity-inverse-100: rgba(250, 250, 250, 0.03);
+  --color-opacity-inverse-200: rgba(250, 250, 250, 0.05);
+  --color-opacity-inverse-300: rgba(250, 250, 250, 0.08);
+  --color-opacity-inverse-400: rgba(250, 250, 250, 0.24);
+  --color-opacity-inverse-500: rgba(250, 250, 250, 0.32);
+  --color-opacity-inverse-600: rgba(250, 250, 250, 0.56);
+  --color-opacity-inverse-700: rgba(250, 250, 250, 0.64);
+  --color-opacity-inverse-800: rgba(250, 250, 250, 0.80);
+  --color-opacity-inverse-900: rgba(250, 250, 250, 1);
+
+  /* ─── Opacity / Brand (rgba #2b7fff) ────────────────────── */
+  --color-opacity-brand-050: rgba(43, 127, 255, 0.02);
+  --color-opacity-brand-100: rgba(43, 127, 255, 0.03);
+  --color-opacity-brand-200: rgba(43, 127, 255, 0.05);
+  --color-opacity-brand-300: rgba(43, 127, 255, 0.08);
+  --color-opacity-brand-400: rgba(43, 127, 255, 0.13);
+  --color-opacity-brand-500: rgba(43, 127, 255, 0.21);
+  --color-opacity-brand-600: rgba(43, 127, 255, 0.34);
+  --color-opacity-brand-700: rgba(43, 127, 255, 0.55);
+  --color-opacity-brand-800: rgba(43, 127, 255, 0.80);
+  --color-opacity-brand-900: rgba(43, 127, 255, 1);
+
+  /* ─── Opacity / Success (rgba #00c950) ──────────────────── */
+  --color-opacity-success-050: rgba(0, 201, 80, 0.02);
+  --color-opacity-success-100: rgba(0, 201, 80, 0.03);
+  --color-opacity-success-200: rgba(0, 201, 80, 0.05);
+  --color-opacity-success-300: rgba(0, 201, 80, 0.08);
+  --color-opacity-success-400: rgba(0, 201, 80, 0.13);
+  --color-opacity-success-500: rgba(0, 201, 80, 0.21);
+  --color-opacity-success-600: rgba(0, 201, 80, 0.34);
+  --color-opacity-success-700: rgba(0, 201, 80, 0.55);
+  --color-opacity-success-800: rgba(0, 201, 80, 0.80);
+  --color-opacity-success-900: rgba(0, 201, 80, 1);
+
+  /* ─── Opacity / Danger (rgba #fb2c36) ───────────────────── */
+  --color-opacity-danger-050: rgba(251, 44, 54, 0.02);
+  --color-opacity-danger-100: rgba(251, 44, 54, 0.03);
+  --color-opacity-danger-200: rgba(251, 44, 54, 0.05);
+  --color-opacity-danger-300: rgba(251, 44, 54, 0.08);
+  --color-opacity-danger-400: rgba(251, 44, 54, 0.13);
+  --color-opacity-danger-500: rgba(251, 44, 54, 0.21);
+  --color-opacity-danger-600: rgba(251, 44, 54, 0.34);
+  --color-opacity-danger-700: rgba(251, 44, 54, 0.55);
+  --color-opacity-danger-800: rgba(251, 44, 54, 0.80);
+  --color-opacity-danger-900: rgba(251, 44, 54, 1);
+
+  /* ─── Opacity / Warning (rgba #ff6900) ──────────────────── */
+  --color-opacity-warning-050: rgba(255, 105, 0, 0.02);
+  --color-opacity-warning-100: rgba(255, 105, 0, 0.03);
+  --color-opacity-warning-200: rgba(255, 105, 0, 0.05);
+  --color-opacity-warning-300: rgba(255, 105, 0, 0.08);
+  --color-opacity-warning-400: rgba(255, 105, 0, 0.13);
+  --color-opacity-warning-500: rgba(255, 105, 0, 0.21);
+  --color-opacity-warning-600: rgba(255, 105, 0, 0.34);
+  --color-opacity-warning-700: rgba(255, 105, 0, 0.55);
+  --color-opacity-warning-800: rgba(255, 105, 0, 0.80);
+  --color-opacity-warning-900: rgba(255, 105, 0, 1);
+}

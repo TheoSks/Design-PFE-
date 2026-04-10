@@ -1,0 +1,52 @@
+/**
+ * Design System PFE — Primitive Spacing & Global Tokens
+ * Source: Figma › _primitives-global
+ * Auto-generated from Figma variables — do not edit manually
+ */
+
+:root {
+  /* ─── Spacing Scale ─────────────────────────────────────── */
+  --space-0:  0px;
+  --space-1:  2px;
+  --space-2:  4px;
+  --space-3:  6px;
+  --space-4:  8px;
+  --space-5:  12px;
+  --space-6:  16px;
+  --space-7:  24px;
+  --space-8:  32px;
+  --space-9:  40px;
+  --space-10: 48px;
+  --space-11: 64px;
+  --space-12: 80px;
+  --space-13: 96px;
+  --space-14: 160px;
+  --space-15: 260px;
+
+  /* ─── Size Scale ────────────────────────────────────────── */
+  --size-1:  4px;
+  --size-2:  6px;
+  --size-3:  8px;
+  --size-4:  12px;
+  --size-5:  16px;
+  --size-6:  20px;
+  --size-7:  24px;
+  --size-8:  32px;
+  --size-9:  40px;
+  --size-10: 48px;
+  --size-11: 56px;
+
+  /* ─── Border Widths ─────────────────────────────────────── */
+  --border-width-0: 0px;
+  --border-width-1: 1px;
+  --border-width-2: 2px;
+  --border-width-3: 3px;
+  --border-width-4: 4px;
+  --border-width-5: 6px;
+  --border-width-6: 8px;
+
+  /* ─── Grid ──────────────────────────────────────────────── */
+  --grid-gutter-sm: 16px;
+  --grid-gutter-md: 20px;
+  --grid-gutter-lg: 24px;
+}

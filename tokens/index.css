@@ -1,0 +1,21 @@
+/**
+ * Design System PFE — Tokens Entry Point
+ * Source: Figma › Design-system-PFE
+ *
+ * Import order matters:
+ *   1. Primitives  — raw values, no dependencies
+ *   2. Semantic    — reference primitives
+ *
+ * Usage:
+ *   @import "tokens/index.css";
+ */
+
+/* ── Primitives ──────────────────────────────────────────── */
+@import "./primitives/colors.css";
+@import "./primitives/typography.css";
+@import "./primitives/spacing.css";
+
+/* ── Semantic ────────────────────────────────────────────── */
+@import "./semantic/global.css";
+@import "./semantic/colors.light.css";
+@import "./semantic/colors.dark.css";

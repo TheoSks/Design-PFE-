@@ -1,0 +1,131 @@
+/**
+ * Design System PFE — Semantic Global Tokens
+ * Source: Figma › semantic-global
+ * Auto-generated from Figma variables — do not edit manually
+ *
+ * These tokens reference primitive values and define
+ * purpose-driven design decisions (layout, type, shadow…).
+ */
+
+:root {
+  /* ─── Layout Padding ────────────────────────────────────── */
+  --layout-padding-none: var(--space-0);    /*  0px */
+  --layout-padding-2xs:  var(--space-1);    /*  2px */
+  --layout-padding-xs:   var(--space-2);    /*  4px */
+  --layout-padding-sm:   var(--space-3);    /*  6px */
+  --layout-padding-md:   var(--space-4);    /*  8px */
+  --layout-padding-lg:   var(--space-5);    /* 12px */
+  --layout-padding-xl:   var(--space-6);    /* 16px */
+  --layout-padding-2xl:  var(--space-7);    /* 24px */
+  --layout-padding-3xl:  var(--space-8);    /* 32px */
+  --layout-padding-4xl:  var(--space-9);    /* 40px */
+  --layout-padding-5xl:  var(--space-10);   /* 48px */
+  --layout-padding-6xl:  var(--space-11);   /* 64px */
+
+  /* ─── Layout Gap ────────────────────────────────────────── */
+  --layout-gap-none: var(--space-0);        /*  0px */
+  --layout-gap-xs:   var(--space-1);        /*  2px */
+  --layout-gap-sm:   var(--space-2);        /*  4px */
+  --layout-gap-md:   var(--space-4);        /*  8px */
+  --layout-gap-lg:   var(--space-5);        /* 12px */
+  --layout-gap-xl:   var(--space-6);        /* 16px */
+  --layout-gap-2xl:  var(--space-7);        /* 24px */
+  --layout-gap-3xl:  var(--space-8);        /* 32px */
+  --layout-gap-4xl:  var(--space-9);        /* 40px */
+
+  /* ─── Layout Border ─────────────────────────────────────── */
+  --layout-border-none:    var(--border-width-0);   /* 0px */
+  --layout-border-thin:    var(--border-width-1);   /* 1px */
+  --layout-border-thick:   var(--border-width-2);   /* 2px */
+  --layout-border-thicker: var(--border-width-3);   /* 3px */
+
+  /* ─── Layout Radius ─────────────────────────────────────── */
+  --layout-radius-xs:   var(--size-1);    /*  4px */
+  --layout-radius-sm:   var(--size-2);    /*  6px */
+  --layout-radius-md:   var(--size-3);    /*  8px */
+  --layout-radius-lg:   var(--size-4);    /* 12px */
+  --layout-radius-xl:   var(--size-5);    /* 16px */
+  --layout-radius-2xl:  var(--size-6);    /* 20px */
+  --layout-radius-3xl:  var(--size-7);    /* 24px */
+  --layout-radius-full: 9999px;
+
+  /* ─── Layout Size ───────────────────────────────────────── */
+  --layout-size-2xs: var(--size-1);   /*  4px */
+  --layout-size-xs:  var(--size-3);   /*  8px */
+  --layout-size-sm:  var(--size-5);   /* 16px */
+  --layout-size-base:var(--size-5);   /* 16px */
+  --layout-size-md:  var(--size-6);   /* 20px */
+  --layout-size-lg:  var(--size-7);   /* 24px */
+  --layout-size-xl:  var(--size-8);   /* 32px */
+  --layout-size-2xl: var(--size-9);   /* 40px */
+  --layout-size-3xl: var(--size-10);  /* 48px */
+
+  /* ─── Grid ──────────────────────────────────────────────── */
+  --grid-column: 4;
+  --grid-gutter: var(--grid-gutter-md);   /* 20px */
+  --grid-margin: var(--grid-gutter-md);   /* 20px */
+
+  /* ─── Font Family ───────────────────────────────────────── */
+  --font-family-heading: var(--font-family-primary);
+  --font-family-content: var(--font-family-secondary);
+
+  /* ─── Font Weight ───────────────────────────────────────── */
+  --font-weight-regular:  var(--font-weight-400);
+  --font-weight-accent:   var(--font-weight-500);
+  --font-weight-emphasis: var(--font-weight-600);
+  --font-weight-bold:     var(--font-weight-700);
+
+  /* ─── Font Size / Heading ───────────────────────────────── */
+  --font-size-heading-small:   var(--font-size-sm);    /* 14px */
+  --font-size-heading-medium:  var(--font-size-2xl);   /* 24px */
+  --font-size-heading-large:   var(--font-size-3xl);   /* 30px */
+  --font-size-heading-display: var(--font-size-5xl);   /* 48px */
+
+  /* ─── Font Size / Content ───────────────────────────────── */
+  --font-size-content-caption:   var(--font-size-xs);   /* 12px */
+  --font-size-content-note:      var(--font-size-sm);   /* 14px */
+  --font-size-content-body:      var(--font-size-md);   /* 16px */
+  --font-size-content-feature:   var(--font-size-sm);   /* 14px */
+  --font-size-content-highlight: var(--font-size-xl);   /* 20px */
+
+  /* ─── Line Height / Heading ─────────────────────────────── */
+  --font-line-height-heading-small:   var(--font-line-height-lg);    /* 26px */
+  --font-line-height-heading-medium:  var(--font-line-height-2xl);   /* 32px */
+  --font-line-height-heading-large:   var(--font-line-height-3xl);   /* 40px */
+  --font-line-height-heading-display: var(--font-line-height-5xl);   /* 54px */
+
+  /* ─── Line Height / Content ─────────────────────────────── */
+  --font-line-height-content-caption:   var(--font-line-height-xs);   /* 16px */
+  --font-line-height-content-note:      var(--font-line-height-sm);   /* 20px */
+  --font-line-height-content-body:      var(--font-line-height-md);   /* 24px */
+  --font-line-height-content-feature:   var(--font-line-height-lg);   /* 26px */
+  --font-line-height-content-highlight: var(--font-line-height-xl);   /* 28px */
+
+  /* ─── Letter Spacing ────────────────────────────────────── */
+  --font-letter-spacing-heading: var(--font-letter-spacing-sm);   /* -1px */
+  --font-letter-spacing-content: var(--font-letter-spacing-md);   /*  0px */
+
+  /* ─── Shadow / Positive ─────────────────────────────────── */
+  --shadow-positive-none: 0px;
+  --shadow-positive-sm:   2px;
+  --shadow-positive-md:   4px;
+  --shadow-positive-lg:   8px;
+  --shadow-positive-xl:   12px;
+  --shadow-positive-2xl:  16px;
+  --shadow-positive-3xl:  20px;
+  --shadow-positive-4xl:  24px;
+  --shadow-positive-5xl:  32px;
+  --shadow-positive-6xl:  40px;
+
+  /* ─── Shadow / Negative ─────────────────────────────────── */
+  --shadow-negative-none: 0px;
+  --shadow-negative-sm:  -2px;
+  --shadow-negative-md:  -4px;
+  --shadow-negative-lg:  -8px;
+  --shadow-negative-xl:  -12px;
+  --shadow-negative-2xl: -16px;
+  --shadow-negative-3xl: -20px;
+
+  /* ─── Opacity ───────────────────────────────────────────── */
+  --opacity-disabled: 0.40;
+}
