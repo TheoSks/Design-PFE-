@@ -1,0 +1,48 @@
+/* ── Page container ──────────────────────────────────────── */
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background-color: var(--background-base);
+}
+
+/* ── Hero ────────────────────────────────────────────────── */
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-gap-xl);
+  padding: var(--layout-padding-2xl) var(--layout-padding-xl) var(--layout-padding-3xl);
+}
+
+.heroTitle {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-accent);
+  line-height: var(--font-line-height-3xl);
+  letter-spacing: var(--font-letter-spacing-heading);
+  color: var(--text-brand-bolder);
+  text-align: center;
+  margin: 0;
+}
+
+.heroBrand {
+  color: var(--text-brand-bolder);
+}
+
+.heroSubtitle {
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-body);
+  font-weight: var(--font-weight-accent);
+  line-height: var(--font-line-height-content-body);
+  color: var(--text-base-bolder);
+  text-align: center;
+  margin: 0;
+}
+
+/* ── Sections ────────────────────────────────────────────── */
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-gap-4xl);
+  padding: var(--layout-padding-xl) 0;
+}

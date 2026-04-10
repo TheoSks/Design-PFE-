@@ -1,0 +1,101 @@
+/* ─── Base ────────────────────────────────────────────────── */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--layout-gap-sm);
+
+  height: 30px;
+  padding: var(--layout-padding-xs) var(--layout-padding-lg);
+
+  border-radius: var(--layout-radius-sm);
+  border: var(--layout-border-thin) solid transparent;
+
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-caption);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--font-line-height-content-caption);
+
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+}
+
+/* ─── Variants ────────────────────────────────────────────── */
+
+/* Primary */
+.primary {
+  background-color: var(--background-neutral-strong-default);
+  color: var(--text-base-lighter);
+  border-color: transparent;
+}
+
+.primary:hover {
+  background-color: var(--color-neutral-800);
+}
+
+/* Secondary */
+.secondary {
+  background-color: var(--background-elevated);
+  color: var(--text-base-strong);
+  border-color: var(--border-default);
+}
+
+.secondary:hover {
+  background-color: var(--background-neutral-faint-hover);
+}
+
+/* Tertiary */
+.tertiary {
+  background-color: transparent;
+  color: var(--text-brand-bolder);
+}
+
+.tertiary:hover {
+  background-color: var(--background-brand-faint-hover);
+}
+
+/* Link */
+.link {
+  background-color: transparent;
+  color: var(--text-base-strong);
+  border-color: transparent;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* Danger */
+.danger {
+  background-color: var(--background-danger-medium-default);
+  color: var(--text-danger-bolder);
+  border-color: var(--border-danger-strong);
+}
+
+.danger:hover {
+  background-color: var(--background-danger-medium-hover);
+}
+
+/* ─── States ──────────────────────────────────────────────── */
+
+.button:disabled {
+  background-color: var(--background-disabled);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+  opacity: var(--opacity-disabled);
+}
+
+.button:focus-visible {
+  outline: none;
+  border-color: var(--border-selected);
+  box-shadow: 0 0 0 1px var(--border-selected);
+}
+
+/* ─── Icon-only ───────────────────────────────────────────── */
+.iconOnly {
+  padding: var(--layout-padding-xs);
+  aspect-ratio: 1;
+}

@@ -1,0 +1,89 @@
+.wrapper {
+  display: flex;
+  width: 358px;
+  max-width: 768px;
+  padding: var(--layout-padding-none, 0);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--layout-padding-none, 0);
+  background-color: var(--background-elevated);
+  border-radius: var(--layout-radius-2xl);
+  border: var(--layout-border-thin) solid var(--border-default);
+  box-shadow:
+    0 var(--shadow-positive-sm) var(--shadow-positive-lg) var(--shadow-brand-lighter);
+  overflow: hidden;
+}
+
+.inputArea {
+  position: relative;
+  width: 100%;
+}
+
+.animatedPlaceholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: var(--layout-padding-lg);
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-note);
+  line-height: var(--font-line-height-content-note);
+  color: var(--text-base-moderate);
+  pointer-events: none;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 0.9em;
+  background-color: var(--background-brand-bolder-default);
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.textarea {
+  position: relative;
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-note);
+  line-height: var(--font-line-height-content-note);
+  color: var(--text-base-strong);
+  resize: none;
+  outline: none;
+  padding: var(--layout-padding-lg);
+  padding-bottom: 48px;
+  z-index: 1;
+}
+
+.sendButton {
+  position: absolute;
+  bottom: var(--layout-padding-md);
+  right: var(--layout-padding-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--layout-size-xl);
+  height: var(--layout-size-xl);
+  border-radius: var(--layout-radius-full);
+  background-color: var(--background-brand-bolder-default);
+  color: var(--text-base-lighter);
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 150ms ease;
+  z-index: 2;
+}
+
+.sendButton:hover {
+  background-color: var(--background-brand-bolder-hover);
+}

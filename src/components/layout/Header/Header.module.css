@@ -1,0 +1,24 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--layout-padding-lg) var(--layout-padding-xl);
+  background-color: var(--background-base);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--layout-gap-md);
+}
+
+.menuButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--icon-neutral-strong);
+  padding: var(--layout-padding-xs);
+}

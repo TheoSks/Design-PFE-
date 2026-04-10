@@ -6,9 +6,7 @@
  * Apply via: <html data-theme="dark"> or prefers-color-scheme
  */
 
-[data-theme="dark"],
-@media (prefers-color-scheme: dark) {
-  :root {
+[data-theme="dark"] {
 
   /* ══════════════════════════════════════════════════════════
    * BACKGROUND
@@ -271,6 +269,4 @@
   --link-primary-hover:   var(--color-brand-300);
   --link-primary-pressed: var(--color-brand-500);
   --link-primary-visited: var(--color-brand-600);
-
-  }
 }

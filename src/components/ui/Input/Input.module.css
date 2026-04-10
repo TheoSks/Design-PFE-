@@ -1,0 +1,97 @@
+/* ── Wrapper ─────────────────────────────────────────── */
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-gap-sm); /* 4px */
+  width: 100%;
+}
+
+/* ── Label ───────────────────────────────────────────── */
+
+.label {
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-note); /* 14px */
+  font-weight: var(--font-weight-bold); /* 700 */
+  line-height: var(--font-line-height-content-note);
+  color: var(--text-base-strong);
+}
+
+/* ── Field wrapper ───────────────────────────────────── */
+
+.fieldWrapper {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  border-radius: var(--layout-radius-xl); /* 12px */
+  border: var(--layout-border-thin) solid var(--border-neutral-bolder);
+  background: var(--background-base);
+  padding: 0 var(--layout-padding-lg); /* 12px */
+  gap: var(--layout-gap-md); /* 8px */
+  transition: border-color 150ms ease;
+}
+
+.fieldWrapper:focus-within {
+  border-color: var(--border-selected);
+}
+
+/* ── Input ───────────────────────────────────────────── */
+
+.input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-body); /* 16px */
+  font-weight: var(--font-weight-regular);
+  color: var(--text-base-strong);
+  line-height: var(--font-line-height-content-body);
+}
+
+.input::placeholder {
+  color: var(--text-base-moderate);
+}
+
+/* ── Icons ───────────────────────────────────────────── */
+
+.iconLeft,
+.iconRight {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: var(--icon-neutral-moderate);
+  /* Reset button styles when used as a toggle */
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* ── Hint ────────────────────────────────────────────── */
+
+.hint {
+  font-size: var(--font-size-content-note);
+  line-height: var(--font-line-height-content-note);
+  color: var(--text-base-moderate);
+}
+
+/* ── State: error ────────────────────────────────────── */
+
+.error .fieldWrapper {
+  border-color: var(--border-danger-strong);
+}
+
+.error .hint {
+  color: var(--text-danger-moderate);
+}
+
+/* ── State: success ──────────────────────────────────── */
+
+.success .fieldWrapper {
+  border-color: var(--border-success-strong);
+}
+
+.success .hint {
+  color: var(--text-success-moderate);
+}

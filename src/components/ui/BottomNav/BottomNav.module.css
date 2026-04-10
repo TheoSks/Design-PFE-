@@ -1,0 +1,82 @@
+/* Classic style: light background, top border */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  padding: var(--layout-padding-md) 0;
+}
+
+.classic {
+  background-color: var(--background-elevated);
+  border-top: var(--layout-border-thin) solid var(--border-default);
+}
+
+/* Pill style: dark floating bar with rounded corners */
+.pill {
+  background-color: var(--background-inverse);
+  border-radius: var(--layout-radius-full);
+  padding: var(--layout-padding-md) var(--layout-padding-lg);
+  margin: 0 var(--layout-padding-lg);
+}
+
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--layout-gap-xs);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--layout-padding-sm) var(--layout-padding-md);
+  border-radius: var(--layout-radius-md);
+  transition: color 200ms ease;
+}
+
+/* Classic tab colors */
+.classic .tab {
+  color: var(--icon-neutral-moderate);
+}
+
+.classic .tab.active {
+  color: var(--icon-brand-default);
+}
+
+/* Pill tab colors */
+.pill .tab {
+  color: var(--text-inverse-moderate);
+}
+
+.pill .tab.active {
+  color: var(--text-inverse-strong);
+}
+
+.iconWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -8px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: var(--layout-radius-full);
+  background-color: var(--background-danger-bolder-default);
+  color: var(--text-inverse-strong);
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-micro);
+  font-weight: var(--font-weight-accent);
+  line-height: 16px;
+  text-align: center;
+}
+
+.label {
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-micro);
+  line-height: var(--font-line-height-content-micro);
+}

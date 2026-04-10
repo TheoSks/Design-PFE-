@@ -1,0 +1,49 @@
+.searchBar {
+  display: flex;
+  align-items: center;
+  gap: var(--layout-gap-lg);
+  padding: var(--layout-padding-lg) var(--layout-padding-xl);
+  border-radius: var(--layout-radius-full);
+  background-color: var(--background-elevated);
+  border: var(--layout-border-thin) solid var(--border-default);
+  cursor: pointer;
+  transition: box-shadow 200ms ease;
+  width: 100%;
+  text-align: left;
+}
+
+.active {
+  box-shadow: 0 var(--shadow-positive-sm) var(--shadow-positive-lg) var(--shadow-neutral-strong);
+}
+
+.off {
+  opacity: var(--opacity-disabled);
+  cursor: default;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: var(--icon-neutral-strong);
+}
+
+.textBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-note);
+  font-weight: var(--font-weight-accent);
+  color: var(--text-base-strong);
+  line-height: var(--font-line-height-content-note);
+}
+
+.subtitle {
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-caption);
+  color: var(--text-base-moderate);
+  line-height: var(--font-line-height-content-caption);
+}
