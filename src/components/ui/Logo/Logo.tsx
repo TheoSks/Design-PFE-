@@ -6,7 +6,7 @@ interface LogoProps {
 }
 
 export function Logo({ size = "md", className }: LogoProps) {
-  const iconSize = { sm: 64, md: 80, lg: 96 }[size];
+  const iconSize = { sm: 80, md: 96, lg: 112 }[size];
 
   return (
     <span
