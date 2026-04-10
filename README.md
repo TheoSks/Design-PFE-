@@ -10,11 +10,11 @@
 
 ## 📌 Présentation
 
-Ce dépôt documente le **Design System** et les **maquettes** réalisés dans le cadre de mon Projet de Fin d'Études. Le projet consiste en une application mobile de recherche immobilière repensée, où l'IA agit comme facilitateur d'expérience — et non comme gadget — face aux plateformes existantes (SeLoger, Leboncoin, Jinka…).
+Ce dépôt documente le Design System et les maquettes réalisés dans le cadre de mon Projet de Fin d'Études. Le projet consiste en une application mobile de recherche immobilière repensée, où l'IA agit comme facilitateur d'expérience — et non comme gadget — face aux plateformes existantes (SeLoger, Leboncoin, BienIci, Nexity…).
 
-L'ambition : **simplifier la recherche immobilière sans dénaturer le métier**.
+L'ambition : **simplifier la recherche immobilière sans dénaturer le métier.**
 
-🔗 **[Voir le fichier Figma →](https://www.figma.com/design/PmqsndekhjJTOY8MEzKFFr/Design-system-PFE)**
+🔗 [Voir le fichier Figma →](https://www.figma.com/design/PmqsndekhjJTOY8MEzKFFr/Design-system-PFE)
 
 ---
 
@@ -26,23 +26,102 @@ L'ambition : **simplifier la recherche immobilière sans dénaturer le métier**
 
 ## 📱 Écrans & Parcours
 
-Le fichier Figma couvre l'ensemble des écrans applicatifs :
-
 | Écran | Description |
 |---|---|
-| **Splash Screen** | Premier lancement, onboarding |
-| **Inscription** | Création de compte & finalisation du profil |
-| **Homepage / Explore** | Recherche classique avec filtres |
-| **Résultats** | Liste des annonces avec Score Qualité de Vie |
-| **Chat IA** | Assistant conversationnel en langage naturel |
+| Splash Screen | Premier lancement, onboarding |
+| Inscription | Création de compte & finalisation du profil |
+| Homepage / Explore | Point d'entrée — prompt conversationnel |
+| Chat IA | Assistant conversationnel en langage naturel |
+| Résultats | Liste des annonces filtrées avec Score Qualité de Vie |
+
+---
+
+## 🗺️ User Flow — Prototype actuel
+
+```
+Homepage (prompt vide)
+       ↓
+Saisie de la recherche ("Appartement Rouen 60m2")
+       ↓
+Chat IA — questions de relance (quartier, luminosité, extérieur...)
+       ↓
+Réponse utilisateur ("Rive droite, balcon, proche métro")
+       ↓
+Résultats filtrés — 24 annonces · tags IA · Score QdV
+```
+
+---
+
+## ✨ Fonctionnalités
+
+### MVP
+
+**1. Chat IA comme point d'entrée unique**  
+Un prompt conversationnel remplace tous les filtres classiques. L'utilisateur décrit sa recherche naturellement et l'IA extrait automatiquement les critères. Elle relance avec des questions contextuelles avant d'afficher les résultats.
+
+**2. Score Qualité de Vie**  
+Différenciateur central du projet. Chaque bien est évalué sur 4 dimensions :
+
+| Critère | Description |
+|---|---|
+| 🚇 Transports | Proximité et fréquence des lignes |
+| 🛒 Commerces | Accès aux services du quotidien |
+| 🌿 Espaces verts | Parcs et nature à proximité |
+| 🔇 Bruit | Niveau sonore du quartier (jour / nuit) |
+
+> ⚠️ **Point de friction (test utilisateur)** — Le score n'est pas proposé proactivement par l'IA. Il apparaît uniquement si l'utilisateur mentionne un critère lié au cadre de vie. **Piste : déclencher automatiquement le Score QdV dès qu'un critère de vie est évoqué dans le chat.**
+
+**3. Résultats filtrés par l'IA**  
+Après la conversation, l'IA présente les annonces les plus pertinentes avec un récapitulatif, des tags contextuels générés automatiquement (ex. *"Belle luminosité"*) et le Score QdV sur chaque carte.
+
+> ⚠️ **Point de friction (test utilisateur)** — Les tags ne sont pas compris spontanément. Le retour en arrière pour modifier les critères n'est pas intuitif. **Pistes : info-bulle sur les tags + bouton "Modifier mes critères" visible depuis les résultats.**
+
+**4. Comparateur d'annonces avec synthèse IA** *(à venir)*  
+L'utilisateur sélectionne 2 à 3 biens, l'IA génère une synthèse comparative incluant le Score QdV, les points forts/faibles et une recommandation.
+
+> 🚧 Non présent dans le prototype actuel — prévu pour la prochaine itération.
+
+**5. Alertes intelligentes** *(à venir)*  
+Notifications personnalisées selon le profil utilisateur.
+
+### Évolutions futures
+
+- 🎙️ Recherche vocale
+- 🗺️ Vue carte augmentée
+- 📱 Mode hors-ligne
+- 🔗 Intégration agences partenaires
+
+---
+
+## 👤 Profils utilisateurs ciblés
+
+- 🎓 Étudiants en mobilité
+- 👔 Jeunes actifs (primo-accédants ou locataires)
+- 👨‍👩‍👧 Familles en recherche de logement
+- 🏢 Professionnels de l'immobilier
+
+---
+
+## 🧪 Test Utilisateur — Résultats clés
+
+**Profil testé** : Jeune couple (Maxime 29 ans, Marine 27 ans) — premier achat — exploration sans urgence. Bonne expérience avec les apps immo classiques (SeLoger, BienIci, Leboncoin, Nexity).
+
+| Étape | Résultat | Observé |
+|---|---|---|
+| Compréhension homepage | Immédiate, sans explication | ✅ |
+| Premier geste : prompt | Oui, sans chercher de filtres | ✅ |
+| Hésitation avant de taper | Oui, quelques secondes | ✅ |
+| Réponse aux relances IA | Fluide après la première hésitation | ✅ |
+| Compréhension Score QdV | Partielle — nécessite une remarque de l'utilisateur | ⚠️ |
+| Retour pour modifier critères | Non trouvé intuitivement | ⚠️ |
+
+> *"Elle me pose des questions, c'est bien ça."* — Maxime, tâche 2
 
 ---
 
 ## 🎨 Design System
 
 ### Fondations — Tokens CSS
-
-Le Design System repose sur un système de tokens organisés par catégories :
 
 ```
 🎨 Couleurs
@@ -79,13 +158,13 @@ Le Design System repose sur un système de tokens organisés par catégories :
 ├── 🖼️  Cover
 │
 ├── 📱 Écrans
-│   ├── Splash Screen 01
+│   ├── Splash Screen
 │   ├── Inscription
 │   ├── Finaliser inscription
 │   ├── Explore / Accueil
 │   ├── Homepage
-│   ├── Résultats
-│   └── Chat IA
+│   ├── Chat IA
+│   └── Résultats
 │
 ├── 🧩 Composants
 │   ├── Logo
@@ -103,29 +182,13 @@ Le Design System repose sur un système de tokens organisés par catégories :
 
 ---
 
-## ✨ Fonctionnalités clés
+## 🔗 Références produit
 
-### MVP
-- 🔍 **Recherche classique** avec filtres avancés (type, surface, prix, localisation)
-- 🤖 **Assistant IA conversationnel** pour affiner sa recherche en langage naturel
-- 🌿 **Score Qualité de Vie** — indicateur croisant transports, commerces, espaces verts, bruit
-- 📊 **Comparateur d'annonces** avec synthèse IA
-- 🔔 **Alertes intelligentes** personnalisées selon le profil utilisateur
-
-### Évolutions futures
-- 🎙️ Recherche vocale
-- 🗺️ Vue carte augmentée
-- 📱 Mode hors-ligne
-- 🔗 Intégration agences partenaires
-
----
-
-## 👤 Profils utilisateurs ciblés
-
-- 🎓 Étudiants en mobilité
-- 👔 Jeunes actifs (primo-accédants ou locataires)
-- 👨‍👩‍👧 Familles en recherche de logement
-- 🏢 Professionnels de l'immobilier
+| Produit | Ce qu'on s'en inspire |
+|---|---|
+| **Zefir / ZIA** | Recherche conversationnelle, relances contextuelles, assistant 24/7 |
+| **SeLoger / BienIci** | Référence UX à dépasser sur la rigidité des filtres |
+| **Jinka** | Agrégation multi-sources |
 
 ---
 
@@ -133,10 +196,10 @@ Le Design System repose sur un système de tokens organisés par catégories :
 
 | Outil | Usage |
 |---|---|
-| **Figma** | Maquettes, prototypes, Design System |
-| **Zeroheight** | Documentation du Design System |
-| **FigJam** | User flows, ateliers d'idéation |
-| **Notion** | Gestion de projet, spécifications |
+| Figma | Maquettes, prototypes, Design System |
+| Zeroheight | Documentation du Design System |
+| FigJam | User flows, ateliers d'idéation |
+| Notion | Gestion de projet, spécifications |
 
 ---
 
@@ -145,7 +208,7 @@ Le Design System repose sur un système de tokens organisés par catégories :
 ```
 Recherche utilisateur
        ↓
-Benchmark (SeLoger · Jinka · Leboncoin · Bien'ici · PAP)
+Benchmark (SeLoger · Jinka · Leboncoin · Bien'ici · PAP · Zefir)
        ↓
 Personas & User Flows
        ↓
