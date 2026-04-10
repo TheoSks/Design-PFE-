@@ -6,31 +6,35 @@ interface LogoProps {
 }
 
 export function Logo({ size = "md", className }: LogoProps) {
-  const heights = { sm: 20, md: 28, lg: 36 };
-  const h = heights[size];
+  const iconSize = { sm: 20, md: 28, lg: 36 }[size];
+  const fontSize = { sm: 16, md: 22, lg: 28 }[size];
 
   return (
-    <span className={className} style={{ display: 'inline-flex', alignItems: 'center' }}>
-      <svg
-        width={h * 2.5}
-        height={h}
-        viewBox="0 0 70 28"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
+    <span
+      className={className}
+      style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/logo.svg"
+        alt=""
+        width={iconSize}
+        height={iconSize}
+        style={{ display: 'block', flexShrink: 0 }}
+        aria-hidden="true"
+      />
+      <span
+        style={{
+          fontFamily: 'var(--font-family-heading)',
+          fontSize,
+          fontWeight: 700,
+          letterSpacing: '-0.5px',
+          color: 'currentColor',
+          lineHeight: 1,
+        }}
       >
-        {/* "Label" wordmark — SF Pro style */}
-        <text
-          x="0"
-          y="22"
-          fontFamily="var(--font-family-heading)"
-          fontSize="22"
-          fontWeight="700"
-          letterSpacing="-0.5"
-          fill="currentColor"
-        >
-          Label
-        </text>
-      </svg>
+        Label
+      </span>
     </span>
   );
 }
