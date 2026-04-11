@@ -1,4 +1,10 @@
 /* ── Card container ────────────────────────────────────────── */
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
 .card {
   position: relative;
   display: flex;

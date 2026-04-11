@@ -1,0 +1,129 @@
+.gallery {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  border-radius: var(--layout-radius-lg);
+  overflow: hidden;
+}
+
+.imageContainer {
+  position: absolute;
+  inset: 0;
+}
+
+.image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  pointer-events: none;
+}
+
+.imageActive {
+  opacity: 1;
+}
+
+.gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    var(--background-neutral-strong-default),
+    transparent
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.topBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--layout-padding-lg);
+  z-index: 2;
+}
+
+.backButton,
+.actionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--layout-radius-full);
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(6px);
+  border: none;
+  cursor: pointer;
+  transition: background-color 200ms ease;
+}
+
+.backButton:hover,
+.actionButton:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.topActions {
+  display: flex;
+  gap: var(--layout-padding-md);
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--layout-radius-full);
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 200ms ease, background-color 200ms ease;
+}
+
+.gallery:hover .arrow {
+  opacity: 1;
+}
+
+.arrow:hover {
+  background: rgba(255, 255, 255, 1);
+}
+
+.arrowLeft {
+  left: var(--layout-padding-md);
+}
+
+.arrowRight {
+  right: var(--layout-padding-md);
+}
+
+.counter {
+  position: absolute;
+  bottom: var(--layout-padding-lg);
+  right: var(--layout-padding-lg);
+  padding: var(--layout-padding-xs) var(--layout-padding-md);
+  border-radius: var(--layout-radius-sm);
+  background: var(--background-neutral-strong-hover);
+  color: var(--text-inverse);
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-caption);
+  font-weight: var(--font-weight-emphasis);
+  line-height: 16px;
+  z-index: 2;
+}

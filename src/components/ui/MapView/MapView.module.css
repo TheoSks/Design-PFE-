@@ -1,0 +1,19 @@
+.map {
+  width: 100%;
+  height: 448px;
+  border-radius: var(--layout-radius-lg);
+  overflow: hidden;
+  z-index: 0;
+}
+
+.marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px !important;
+  height: 32px !important;
+  background: var(--background-brand-bolder-default);
+  border: 3px solid var(--background-base);
+  border-radius: var(--layout-radius-full);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}

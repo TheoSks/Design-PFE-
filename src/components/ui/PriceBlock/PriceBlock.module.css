@@ -1,0 +1,56 @@
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-padding-xl);
+  align-items: center;
+  justify-content: center;
+  padding: var(--layout-padding-xl);
+  background: var(--background-brand-faint-default);
+  border-radius: var(--layout-radius-lg);
+}
+
+.priceInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-padding-md);
+  width: 100%;
+}
+
+.price {
+  font-family: var(--root-font-family-primary);
+  font-size: var(--root-font-size-2xl);
+  font-weight: var(--font-weight-accent);
+  color: var(--text-base-strong);
+  line-height: 32px;
+  letter-spacing: -1px;
+}
+
+.pricePerM2 {
+  font-family: var(--font-family-content);
+  font-size: var(--root-font-size-md);
+  font-weight: var(--font-weight-accent);
+  color: var(--text-base-bolder);
+  line-height: 24px;
+}
+
+.cta {
+  width: 100%;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background-brand-strong-default);
+  color: var(--text-base-lighter);
+  border: none;
+  border-radius: var(--layout-radius-xl);
+  font-family: var(--font-family-content);
+  font-size: 16px;
+  font-weight: var(--font-weight-emphasis);
+  line-height: 24px;
+  cursor: pointer;
+  transition: background-color 200ms ease;
+}
+
+.cta:hover {
+  background: var(--background-brand-strong-hover);
+}

@@ -1,0 +1,82 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.title {
+  font-family: var(--root-font-family-primary);
+  font-size: var(--root-font-size-xl);
+  font-weight: var(--font-weight-accent);
+  color: var(--text-base-strong);
+  line-height: 28px;
+  letter-spacing: -1px;
+  margin: 0;
+}
+
+.section {
+  padding-top: var(--layout-padding-lg);
+}
+
+.subtitle {
+  font-family: var(--font-family-content);
+  font-size: var(--root-font-size-md);
+  font-weight: var(--font-weight-accent);
+  color: var(--text-base-strong);
+  line-height: 24px;
+  margin: 0;
+}
+
+.scaleRow {
+  display: flex;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 56px;
+  gap: var(--layout-padding-xl);
+}
+
+.grades {
+  display: flex;
+  align-items: center;
+  gap: var(--layout-padding-md);
+}
+
+.grade {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  font-family: var(--font-family-content);
+  font-size: 16px;
+  font-weight: var(--font-weight-accent);
+  color: #190a1c;
+  transition: transform 100ms ease;
+}
+
+.gradeActive {
+  height: 48px;
+  border-radius: var(--layout-radius-sm);
+}
+
+.valueBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.value {
+  font-family: var(--font-family-content);
+  font-size: var(--root-font-size-md);
+  font-weight: var(--font-weight-accent);
+  color: #190a1c;
+  line-height: 24px;
+}
+
+.unit {
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-caption);
+  font-weight: var(--font-weight-accent);
+  color: var(--text-base-moderate);
+  line-height: 16px;
+}

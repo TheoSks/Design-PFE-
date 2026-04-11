@@ -1,0 +1,1 @@
+export { PropertySpecs } from './PropertySpecs';

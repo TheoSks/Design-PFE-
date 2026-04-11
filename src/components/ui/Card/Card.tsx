@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import styles from './Card.module.css';
 import { cn } from '@/lib/cn';
 import {
@@ -25,6 +26,7 @@ interface CardProps {
   location: string;
   price: string;
   features?: CardFeature[];
+  href?: string;
   className?: string;
 }
 
@@ -38,6 +40,7 @@ export function Card({
   location,
   price,
   features,
+  href,
   className,
 }: CardProps) {
   const [current, setCurrent] = useState(0);
@@ -88,7 +91,7 @@ export function Card({
     setTouchStart(null);
   };
 
-  return (
+  const card = (
     <article
       className={cn(styles.card, className)}
       aria-label={imageAlt}
@@ -176,6 +179,16 @@ export function Card({
       )}
     </article>
   );
+
+  if (href) {
+    return (
+      <Link href={href} className={styles.cardLink}>
+        {card}
+      </Link>
+    );
+  }
+
+  return card;
 }
 
 export type { CardProps, CardFeature };

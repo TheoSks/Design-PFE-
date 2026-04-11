@@ -1,0 +1,29 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--layout-padding-lg) var(--layout-padding-xl);
+  padding: var(--layout-padding-md) 0;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--layout-padding-md);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--text-base-strong);
+}
+
+.label {
+  font-family: var(--font-family-content);
+  font-size: 16px;
+  font-weight: var(--font-weight-accent);
+  color: var(--text-base-strong);
+  line-height: 24px;
+  white-space: nowrap;
+}
