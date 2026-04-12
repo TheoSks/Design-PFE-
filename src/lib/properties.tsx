@@ -148,7 +148,6 @@ export const PROPERTIES: PropertyData[] = [
     cardFeatures: [{ label: '5 pièces' }, { label: '120 m²' }],
     badgeLabel: 'Pépite rare',
     badgeColor: 'purple',
-    badgeColor: 'purple',
   },
   {
     id: 'villa-vue-mer-nice',

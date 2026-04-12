@@ -102,7 +102,7 @@ function extractCriteria(text: string, existing: SearchCriteria): SearchCriteria
 }
 
 // ── Contextual response generation ────────────────────────────
-function generateResponse(criteria: SearchCriteria, msgCount: number): { text: string; chips: string[] } {
+function generateResponse(criteria: SearchCriteria, msgCount: number): { text: string; chips: string[]; showResultsLink?: boolean } {
   const parts: string[] = [];
   const missing: string[] = [];
   const chips: string[] = [];
