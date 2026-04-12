@@ -32,6 +32,8 @@ export interface PropertyData {
   cardLocation: string;
   cardPrice: string;
   cardFeatures: { label: string }[];
+  badgeLabel?: string;
+  badgeColor?: 'blue' | 'green' | 'orange' | 'amber' | 'purple';
 }
 
 export const PROPERTIES: PropertyData[] = [
@@ -89,6 +91,8 @@ export const PROPERTIES: PropertyData[] = [
     cardLocation: 'Paris 11e, Île-de-France',
     cardPrice: '120.000 €',
     cardFeatures: [{ label: '3 pièces' }, { label: '65 m²' }],
+    badgeLabel: 'Coup de cœur',
+    badgeColor: 'blue',
   },
   {
     id: 'maison-familiale-versailles',
@@ -142,6 +146,9 @@ export const PROPERTIES: PropertyData[] = [
     cardLocation: 'Versailles, Yvelines',
     cardPrice: '350.000 €',
     cardFeatures: [{ label: '5 pièces' }, { label: '120 m²' }],
+    badgeLabel: 'Pépite rare',
+    badgeColor: 'purple',
+    badgeColor: 'purple',
   },
   {
     id: 'villa-vue-mer-nice',
@@ -198,6 +205,8 @@ export const PROPERTIES: PropertyData[] = [
     cardLocation: 'Nice, Alpes-Maritimes',
     cardPrice: '890.000 €',
     cardFeatures: [{ label: '7 pièces' }, { label: '280 m²' }],
+    badgeLabel: 'Très demandé',
+    badgeColor: 'amber',
   },
 ];
 

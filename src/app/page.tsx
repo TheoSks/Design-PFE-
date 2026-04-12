@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -7,16 +8,11 @@ import { AISearchInput } from '@/components/ui/AISearchInput';
 import { CardCarousel } from '@/components/ui/CardCarousel';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
-import { PROPERTIES } from '@/lib/properties';
-
-const sections = [
-  { title: 'Belle luminosité', cards: [PROPERTIES[0], PROPERTIES[1], PROPERTIES[2]] },
-  { title: 'Maison proche RER dans les Yvelines', cards: [PROPERTIES[1], PROPERTIES[0], PROPERTIES[2]] },
-  { title: 'Vue mer', cards: [PROPERTIES[2], PROPERTIES[0], PROPERTIES[1]] },
-  { title: 'Belle luminosité', cards: [PROPERTIES[0], PROPERTIES[2], PROPERTIES[1]] },
-];
+import { SECTIONS } from '@/lib/sections';
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <div className={styles.page}>
       <Header />
@@ -32,14 +28,14 @@ export default function Home() {
       </section>
 
       <div className={styles.sections}>
-        {sections.map((section, i) => (
-          <CardCarousel key={i} title={section.title} onSeeAll={() => {}}>
+        {SECTIONS.map((section, i) => (
+          <CardCarousel key={i} title={section.title} onSeeAll={() => router.push(`/rubrique/${section.slug}`)}>
             {section.cards.map((property, j) => (
               <Card
                 key={j}
                 images={property.images}
                 imageAlt={property.cardTitle}
-                badge={<Badge variant="ia">Label</Badge>}
+                badge={<Badge variant="ia" color={property.badgeColor}>{property.badgeLabel ?? 'Label'}</Badge>}
                 title={property.cardTitle}
                 location={property.cardLocation}
                 price={property.cardPrice}

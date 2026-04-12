@@ -214,7 +214,7 @@ export default function AnnoncePage() {
                 location={prop.cardLocation}
                 price={prop.cardPrice}
                 features={prop.cardFeatures}
-                badge={<Badge variant="ia">Label</Badge>}
+                badge={<Badge variant="ia" color={prop.badgeColor}>{prop.badgeLabel ?? 'Label'}</Badge>}
                 href={`/annonce/${prop.id}`}
               />
             ))}

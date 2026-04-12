@@ -15,10 +15,37 @@
   color: var(--text-base-strong);
 }
 
+/* ── Subtle shimmer border ────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Animated gradient border wrapper */
+.iaWrapper {
+  border-radius: var(--layout-radius-full);
+  padding: 2px;
+  background: linear-gradient(120deg, #93c5fd, #2B7FFF, #60a5fa, #93c5fd);
+  background-size: 250% 250%;
+  animation: shimmer 7s ease-in-out infinite;
+}
+
+@keyframes moveBg {
+  to { background-position: 300% 0; }
+}
+
 .ia {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--layout-gap-xs);
   padding: var(--layout-padding-xs) var(--layout-padding-md);
   font-size: var(--font-size-content-caption);
-  background-color: var(--background-brand-faint-default);
+  font-family: var(--font-family-content);
+  font-weight: var(--font-weight-accent);
+  white-space: nowrap;
+  border-radius: var(--layout-radius-full);
+  background-color: var(--background-base);
   color: var(--text-brand-bolder);
 }
 
@@ -28,3 +55,46 @@
   background-color: var(--background-neutral-lighter-default);
   color: var(--text-base-bolder);
 }
+
+/* ── Color variants for ia wrapper gradient ───────────────── */
+.greenWrapper {
+  padding: 2px;
+  background: linear-gradient(120deg, #6ee7a0, #008236, #34d399, #6ee7a0);
+  background-size: 250% 250%;
+  animation: shimmer 7s ease-in-out infinite;
+}
+
+.orangeWrapper {
+  padding: 2px;
+  background: linear-gradient(120deg, #fdba74, #c2410c, #fb923c, #fdba74);
+  background-size: 250% 250%;
+  animation: shimmer 7s ease-in-out infinite;
+}
+
+.amberWrapper {
+  padding: 2px;
+  background: linear-gradient(120deg, #fcd34d, #92400e, #f59e0b, #fcd34d);
+  background-size: 250% 250%;
+  animation: shimmer 7s ease-in-out infinite;
+}
+
+.purpleWrapper {
+  padding: 2px;
+  background: linear-gradient(120deg, #c4b5fd, #5b21b6, #a78bfa, #c4b5fd);
+  background-size: 250% 250%;
+  animation: shimmer 7s ease-in-out infinite;
+}
+
+.blueWrapper {
+  padding: 2px;
+  background: linear-gradient(120deg, #93c5fd, #2B7FFF, #60a5fa, #93c5fd);
+  background-size: 250% 250%;
+  animation: shimmer 7s ease-in-out infinite;
+}
+
+/* ── Color variants for ia inner text ─────────────────────── */
+.green.ia { color: var(--color-success-600); }
+.orange.ia { color: var(--color-warning-600); }
+.amber.ia { color: #b45309; }
+.purple.ia { color: #7c3aed; }
+.blue.ia { color: var(--color-brand-600); }

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rive Test</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .test-row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+    .test-box { text-align: center; }
+    .test-box canvas { border: 2px solid red; display: block; }
+    .label { font-size: 12px; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Rive Debug</h1>
+  <div class="test-row">
+    <div class="test-box">
+      <canvas id="c1" width="530" height="530" style="width:265px;height:265px;background:#fff;"></canvas>
+      <div class="label">White bg / 530x530 native</div>
+    </div>
+    <div class="test-box">
+      <canvas id="c2" width="530" height="530" style="width:265px;height:265px;background:#1a1a2e;"></canvas>
+      <div class="label">Dark bg / 530x530 native</div>
+    </div>
+    <div class="test-box">
+      <canvas id="c3" width="530" height="530" style="width:265px;height:265px;background:linear-gradient(135deg,#ff0,#f0f);"></canvas>
+      <div class="label">Gradient bg / 530x530 native</div>
+    </div>
+  </div>
+  <pre id="info" style="font-size: 14px; background: #f5f5f5; padding: 16px; border-radius: 8px;">Loading...</pre>
+
+  <script src="https://unpkg.com/@rive-app/canvas@2.37.1"></script>
+  <script>
+    const info = document.getElementById('info');
+    let log = '';
+
+    function addLog(msg) {
+      log += msg + '\n';
+      info.textContent = log;
+      console.log(msg);
+    }
+
+    ['c1', 'c2', 'c3'].forEach((id) => {
+      const canvas = document.getElementById(id);
+      const r = new rive.Rive({
+        src: '/character-animation-sm-mobile.riv',
+        canvas: canvas,
+        stateMachines: 'Auto Generated State Machine',
+        autoplay: true,
+        onLoad: () => {
+          addLog('[' + id + '] Loaded');
+          addLog('[' + id + '] Artboard: ' + r.artboardName);
+          addLog('[' + id + '] Animations: ' + JSON.stringify(r.animationNames));
+          addLog('[' + id + '] StateMachines: ' + JSON.stringify(r.stateMachineNames));
+          addLog('[' + id + '] Bounds: ' + JSON.stringify(r.bounds));
+          r.resizeDrawingSurfaceToCanvas();
+
+          // List all state machine inputs
+          try {
+            const inputs = r.stateMachineInputs('Auto Generated State Machine');
+            if (inputs) {
+              inputs.forEach((input) => {
+                addLog('[' + id + '] Input: name="' + input.name + '" type=' + input.type + ' value=' + input.value);
+                // Try firing triggers
+                if (input.type === rive.StateMachineInputType.Trigger) {
+                  addLog('[' + id + '] Firing trigger: ' + input.name);
+                  input.fire();
+                }
+                // Try setting booleans to true
+                if (input.type === rive.StateMachineInputType.Boolean) {
+                  addLog('[' + id + '] Setting boolean ' + input.name + ' = true');
+                  input.value = true;
+                }
+              });
+            } else {
+              addLog('[' + id + '] No inputs found');
+            }
+          } catch(e) {
+            addLog('[' + id + '] Input error: ' + e.message);
+          }
+        },
+        onLoadError: (e) => {
+          addLog('[' + id + '] LOAD ERROR: ' + e);
+        },
+        onStateChange: (e) => {
+          addLog('[' + id + '] State change: ' + JSON.stringify(e.data));
+        },
+      });
+    });
+  </script>
+</body>
+</html>
