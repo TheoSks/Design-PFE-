@@ -70,7 +70,7 @@ export default function AnnoncePage() {
             title="Vous vendez votre bien ?"
             description="Obtenez une offre 2x plus vite grâce à la Vente Collective."
             linkText="En savoir plus"
-            imageSrc="/Gemini_Generated_Image_8e76b38e76b38e76.png"
+            imageSrc="/selling-your-home.webp.svg"
           />
 
           {/* Description */}
