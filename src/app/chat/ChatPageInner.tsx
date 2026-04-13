@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import styles from './page.module.css';
 import { Logo } from '@/components/ui/Logo';
 import { Card } from '@/components/ui/Card';
@@ -10,10 +11,11 @@ import { Badge } from '@/components/ui/Badge';
 import { BurgerMenu } from '@/components/ui/BurgerMenu';
 import { PropertySpecs } from '@/components/ui/PropertySpecs';
 import { PriceBlock } from '@/components/ui/PriceBlock';
-import { MapView } from '@/components/ui/MapView';
 import { IconSparkle, IconSend, IconUser, IconMenu, IconChevronLeft, IconHeart } from '@/components/icons';
 import { PROPERTIES, type PropertyData } from '@/lib/properties';
 import { RENTALS } from '@/lib/rentals';
+
+const MapView = dynamic(() => import('@/components/ui/MapView').then((m) => ({ default: m.MapView })), { ssr: false });
 
 // ── Types ────────────────────────────────────────────────────
 interface Message {
