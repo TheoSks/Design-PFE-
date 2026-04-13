@@ -8,7 +8,10 @@ import { Logo } from '@/components/ui/Logo';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { BurgerMenu } from '@/components/ui/BurgerMenu';
-import { IconSparkle, IconSend, IconUser, IconMenu } from '@/components/icons';
+import { PropertySpecs } from '@/components/ui/PropertySpecs';
+import { PriceBlock } from '@/components/ui/PriceBlock';
+import { MapView } from '@/components/ui/MapView';
+import { IconSparkle, IconSend, IconUser, IconMenu, IconChevronLeft, IconHeart } from '@/components/icons';
 import { PROPERTIES, type PropertyData } from '@/lib/properties';
 import { RENTALS } from '@/lib/rentals';
 
@@ -294,6 +297,9 @@ export default function ChatPageInner() {
   const [isTyping, setIsTyping] = useState(false);
   const [hasResults, setHasResults] = useState(false);
   const [criteriaSnapshot, setCriteriaSnapshot] = useState<SearchCriteria>({ features: [] });
+  const [selectedProperty, setSelectedProperty] = useState<PropertyData | null>(null);
+  const [detailOpen, setDetailOpen] = useState(false);
+  const [detailFavorite, setDetailFavorite] = useState(false);
   const criteriaRef = useRef<SearchCriteria>({ features: [] });
   const msgCountRef = useRef(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -339,6 +345,16 @@ export default function ChatPageInner() {
       .map((p) => ({ property: p, score: computeMatchScore(p, criteriaSnapshot) }))
       .sort((a, b) => b.score - a.score);
   }, [source, criteriaSnapshot]);
+
+  function openDetail(property: PropertyData) {
+    setSelectedProperty(property);
+    setDetailFavorite(false);
+    setDetailOpen(true);
+  }
+
+  function closeDetail() {
+    setDetailOpen(false);
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -492,19 +508,102 @@ export default function ChatPageInner() {
         <div className={`${styles.panel} ${activeTab === 'results' ? styles.panelActive : styles.panelRight}`}>
           <div className={styles.resultsList}>
             {matchedResults.map(({ property: p, score }) => (
-              <Card
-                key={p.id}
-                images={p.images}
-                title={p.cardTitle}
-                location={p.cardLocation}
-                price={p.cardPrice}
-                features={p.cardFeatures}
-                badge={<Badge variant="ia" color={getMatchColor(score)}>{getMatchLabel(score)}</Badge>}
-                href={`/annonce/${p.id}`}
-              />
+              <div key={p.id} className={styles.cardWrapper} onClick={() => openDetail(p)}>
+                <Card
+                  images={p.images}
+                  title={p.cardTitle}
+                  location={p.cardLocation}
+                  price={p.cardPrice}
+                  features={p.cardFeatures}
+                  badge={<Badge variant="ia" color={getMatchColor(score)}>{getMatchLabel(score)}</Badge>}
+                />
+              </div>
             ))}
           </div>
         </div>{/* end results panel */}
+
+        {/* Detail overlay — slides in from right on card click */}
+        <div className={`${styles.detailOverlay} ${detailOpen ? styles.detailOverlayOpen : ''}`}>
+          {selectedProperty && (
+            <>
+              {/* Sticky back bar */}
+              <div className={styles.detailBack}>
+                <button className={styles.detailBackButton} onClick={closeDetail} type="button">
+                  <IconChevronLeft size={20} />
+                  Résultats
+                </button>
+                <button
+                  className={styles.detailFavButton}
+                  onClick={() => setDetailFavorite((f) => !f)}
+                  type="button"
+                  aria-label={detailFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+                >
+                  <IconHeart size={20} filled={detailFavorite} />
+                </button>
+              </div>
+
+              {/* Hero image */}
+              <img
+                src={selectedProperty.images[0]}
+                alt={selectedProperty.title}
+                className={styles.detailHeroImage}
+              />
+
+              <div className={styles.detailBody}>
+                {/* Title + location */}
+                <div className={styles.detailHeader}>
+                  <h1 className={styles.detailTitle}>{selectedProperty.title}</h1>
+                  <p className={styles.detailLocation}>{selectedProperty.location}</p>
+                </div>
+
+                {/* Specs */}
+                <PropertySpecs specs={selectedProperty.specs} />
+
+                {/* Price */}
+                <PriceBlock
+                  price={selectedProperty.price}
+                  pricePerM2={selectedProperty.pricePerM2}
+                />
+
+                {/* Description */}
+                <section className={styles.detailSection}>
+                  <h2 className={styles.detailSectionTitle}>Description</h2>
+                  {selectedProperty.description.slice(0, 2).map((para, i) => (
+                    <p key={i} className={styles.detailDescParagraph}>{para}</p>
+                  ))}
+                </section>
+
+                {/* Localisation — interactive map */}
+                <section className={styles.detailSection}>
+                  <div className={styles.detailMapHeader}>
+                    <h2 className={styles.detailSectionTitle}>Localisation</h2>
+                    <div className={styles.detailMapSubHeader}>
+                      <span className={styles.detailLocation}>{selectedProperty.location}</span>
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedProperty.location)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.detailMapLink}
+                      >
+                        Google Maps
+                      </a>
+                    </div>
+                  </div>
+                  <MapView
+                    lat={selectedProperty.coordinates.lat}
+                    lng={selectedProperty.coordinates.lng}
+                    className={styles.detailMap}
+                  />
+                </section>
+
+                {/* CTA — full annonce */}
+                <Link href={`/annonce/${selectedProperty.id}`} className={styles.detailFullLink}>
+                  Voir l&apos;annonce complète →
+                </Link>
+              </div>
+            </>
+          )}
+        </div>{/* end detail overlay */}
 
       </div>{/* end tabContent */}
     </div>
