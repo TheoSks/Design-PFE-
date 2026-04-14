@@ -40,15 +40,9 @@ export function MapView({ lat, lng, zoom = 16, className }: MapViewProps) {
       bearing: -20,
       scrollZoom: false,
       doubleClickZoom: false,
-      attributionControl: false,
+      attributionControl: { compact: true },
       pitchWithRotate: false,
     });
-
-    // Minimal attribution
-    map.addControl(
-      new maptilersdk.AttributionControl({ compact: true }),
-      'bottom-right'
-    );
 
     // Custom SVG pin marker
     const el = document.createElement('div');
