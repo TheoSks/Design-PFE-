@@ -231,9 +231,9 @@
 .promoBanner {
   display: flex;
   flex-direction: column;
-  gap: var(--layout-padding-xl);
-  padding: 40px var(--layout-padding-xl);
-  margin: 0 var(--layout-padding-lg);
+  gap: var(--layout-padding-md);
+  padding: var(--layout-padding-lg) var(--layout-padding-lg);
+  margin: 0 var(--layout-padding-lg) var(--layout-padding-xl);
   background: var(--background-brand-moderate-default);
   border-radius: var(--layout-radius-xl);
   max-width: 576px;
@@ -243,29 +243,29 @@
 
 .promoTitle {
   font-family: var(--root-font-family-primary);
-  font-size: var(--root-font-size-4xl);
+  font-size: var(--root-font-size-xl);
   font-weight: var(--font-weight-accent);
   color: var(--text-base-strong);
-  line-height: 28px;
-  letter-spacing: -1px;
+  line-height: 22px;
+  letter-spacing: -0.5px;
   margin: 0;
 }
 
 .promoSubtitle {
   font-family: var(--font-family-content);
-  font-size: var(--root-font-size-lg);
+  font-size: var(--root-font-size-sm);
   font-weight: var(--font-weight-accent);
   color: var(--text-base-strong);
-  line-height: 24px;
+  line-height: 20px;
   margin: 0;
 }
 
 .promoText {
   font-family: var(--font-family-content);
-  font-size: var(--root-font-size-lg);
+  font-size: var(--root-font-size-sm);
   font-weight: var(--font-weight-accent);
   color: var(--text-base-strong);
-  line-height: 24px;
+  line-height: 20px;
   margin: 0;
 }
 
@@ -273,13 +273,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 58px;
-  width: 244px;
+  height: 44px;
+  width: 100%;
   background: var(--background-base);
   border: var(--layout-border-thin) solid var(--border-divider);
   border-radius: var(--layout-radius-lg);
   font-family: var(--font-family-content);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: var(--font-weight-bold);
   color: var(--text-base-strong);
   cursor: pointer;
