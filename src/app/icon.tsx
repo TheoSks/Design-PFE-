@@ -20,10 +20,11 @@ export default function Icon() {
           justifyContent: 'center',
           background: 'linear-gradient(145deg, #5b9fff 0%, #2b7fff 100%)',
           borderRadius: 114,
+          overflow: 'hidden',
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={base64} width={512} height={512} alt="" />
+        <img src={base64} width={640} height={640} alt="" />
       </div>
     ),
     { ...size }

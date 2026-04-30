@@ -20,10 +20,11 @@ export default function AppleIcon() {
           justifyContent: 'center',
           background: 'linear-gradient(145deg, #5b9fff 0%, #2b7fff 100%)',
           borderRadius: 40,
+          overflow: 'hidden',
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={base64} width={180} height={180} alt="" />
+        <img src={base64} width={224} height={224} alt="" />
       </div>
     ),
     { ...size }
