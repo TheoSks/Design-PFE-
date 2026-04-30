@@ -23,7 +23,7 @@
   display: flex;
   align-items: center;
   height: 48px;
-  border-radius: var(--layout-radius-xl); /* 12px */
+  border-radius: 8px;
   border: var(--layout-border-thin) solid var(--border-neutral-bolder);
   background: var(--background-base);
   padding: 0 var(--layout-padding-lg); /* 12px */

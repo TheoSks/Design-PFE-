@@ -21,11 +21,13 @@ import {
   IconHeart,
 } from '@/components/icons';
 import { getPropertyById, PROPERTIES } from '@/lib/properties';
+import { RENTALS } from '@/lib/rentals';
 import styles from './page.module.css';
 
 export default function AnnoncePage() {
   const params = useParams();
-  const property = getPropertyById(params.id as string);
+  const allProperties = [...PROPERTIES, ...RENTALS];
+  const property = allProperties.find((p) => p.id === (params.id as string));
 
   const [isFavorite, setIsFavorite] = useState(false);
   const [descExpanded, setDescExpanded] = useState(false);
@@ -34,8 +36,8 @@ export default function AnnoncePage() {
     notFound();
   }
 
-  // Similar properties: all properties except the current one
-  const similarProperties = PROPERTIES.filter((p) => p.id !== property.id);
+  // Similar properties: same dataset (buy or rent), excluding current
+  const similarProperties = allProperties.filter((p) => p.id !== property.id).slice(0, 6);
 
   return (
     <div className={styles.page}>
@@ -210,6 +212,7 @@ export default function AnnoncePage() {
               <Card
                 key={prop.id}
                 images={prop.images}
+                imageAlt={prop.cardTitle}
                 title={prop.cardTitle}
                 location={prop.cardLocation}
                 price={prop.cardPrice}

@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './EnergyRating.module.css';
+import { cn } from '@/lib/cn';
 
 type Grade = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G';
 
@@ -47,7 +48,7 @@ export function EnergyRating({
   className,
 }: EnergyRatingProps) {
   return (
-    <div className={`${styles.container} ${className || ''}`}>
+    <div className={cn(styles.container, className)}>
       <h3 className={styles.title}>{title}</h3>
 
       <div className={styles.section}>
@@ -57,7 +58,7 @@ export function EnergyRating({
             {GRADES.map((g) => (
               <div
                 key={g}
-                className={`${styles.grade} ${g === dpeGrade ? styles.gradeActive : ''}`}
+                className={cn(styles.grade, g === dpeGrade && styles.gradeActive)}
                 style={{ backgroundColor: DPE_COLORS[g] }}
               >
                 {g}
@@ -78,7 +79,7 @@ export function EnergyRating({
             {GRADES.map((g) => (
               <div
                 key={g}
-                className={`${styles.grade} ${g === gesGrade ? styles.gradeActive : ''}`}
+                className={cn(styles.grade, g === gesGrade && styles.gradeActive)}
                 style={{ backgroundColor: GES_COLORS[g] }}
               >
                 {g}

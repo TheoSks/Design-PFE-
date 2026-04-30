@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import styles from './BurgerMenu.module.css';
+import { cn } from '@/lib/cn';
 import { IconHome, IconLocation, IconBuilding, IconUser } from '@/components/icons';
 
 interface BurgerMenuProps {
@@ -41,14 +42,14 @@ export function BurgerMenu({ open, onClose }: BurgerMenuProps) {
     <>
       {/* Backdrop */}
       <div
-        className={`${styles.backdrop} ${open ? styles.backdropVisible : ''}`}
+        className={cn(styles.backdrop, open && styles.backdropVisible)}
         onClick={onClose}
         aria-hidden="true"
       />
 
       {/* Drawer */}
       <nav
-        className={`${styles.drawer} ${open ? styles.drawerOpen : ''}`}
+        className={cn(styles.drawer, open && styles.drawerOpen)}
         aria-label="Navigation"
         aria-hidden={!open}
       >

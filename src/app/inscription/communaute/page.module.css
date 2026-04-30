@@ -1,0 +1,86 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: var(--background-base);
+  padding: 32px 24px 32px;
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  display: block;
+  margin: 0 0 28px;
+  margin-left: -10px; /* compense le padding interne du SVG */
+}
+
+.eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-base-strong);
+  margin: 0 0 10px;
+  text-transform: none;
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-base-strong);
+  line-height: 1.25;
+  letter-spacing: -0.4px;
+  margin: 0 0 24px;
+}
+
+.lead {
+  font-size: 15px;
+  color: var(--text-base-strong);
+  line-height: 1.55;
+  margin: 0 0 16px;
+}
+
+.body {
+  font-size: 14px;
+  color: var(--text-base-moderate);
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+.learnMore {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-base-strong);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  align-self: flex-start;
+}
+
+/* ── Actions ──────────────────────────────────────────────── */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 32px;
+}
+
+.primaryButton {
+  width: 100%;
+  height: 56px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+}
+
+.secondaryButton {
+  width: 100%;
+  height: 56px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+}

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Roboto } from 'next/font/google';
 import { ThemeProvider } from '@/components/ThemeProvider';
+import { UserProvider } from '@/lib/UserContext';
 import './globals.css';
 
 const roboto = Roboto({
@@ -30,9 +31,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" data-theme="light">
+    <html lang="fr" data-theme="light" suppressHydrationWarning>
       <body className={roboto.className}>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <UserProvider>{children}</UserProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

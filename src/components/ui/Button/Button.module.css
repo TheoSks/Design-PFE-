@@ -36,6 +36,17 @@
   background-color: var(--color-neutral-800);
 }
 
+/* Brand */
+.brand {
+  background-color: var(--color-brand-500);
+  color: #fff;
+  border-color: transparent;
+}
+
+.brand:hover {
+  background-color: var(--color-brand-600);
+}
+
 /* Secondary */
 .secondary {
   background-color: var(--background-elevated);

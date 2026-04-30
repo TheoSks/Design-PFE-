@@ -3,6 +3,7 @@
 import { useState, useMemo, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import styles from './page.module.css';
+import { cn } from '@/lib/cn';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Card } from '@/components/ui/Card';
@@ -168,7 +169,7 @@ function RechercheInner() {
           style={{ transform: mode === 'achat' ? 'translateX(100%)' : 'translateX(0)' }}
         />
         <button
-          className={`${styles.modeButton} ${mode === 'location' ? styles.modeButtonActive : ''}`}
+          className={cn(styles.modeButton, mode === 'location' && styles.modeButtonActive)}
           onClick={() => switchMode('location')}
           type="button"
         >
@@ -176,7 +177,7 @@ function RechercheInner() {
           Location
         </button>
         <button
-          className={`${styles.modeButton} ${mode === 'achat' ? styles.modeButtonActive : ''}`}
+          className={cn(styles.modeButton, mode === 'achat' && styles.modeButtonActive)}
           onClick={() => switchMode('achat')}
           type="button"
         >
@@ -206,7 +207,7 @@ function RechercheInner() {
           {(['type', 'rooms', 'budget', 'city'] as FilterKey[]).map((key) => (
             <button
               key={key}
-              className={`${styles.filterButton} ${selected[key].size > 0 ? styles.filterButtonActive : ''} ${openFilter === key ? styles.filterButtonOpen : ''}`}
+              className={cn(styles.filterButton, selected[key].size > 0 && styles.filterButtonActive, openFilter === key && styles.filterButtonOpen)}
               onClick={() => setOpenFilter(openFilter === key ? null : key)}
               type="button"
             >
@@ -214,7 +215,7 @@ function RechercheInner() {
               {selected[key].size > 0 && (
                 <span className={styles.filterBadge}>{selected[key].size}</span>
               )}
-              <span className={`${styles.filterArrow} ${openFilter === key ? styles.filterArrowUp : ''}`}>
+              <span className={cn(styles.filterArrow, openFilter === key && styles.filterArrowUp)}>
                 <IconChevronDown size={14} />
               </span>
             </button>

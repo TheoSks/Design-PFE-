@@ -27,3 +27,6 @@ export { default as IconBath } from "./IconBath";
 export { default as IconShower } from "./IconShower";
 export { default as IconChevronDown } from "./IconChevronDown";
 export { default as IconShare } from "./IconShare";
+export { default as IconPhone } from "./IconPhone";
+export { default as IconBell } from "./IconBell";
+export { default as IconX } from "./IconX";

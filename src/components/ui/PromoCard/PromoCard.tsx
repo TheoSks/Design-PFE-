@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './PromoCard.module.css';
+import { cn } from '@/lib/cn';
 
 interface PromoCardProps {
   title: string;
@@ -19,7 +20,7 @@ export function PromoCard({
   className,
 }: PromoCardProps) {
   return (
-    <div className={`${styles.card} ${className || ''}`}>
+    <div className={cn(styles.card, className)}>
       <div className={styles.content}>
         <span className={styles.title}>{title}</span>
         <span className={styles.description}>{description}</span>
