@@ -84,7 +84,7 @@ export const PROPERTIES: PropertyData[] = [
       { label: 'Prix de vente', value: '599 000 €' },
       { label: 'Honoraires', value: 'À la charge du vendeur' },
     ],
-    advertiser: { name: 'Zefir', address: '25 rue du Mail, 75002 Paris', siret: '851800235', carte: 'CPI 9301 2016 000 017 847' },
+    advertiser: { name: 'Label Immo', address: '25 rue du Mail, 75002 Paris', siret: '851800235', carte: 'CPI 9301 2016 000 017 847' },
     coordinates: { lat: 48.8963, lng: 2.3838 },
     reference: 'f5209eb4-574f-4d32-996a-f30653',
     cardTitle: 'Spacieux 4 pièces avec balcon plein sud',
