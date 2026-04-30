@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import * as maptilersdk from '@maptiler/sdk';
-import '@maptiler/sdk/dist/maptiler-sdk.css';
+import maplibregl from 'maplibre-gl';
+import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './MapView.module.css';
 import { cn } from '@/lib/cn';
 
@@ -24,32 +24,35 @@ const MARKER_SVG = `
 
 export function MapView({ lat, lng, zoom = 16, className }: MapViewProps) {
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<maptilersdk.Map | null>(null);
+  const mapInstanceRef = useRef<maplibregl.Map | null>(null);
 
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return;
 
-    maptilersdk.config.apiKey = process.env.NEXT_PUBLIC_MAPTILER_KEY ?? '';
-
-    const map = new maptilersdk.Map({
+    const map = new maplibregl.Map({
       container: mapRef.current,
-      style: maptilersdk.MapStyle.STREETS,
+      style: 'https://tiles.openfreemap.org/styles/liberty',
       center: [lng, lat],
       zoom,
       pitch: 50,
       bearing: -20,
       scrollZoom: false,
       doubleClickZoom: false,
-      attributionControl: { compact: true },
+      attributionControl: false,
       pitchWithRotate: false,
     });
+
+    map.addControl(
+      new maplibregl.AttributionControl({ compact: true }),
+      'bottom-right'
+    );
 
     // Custom SVG pin marker
     const el = document.createElement('div');
     el.innerHTML = MARKER_SVG;
     el.className = styles.markerWrapper;
 
-    new maptilersdk.Marker({ element: el })
+    new maplibregl.Marker({ element: el })
       .setLngLat([lng, lat])
       .addTo(map);
 

@@ -18,7 +18,7 @@
   z-index: 0;
 }
 
-/* MapTiler SDK container (built on MapLibre) */
+/* MapLibre container */
 .map :global(.maplibregl-map) {
   font-family: var(--font-family-content);
 }

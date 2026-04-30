@@ -18,11 +18,12 @@ export default function Icon() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: '#ffffff',
+          background: 'linear-gradient(145deg, #5b9fff 0%, #2b7fff 100%)',
+          borderRadius: 114,
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={base64} width={400} height={400} alt="" />
+        <img src={base64} width={352} height={352} alt="" />
       </div>
     ),
     { ...size }

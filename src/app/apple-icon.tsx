@@ -18,11 +18,12 @@ export default function AppleIcon() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: '#ffffff',
+          background: 'linear-gradient(145deg, #5b9fff 0%, #2b7fff 100%)',
+          borderRadius: 40,
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={base64} width={140} height={140} alt="" />
+        <img src={base64} width={124} height={124} alt="" />
       </div>
     ),
     { ...size }
