@@ -24,7 +24,7 @@ export default function Icon() {
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={base64} width={768} height={768} alt="" />
+        <img src={base64} width={1130} height={1130} alt="" />
       </div>
     ),
     { ...size }
