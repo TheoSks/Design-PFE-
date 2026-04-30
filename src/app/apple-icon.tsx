@@ -24,7 +24,7 @@ export default function AppleIcon() {
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={base64} width={224} height={224} alt="" />
+        <img src={base64} width={270} height={270} alt="" />
       </div>
     ),
     { ...size }
