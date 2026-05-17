@@ -334,14 +334,31 @@
   margin: 0;
 }
 
-/* ── Map container ────────────────────────────────────────── */
-.mapContainer {
+/* ── Map stage: full-bleed map + bottom sheet on top ──────── */
+.mapStage {
   position: relative;
   width: 100%;
-  height: 70dvh;
-  min-height: 480px;
-  padding: var(--layout-padding-lg) var(--layout-padding-xl) var(--layout-padding-xl);
-  box-sizing: border-box;
+  height: calc(100dvh - 280px);
+  min-height: 520px;
+  flex: 1;
+  overflow: hidden;
+  background: var(--background-base);
+}
+
+.mapFill {
+  position: absolute !important;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0 !important;
+}
+
+.sheetGrid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-gap-xl);
+  padding: var(--layout-padding-lg) var(--layout-padding-xl) calc(var(--layout-padding-2xl) + 80px);
+  align-items: center;
 }
 
 /* ── Floating view toggle (Airbnb style) ───────────────────── */

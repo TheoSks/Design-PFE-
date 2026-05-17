@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useCallback, useEffect, Suspense } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import styles from './page.module.css';
 import { cn } from '@/lib/cn';
@@ -9,6 +9,7 @@ import { Footer } from '@/components/layout/Footer';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { PropertyMap } from '@/components/ui/Map';
+import { BottomSheet, type BottomSheetHandle } from '@/components/ui/BottomSheet';
 import { IconBuilding, IconLocation, IconChevronDown, IconMenu, IconHome } from '@/components/icons';
 import { PROPERTIES, type PropertyData } from '@/lib/properties';
 import { RENTALS } from '@/lib/rentals';
@@ -68,6 +69,8 @@ function RechercheInner() {
     type: new Set(), rooms: new Set(), budget: new Set(), city: new Set(),
   });
   const [openFilter, setOpenFilter] = useState<FilterKey | null>(null);
+  const [sheetSnap, setSheetSnap] = useState(0);
+  const sheetRef = useRef<BottomSheetHandle | null>(null);
 
   // Persist view choice
   useEffect(() => {
@@ -287,15 +290,47 @@ function RechercheInner() {
         </div>
       )}
 
-      {/* Count */}
-      <p className={styles.count}>
-        {filtered.length} bien{filtered.length > 1 ? 's' : ''} disponible{filtered.length > 1 ? 's' : ''}
-      </p>
+      {/* Count (hidden in map view) */}
+      {view !== 'map' && (
+        <p className={styles.count}>
+          {filtered.length} bien{filtered.length > 1 ? 's' : ''} disponible{filtered.length > 1 ? 's' : ''}
+        </p>
+      )}
 
       {/* Results */}
       {view === 'map' ? (
-        <div className={styles.mapContainer}>
-          <PropertyMap properties={filtered} />
+        <div className={styles.mapStage}>
+          <PropertyMap properties={filtered} className={styles.mapFill} />
+          <BottomSheet
+            ref={sheetRef}
+            snapPoints={[0.14, 0.5, 0.92]}
+            defaultSnap={0}
+            onSnapChange={setSheetSnap}
+            peekLabel={`${filtered.length} bien${filtered.length > 1 ? 's' : ''} disponible${filtered.length > 1 ? 's' : ''}`}
+          >
+            <div className={styles.sheetGrid}>
+              {filtered.length > 0 ? (
+                filtered.map((property) => (
+                  <Card
+                    key={property.id}
+                    images={property.images}
+                    imageAlt={property.cardTitle}
+                    badge={<Badge variant="ia" color={property.badgeColor}>{property.badgeLabel ?? (mode === 'location' ? 'Location' : 'Achat')}</Badge>}
+                    title={property.cardTitle}
+                    location={property.cardLocation}
+                    price={property.cardPrice}
+                    features={property.cardFeatures}
+                    href={`/annonce/${property.id}`}
+                  />
+                ))
+              ) : (
+                <div className={styles.empty}>
+                  <span className={styles.emptyIcon}>🏠</span>
+                  <p className={styles.emptyText}>Aucun bien ne correspond à vos critères.</p>
+                </div>
+              )}
+            </div>
+          </BottomSheet>
         </div>
       ) : filtered.length > 0 ? (
         <div className={styles.grid}>
@@ -322,27 +357,38 @@ function RechercheInner() {
 
       </div>{/* end contentFade */}
 
-      {/* Floating view toggle — Airbnb style */}
-      <button
-        className={styles.floatingViewToggle}
-        onClick={() => setView(view === 'list' ? 'map' : 'list')}
-        type="button"
-        aria-label={view === 'list' ? 'Afficher la carte' : 'Afficher la liste'}
-      >
-        {view === 'list' ? (
-          <>
-            <IconHome size={18} />
-            Carte
-          </>
-        ) : (
-          <>
-            <IconMenu size={18} />
-            Liste
-          </>
-        )}
-      </button>
+      {/* Floating view toggle — Airbnb style.
+          In map view: only shown when the sheet is expanded (mid/full) so the user can
+          quickly collapse back to the map. */}
+      {(view === 'list' || (view === 'map' && sheetSnap > 0)) && (
+        <button
+          className={styles.floatingViewToggle}
+          onClick={() => {
+            if (view === 'list') {
+              setView('map');
+            } else {
+              // In map view with sheet open, collapse it back to peek
+              sheetRef.current?.snapTo(0);
+            }
+          }}
+          type="button"
+          aria-label={view === 'list' ? 'Afficher la carte' : 'Afficher la carte en plein écran'}
+        >
+          {view === 'list' ? (
+            <>
+              <IconHome size={18} />
+              Carte
+            </>
+          ) : (
+            <>
+              <IconHome size={18} />
+              Carte
+            </>
+          )}
+        </button>
+      )}
 
-      <Footer />
+      {view === 'list' && <Footer />}
     </div>
   );
 }
