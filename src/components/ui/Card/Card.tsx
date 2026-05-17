@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import styles from './Card.module.css';
 import { cn } from '@/lib/cn';
+import { useDominantColor } from './useDominantColor';
 import {
   IconHeart,
   IconLocation,
@@ -48,6 +49,7 @@ export function Card({
 }: CardProps) {
   const [current, setCurrent] = useState(0);
   const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
+  const gradientColor = useDominantColor(images[current]);
 
   const prev = (e: React.MouseEvent | React.TouchEvent) => {
     e.stopPropagation();
@@ -108,6 +110,7 @@ export function Card({
       aria-label={imageAlt}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      style={{ ['--card-gradient-color' as string]: gradientColor }}
     >
       <div className={styles.imageWrapper} aria-hidden="true">
         {images.map((src, i) => (
