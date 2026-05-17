@@ -332,6 +332,7 @@
   font-weight: var(--font-weight-accent);
   color: var(--text-base-strong);
   margin: 0;
+  padding: var(--layout-padding-md) var(--layout-padding-xl) 0;
 }
 
 /* ── Map stage: full-bleed map + bottom sheet on top ──────── */
