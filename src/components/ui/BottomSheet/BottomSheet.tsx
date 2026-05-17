@@ -18,7 +18,12 @@ export interface BottomSheetHandle {
 }
 
 interface BottomSheetProps {
-  /** Snap points in viewport-relative units. Lower = closer to bottom. e.g. [0.12, 0.5, 0.9] */
+  /**
+   * Snap points expressed as either:
+   *  - viewport ratio (number between 0 and 1, e.g. 0.5 = 50% of viewport)
+   *  - pixel value (number >= 1, e.g. 90 = 90px)
+   * Ordered from smallest (peek) to largest (full).
+   */
   snapPoints?: number[];
   defaultSnap?: number;
   children: ReactNode;
@@ -66,9 +71,13 @@ export const BottomSheet = forwardRef<BottomSheetHandle, BottomSheetProps>(funct
     return typeof window !== 'undefined' ? window.innerHeight - topOffset : 800;
   }, [topOffset]);
 
-  // Compute sheet height in px for a given snap index
+  // Compute sheet height in px for a given snap index.
+  // Snap values < 1 are treated as viewport ratios, >= 1 as raw pixels.
   const heightForSnap = useCallback(
-    (index: number) => snapPoints[index] * getViewportHeight(),
+    (index: number) => {
+      const v = snapPoints[index];
+      return v < 1 ? v * getViewportHeight() : v;
+    },
     [snapPoints, getViewportHeight],
   );
 
@@ -108,7 +117,6 @@ export const BottomSheet = forwardRef<BottomSheetHandle, BottomSheetProps>(funct
 
   const settleSnap = useCallback(() => {
     const currentHeight = heightForSnap(snapIndex) - dragOffset;
-    const ratio = currentHeight / getViewportHeight();
 
     // Velocity-based snapping: a fast flick overrides the closest-snap heuristic
     let target = snapIndex;
@@ -117,10 +125,10 @@ export const BottomSheet = forwardRef<BottomSheetHandle, BottomSheetProps>(funct
     } else if (velocity.current > 0.6) {
       target = Math.max(0, snapIndex - 1);
     } else {
-      // Closest snap
+      // Closest snap by absolute pixel height
       let bestDist = Infinity;
-      snapPoints.forEach((sp, i) => {
-        const dist = Math.abs(sp - ratio);
+      snapPoints.forEach((_, i) => {
+        const dist = Math.abs(heightForSnap(i) - currentHeight);
         if (dist < bestDist) {
           bestDist = dist;
           target = i;
@@ -131,7 +139,7 @@ export const BottomSheet = forwardRef<BottomSheetHandle, BottomSheetProps>(funct
     setSnapIndex(target);
     setDragOffset(0);
     if (target !== snapIndex) onSnapChange?.(target);
-  }, [snapIndex, dragOffset, heightForSnap, getViewportHeight, snapPoints, onSnapChange]);
+  }, [snapIndex, dragOffset, heightForSnap, snapPoints, onSnapChange]);
 
   const handlePointerUp = useCallback(
     (e: ReactPointerEvent<HTMLDivElement>) => {

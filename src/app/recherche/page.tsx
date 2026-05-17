@@ -303,7 +303,7 @@ function RechercheInner() {
           <PropertyMap properties={filtered} className={styles.mapFill} />
           <BottomSheet
             ref={sheetRef}
-            snapPoints={[0.14, 0.5, 0.92]}
+            snapPoints={[88, 0.5, 0.92]}
             defaultSnap={0}
             onSnapChange={setSheetSnap}
             peekLabel={`${filtered.length} bien${filtered.length > 1 ? 's' : ''} disponible${filtered.length > 1 ? 's' : ''}`}
