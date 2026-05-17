@@ -68,11 +68,12 @@ export default function CartePage() {
             Location
           </button>
         </div>
-
-        <span className={styles.count}>{properties.length} bien{properties.length > 1 ? 's' : ''}</span>
       </div>
 
       <div className={styles.mapStage}>
+        <div className={styles.countPill} aria-live="polite">
+          {properties.length} bien{properties.length > 1 ? 's' : ''} disponible{properties.length > 1 ? 's' : ''}
+        </div>
         <PropertyMap properties={properties} className={styles.mapFill} />
       </div>
     </div>
