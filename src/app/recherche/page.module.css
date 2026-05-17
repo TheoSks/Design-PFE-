@@ -343,6 +343,7 @@
   flex: 1;
   overflow: hidden;
   background: var(--background-base);
+  margin-top: var(--layout-padding-xl);
 }
 
 .mapFill {
