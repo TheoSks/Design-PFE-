@@ -6,6 +6,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
+import { PropertyMap } from '@/components/ui/Map';
 import { getSectionBySlug } from '@/lib/sections';
 import { IconChevronLeft } from '@/components/icons';
 import { Button } from '@/components/ui/Button';
@@ -37,6 +38,10 @@ export default function RubriquePage() {
             </Button>
             <h1 className={styles.title}>{section.title}</h1>
             <p className={styles.count}>{section.cards.length} annonce{section.cards.length > 1 ? 's' : ''}</p>
+          </div>
+
+          <div className={styles.miniMap}>
+            <PropertyMap properties={section.cards} />
           </div>
 
           <div className={styles.grid}>

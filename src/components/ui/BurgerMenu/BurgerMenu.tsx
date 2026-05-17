@@ -15,8 +15,19 @@ const NAV_ITEMS = [
   { href: '/',                       label: 'Accueil',  icon: <IconHome size={20} /> },
   { href: '/recherche?mode=location', label: 'Location', icon: <IconLocation size={20} /> },
   { href: '/recherche?mode=achat',    label: 'Achat',    icon: <IconBuilding size={20} /> },
+  { href: '/carte',                   label: 'Carte',    icon: <MapPinIcon /> },
   { href: '/compte',                  label: 'Compte',   icon: <IconUser size={20} /> },
 ];
+
+function MapPinIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M3 6L9 3L15 6L21 3V18L15 21L9 18L3 21V6Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/>
+      <path d="M9 3V18" stroke="currentColor" strokeWidth="1.6"/>
+      <path d="M15 6V21" stroke="currentColor" strokeWidth="1.6"/>
+    </svg>
+  );
+}
 
 export function BurgerMenu({ open, onClose }: BurgerMenuProps) {
   // Lock body scroll when open

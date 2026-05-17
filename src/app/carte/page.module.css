@@ -1,0 +1,104 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background-color: var(--background-base);
+  animation: pageEnter 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--layout-gap-md);
+  padding: var(--layout-padding-md) var(--layout-padding-xl);
+  background: var(--background-base);
+  border-bottom: 1px solid var(--border-default);
+  flex-shrink: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.toolbar::-webkit-scrollbar { display: none; }
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: var(--layout-radius-full);
+  border: 1px solid var(--border-default);
+  background: var(--background-elevated);
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-feature);
+  font-weight: var(--font-weight-accent);
+  color: var(--text-base-strong);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 150ms ease;
+}
+
+.backButton:hover {
+  background: var(--background-neutral-faint-default);
+}
+
+.segmentControl {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 9999px;
+  background: var(--background-brand-faint-hover, #DBEAFE);
+  flex-shrink: 0;
+}
+
+.segment {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-feature);
+  font-weight: var(--font-weight-accent);
+  color: var(--text-base-bolder, #525252);
+  cursor: pointer;
+  transition: background-color 220ms cubic-bezier(0.32, 0.72, 0, 1),
+              color 220ms ease,
+              box-shadow 220ms ease;
+}
+
+.segmentActive {
+  background: var(--background-elevated, #ffffff);
+  color: var(--text-base-strong, #0a0a0a);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.count {
+  margin-left: auto;
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-feature);
+  color: var(--text-base-bolder);
+  flex-shrink: 0;
+}
+
+.mapStage {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  min-height: calc(100dvh - 140px);
+  overflow: hidden;
+  background: var(--background-base);
+}
+
+.mapFill {
+  position: absolute !important;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0 !important;
+}

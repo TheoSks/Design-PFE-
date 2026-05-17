@@ -9,6 +9,7 @@ import { Logo } from '@/components/ui/Logo';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { BurgerMenu } from '@/components/ui/BurgerMenu';
+import { PropertyMap } from '@/components/ui/Map';
 import { IconSparkle, IconSend, IconMenu } from '@/components/icons';
 import { PROPERTIES, type PropertyData } from '@/lib/properties';
 import { RENTALS } from '@/lib/rentals';
@@ -19,6 +20,7 @@ interface Message {
   role: 'user' | 'ai';
   text: string;
   showResultsLink?: boolean;
+  mapResults?: PropertyData[];
 }
 
 interface SearchCriteria {
@@ -326,7 +328,23 @@ export default function ChatPageInner() {
 
     setTimeout(() => {
       const response = generateResponse(criteriaRef.current, msgCountRef.current);
-      setMessages((prev) => [...prev, { role: 'ai', text: response.text, showResultsLink: response.showResultsLink }]);
+
+      // Inline map: trigger when a geographic intent is set (city) and we can match properties.
+      // We surface the top 5 matched properties so the user instantly sees them on the map.
+      let mapResults: PropertyData[] | undefined;
+      const wantsMap = /\bcarte\b|\bmap\b|\bo[uù]\s+sont\b|\bo[uù]\s+est\b|\bg[ée]ographique?\b/i.test(text);
+      if (criteriaRef.current.city || wantsMap) {
+        const src = criteriaRef.current.transaction === 'location' ? RENTALS : PROPERTIES;
+        const scored = src
+          .map((p) => ({ p, score: computeMatchScore(p, criteriaRef.current) }))
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 5)
+          .map((x) => x.p)
+          .filter((p) => !!p.coordinates);
+        if (scored.length > 0) mapResults = scored;
+      }
+
+      setMessages((prev) => [...prev, { role: 'ai', text: response.text, showResultsLink: response.showResultsLink, mapResults }]);
       setChips(response.chips);
       setCriteriaSnapshot({ ...criteriaRef.current, features: [...criteriaRef.current.features] });
       if (response.showResultsLink) setHasResults(true);
@@ -427,6 +445,19 @@ export default function ChatPageInner() {
                         {line}
                       </p>
                     ) : null
+                  )}
+                  {msg.mapResults && msg.mapResults.length > 0 && (
+                    <div className={styles.inlineMap}>
+                      <PropertyMap properties={msg.mapResults} />
+                      <button
+                        className={styles.inlineMapExpand}
+                        onClick={() => setActiveTab('results')}
+                        type="button"
+                        aria-label="Voir les biens en plein écran"
+                      >
+                        Voir {msg.mapResults.length} bien{msg.mapResults.length > 1 ? 's' : ''} →
+                      </button>
+                    </div>
                   )}
                   {msg.showResultsLink && (
                     <button
