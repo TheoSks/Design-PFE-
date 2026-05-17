@@ -72,16 +72,6 @@ function RechercheInner() {
   const [sheetSnap, setSheetSnap] = useState(0);
   const sheetRef = useRef<BottomSheetHandle | null>(null);
 
-  // Persist view choice
-  useEffect(() => {
-    const stored = typeof window !== 'undefined' ? window.localStorage.getItem('recherche-view') : null;
-    if (stored === 'list' || stored === 'map') setView(stored);
-  }, []);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') window.localStorage.setItem('recherche-view', view);
-  }, [view]);
-
   function switchMode(m: 'location' | 'achat') {
     setMode(m);
     setSelected({ type: new Set(), rooms: new Set(), budget: new Set(), city: new Set() });
@@ -357,36 +347,25 @@ function RechercheInner() {
 
       </div>{/* end contentFade */}
 
-      {/* Floating view toggle — Airbnb style.
-          In map view: only shown when the sheet is expanded (mid/full) so the user can
-          quickly collapse back to the map. */}
-      {(view === 'list' || (view === 'map' && sheetSnap > 0)) && (
-        <button
-          className={styles.floatingViewToggle}
-          onClick={() => {
-            if (view === 'list') {
-              setView('map');
-            } else {
-              // In map view with sheet open, collapse it back to peek
-              sheetRef.current?.snapTo(0);
-            }
-          }}
-          type="button"
-          aria-label={view === 'list' ? 'Afficher la carte' : 'Afficher la carte en plein écran'}
-        >
-          {view === 'list' ? (
-            <>
-              <IconHome size={18} />
-              Carte
-            </>
-          ) : (
-            <>
-              <IconHome size={18} />
-              Carte
-            </>
-          )}
-        </button>
-      )}
+      {/* Floating view toggle — always visible to allow round-trip between list and map */}
+      <button
+        className={styles.floatingViewToggle}
+        onClick={() => setView(view === 'list' ? 'map' : 'list')}
+        type="button"
+        aria-label={view === 'list' ? 'Afficher la carte' : 'Afficher la liste'}
+      >
+        {view === 'list' ? (
+          <>
+            <IconHome size={18} />
+            Carte
+          </>
+        ) : (
+          <>
+            <IconMenu size={18} />
+            Liste
+          </>
+        )}
+      </button>
 
       {view === 'list' && <Footer />}
     </div>
