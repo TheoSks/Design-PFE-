@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useCallback, Suspense } from 'react';
+import { useState, useMemo, useCallback, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import styles from './page.module.css';
 import { cn } from '@/lib/cn';
@@ -8,7 +8,8 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
-import { IconBuilding, IconLocation, IconChevronDown } from '@/components/icons';
+import { PropertyMap } from '@/components/ui/Map';
+import { IconBuilding, IconLocation, IconChevronDown, IconMenu, IconHome } from '@/components/icons';
 import { PROPERTIES, type PropertyData } from '@/lib/properties';
 import { RENTALS } from '@/lib/rentals';
 
@@ -62,10 +63,21 @@ function RechercheInner() {
   const initialMode = searchParams.get('mode') === 'achat' ? 'achat' : 'location';
 
   const [mode, setMode] = useState<'location' | 'achat'>(initialMode as 'location' | 'achat');
+  const [view, setView] = useState<'list' | 'map'>('list');
   const [selected, setSelected] = useState<Record<FilterKey, Set<string>>>({
     type: new Set(), rooms: new Set(), budget: new Set(), city: new Set(),
   });
   const [openFilter, setOpenFilter] = useState<FilterKey | null>(null);
+
+  // Persist view choice
+  useEffect(() => {
+    const stored = typeof window !== 'undefined' ? window.localStorage.getItem('recherche-view') : null;
+    if (stored === 'list' || stored === 'map') setView(stored);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') window.localStorage.setItem('recherche-view', view);
+  }, [view]);
 
   function switchMode(m: 'location' | 'achat') {
     setMode(m);
@@ -275,13 +287,41 @@ function RechercheInner() {
         </div>
       )}
 
-      {/* Count */}
-      <p className={styles.count}>
-        {filtered.length} bien{filtered.length > 1 ? 's' : ''} disponible{filtered.length > 1 ? 's' : ''}
-      </p>
+      {/* Count + view toggle */}
+      <div className={styles.countRow}>
+        <p className={styles.count}>
+          {filtered.length} bien{filtered.length > 1 ? 's' : ''} disponible{filtered.length > 1 ? 's' : ''}
+        </p>
+        <div className={styles.viewToggle} role="tablist" aria-label="Vue des résultats">
+          <button
+            role="tab"
+            aria-selected={view === 'list'}
+            className={cn(styles.viewButton, view === 'list' && styles.viewButtonActive)}
+            onClick={() => setView('list')}
+            type="button"
+          >
+            <IconMenu size={16} />
+            Liste
+          </button>
+          <button
+            role="tab"
+            aria-selected={view === 'map'}
+            className={cn(styles.viewButton, view === 'map' && styles.viewButtonActive)}
+            onClick={() => setView('map')}
+            type="button"
+          >
+            <IconHome size={16} />
+            Carte
+          </button>
+        </div>
+      </div>
 
       {/* Results */}
-      {filtered.length > 0 ? (
+      {view === 'map' ? (
+        <div className={styles.mapContainer}>
+          <PropertyMap properties={filtered} />
+        </div>
+      ) : filtered.length > 0 ? (
         <div className={styles.grid}>
           {filtered.map((property) => (
             <Card
