@@ -44,6 +44,8 @@
 .scrollInner > * {
   scroll-snap-align: start;
   flex-shrink: 0;
+  width: 340px;
+  max-width: calc(100vw - var(--layout-padding-2xl) * 2);
 }
 
 .seeAllButton {
