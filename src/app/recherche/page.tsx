@@ -287,34 +287,10 @@ function RechercheInner() {
         </div>
       )}
 
-      {/* Count + view toggle */}
-      <div className={styles.countRow}>
-        <p className={styles.count}>
-          {filtered.length} bien{filtered.length > 1 ? 's' : ''} disponible{filtered.length > 1 ? 's' : ''}
-        </p>
-        <div className={styles.viewToggle} role="tablist" aria-label="Vue des résultats">
-          <button
-            role="tab"
-            aria-selected={view === 'list'}
-            className={cn(styles.viewButton, view === 'list' && styles.viewButtonActive)}
-            onClick={() => setView('list')}
-            type="button"
-          >
-            <IconMenu size={16} />
-            Liste
-          </button>
-          <button
-            role="tab"
-            aria-selected={view === 'map'}
-            className={cn(styles.viewButton, view === 'map' && styles.viewButtonActive)}
-            onClick={() => setView('map')}
-            type="button"
-          >
-            <IconHome size={16} />
-            Carte
-          </button>
-        </div>
-      </div>
+      {/* Count */}
+      <p className={styles.count}>
+        {filtered.length} bien{filtered.length > 1 ? 's' : ''} disponible{filtered.length > 1 ? 's' : ''}
+      </p>
 
       {/* Results */}
       {view === 'map' ? (
@@ -345,6 +321,26 @@ function RechercheInner() {
       )}
 
       </div>{/* end contentFade */}
+
+      {/* Floating view toggle — Airbnb style */}
+      <button
+        className={styles.floatingViewToggle}
+        onClick={() => setView(view === 'list' ? 'map' : 'list')}
+        type="button"
+        aria-label={view === 'list' ? 'Afficher la carte' : 'Afficher la liste'}
+      >
+        {view === 'list' ? (
+          <>
+            <IconHome size={18} />
+            Carte
+          </>
+        ) : (
+          <>
+            <IconMenu size={18} />
+            Liste
+          </>
+        )}
+      </button>
 
       <Footer />
     </div>

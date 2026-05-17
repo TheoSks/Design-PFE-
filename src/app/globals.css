@@ -1,6 +1,9 @@
 /* Design System Tokens */
 @import "../../tokens/index.css";
 
+/* MapLibre GL */
+@import "maplibre-gl/dist/maplibre-gl.css";
+
 /* Reset */
 *,
 *::before,
