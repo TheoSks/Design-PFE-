@@ -11,7 +11,22 @@ import {
   IconChevronLeft,
   IconChevronRight,
   IconShare,
+  IconDoor,
+  IconRuler,
+  IconBed,
+  IconBath,
+  IconBuilding,
 } from '@/components/icons';
+
+function defaultIconFor(label: string): React.ReactNode {
+  const l = label.toLowerCase();
+  if (/m²|m2|surface/.test(l)) return <IconRuler size={18} />;
+  if (/chambre/.test(l)) return <IconBed size={18} />;
+  if (/sdb|salle de bain|bain|douche/.test(l)) return <IconBath size={18} />;
+  if (/pièce|piece/.test(l)) return <IconDoor size={18} />;
+  if (/étage|etage|niveau/.test(l)) return <IconBuilding size={18} />;
+  return null;
+}
 
 interface CardFeature {
   icon?: React.ReactNode;
@@ -187,7 +202,7 @@ export function Card({
           <div className={styles.features}>
             {features.map((f, i) => (
               <span key={i} className={styles.feature}>
-                {f.icon}
+                {f.icon ?? defaultIconFor(f.label)}
                 {f.label}
               </span>
             ))}
