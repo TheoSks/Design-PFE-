@@ -8,8 +8,9 @@
 .card {
   position: relative;
   display: flex;
-  width: 340px;
-  height: 440px;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 340 / 440;
   flex-direction: column;
   justify-content: space-between;
   align-items: stretch;
