@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 
 const cache = new Map<string, string>();
-const FALLBACK = 'rgb(116, 110, 99)';
+const FALLBACK = 'rgb(38, 36, 33)';
 
 type RGB = { r: number; g: number; b: number };
 
@@ -112,10 +112,10 @@ function extractColor(img: HTMLImageElement): string | null {
       b: Math.round(best.b / Math.max(1, Math.floor(pixelCount))),
     };
 
-    // Push saturation down a bit and clamp lightness to ~30% for a deep, readable backdrop
+    // Heavily desaturate and darken for a moody, premium backdrop that never overpowers the image
     const hsl = rgbToHsl(avg);
-    const targetSat = Math.min(hsl.s * 0.8, 0.45);
-    const targetLight = 0.3;
+    const targetSat = Math.min(hsl.s * 0.35, 0.18);
+    const targetLight = 0.16;
     const tuned = hslToRgb(hsl.h, targetSat, targetLight);
 
     return `rgb(${tuned.r}, ${tuned.g}, ${tuned.b})`;
