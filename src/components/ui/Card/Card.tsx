@@ -9,6 +9,7 @@ import {
   IconLocation,
   IconChevronLeft,
   IconChevronRight,
+  IconShare,
 } from '@/components/icons';
 
 interface CardFeature {
@@ -22,6 +23,7 @@ interface CardProps {
   badge?: React.ReactNode;
   isFavorite?: boolean;
   onFavoriteToggle?: () => void;
+  onShare?: () => void;
   title: string;
   location: string;
   price: string;
@@ -36,6 +38,7 @@ export function Card({
   badge,
   isFavorite = false,
   onFavoriteToggle,
+  onShare,
   title,
   location,
   price,
@@ -56,6 +59,18 @@ export function Card({
     setCurrent((c) => (c + 1) % images.length);
   };
 
+  const handleFavorite = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onFavoriteToggle?.();
+  };
+
+  const handleShare = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onShare?.();
+  };
+
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchStart({
       x: e.touches[0].clientX,
@@ -73,20 +88,16 @@ export function Card({
 
     const dx = Math.abs(touchEnd.x - touchStart.x);
     const dy = Math.abs(touchEnd.y - touchStart.y);
-    const minDistance = 30; // mininum pour considérer comme un geste
+    const minDistance = 30;
 
-    // Si le mouvement vertical est plus important que horizontal → naviguer images
     if (dy > dx && dy > minDistance && images.length > 1) {
       e.stopPropagation();
       if (touchEnd.y < touchStart.y) {
-        // Swipe vers le haut → image suivante
         next(e);
       } else {
-        // Swipe vers le bas → image précédente
         prev(e);
       }
     }
-    // Sinon, le carousel gérera le scroll horizontal naturellement
 
     setTouchStart(null);
   };
@@ -109,17 +120,30 @@ export function Card({
           />
         ))}
       </div>
-      {/* Top row: badge + favorite */}
+
+      <div className={styles.gradient} aria-hidden="true" />
+
+      {/* Top row: badge + stacked action buttons */}
       <div className={styles.topRow}>
-        {badge && <div>{badge}</div>}
-        <button
-          className={styles.favoriteButton}
-          onClick={onFavoriteToggle}
-          type="button"
-          aria-label={isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
-        >
-          <IconHeart size={20} filled={isFavorite} />
-        </button>
+        {badge ? <div>{badge}</div> : <div />}
+        <div className={styles.actionButtons}>
+          <button
+            className={styles.actionButton}
+            onClick={handleShare}
+            type="button"
+            aria-label="Copier le lien"
+          >
+            <IconShare size={20} />
+          </button>
+          <button
+            className={styles.actionButton}
+            onClick={handleFavorite}
+            type="button"
+            aria-label={isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+          >
+            <IconHeart size={20} filled={isFavorite} />
+          </button>
+        </div>
       </div>
 
       {/* Nav arrows */}
@@ -144,26 +168,28 @@ export function Card({
         </>
       )}
 
-      {/* Details overlay panel */}
+      {/* Details overlay (text directly on gradient, no white panel) */}
       <div className={styles.contentPanel}>
-        <div className={styles.contentLeft}>
-          <h3 className={styles.title}>{title}</h3>
-          <div className={styles.locationRow}>
-            <IconLocation size={14} />
-            <span>{location}</span>
-          </div>
-          {features && features.length > 0 && (
-            <div className={styles.features}>
-              {features.map((f, i) => (
-                <span key={i} className={styles.feature}>
-                  {f.icon}
-                  {f.label}
-                </span>
-              ))}
+        <div className={styles.headerRow}>
+          <div className={styles.contentLeft}>
+            <h3 className={styles.title}>{title}</h3>
+            <div className={styles.locationRow}>
+              <IconLocation size={16} />
+              <span>{location}</span>
             </div>
-          )}
+          </div>
+          <span className={styles.price}>{price}</span>
         </div>
-        <span className={styles.price}>{price}</span>
+        {features && features.length > 0 && (
+          <div className={styles.features}>
+            {features.map((f, i) => (
+              <span key={i} className={styles.feature}>
+                {f.icon}
+                {f.label}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Pagination dots */}
