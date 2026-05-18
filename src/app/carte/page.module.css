@@ -224,4 +224,9 @@
   padding: 8px 14px;
   border-radius: 9999px;
   cursor: pointer;
+  white-space: nowrap;
+}
+
+.zoneButtonGhost {
+  white-space: nowrap;
 }
