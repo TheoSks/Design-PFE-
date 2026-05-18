@@ -379,6 +379,9 @@ export default function ChatPageInner() {
   const [streamingIdx, setStreamingIdx] = useState<number | null>(null);
   const [streamedLen, setStreamedLen] = useState(0);
   const [hydrated, setHydrated] = useState(false);
+  const [compareMode, setCompareMode] = useState(false);
+  const [compareSet, setCompareSet] = useState<Set<string>>(new Set());
+  const [compareOpen, setCompareOpen] = useState(false);
   const voice = useVoiceInput('fr-FR');
   const criteriaRef = useRef<SearchCriteria>({ features: [] });
   const msgCountRef = useRef(0);
@@ -524,6 +527,15 @@ export default function ChatPageInner() {
     }
     criteriaRef.current = next;
     setCriteriaSnapshot({ ...next, features: [...next.features] });
+  }
+
+  function toggleCompare(id: string) {
+    setCompareSet((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else if (next.size < 4) next.add(id);
+      return next;
+    });
   }
 
   function resetChat() {
@@ -859,24 +871,136 @@ export default function ChatPageInner() {
 
         {/* Results panel */}
         <div className={`${styles.panel} ${activeTab === 'results' ? styles.panelActive : styles.panelRight}`}>
-          <div className={styles.resultsList}>
-            {matchedResults.map(({ property: p, score }) => (
-              <Card
-                key={p.id}
-                images={p.images}
-                imageAlt={p.cardTitle}
-                title={p.cardTitle}
-                location={p.cardLocation}
-                price={p.cardPrice}
-                features={p.cardFeatures}
-                badge={<Badge variant="ia" color={getMatchColor(score)}>{getMatchLabel(score)}</Badge>}
-                href={`/annonce/${p.id}`}
-              />
-            ))}
+          <div className={styles.resultsToolbar}>
+            <span className={styles.resultsCount}>{matchedResults.length} biens</span>
+            <button
+              className={`${styles.compareToggle} ${compareMode ? styles.compareToggleActive : ''}`}
+              onClick={() => {
+                setCompareMode((c) => !c);
+                if (compareMode) setCompareSet(new Set());
+              }}
+              type="button"
+            >
+              {compareMode ? 'Annuler' : 'Comparer'}
+            </button>
           </div>
+
+          <div className={styles.resultsList}>
+            {matchedResults.map(({ property: p, score }) => {
+              const isSelected = compareSet.has(p.id);
+              if (compareMode) {
+                return (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => toggleCompare(p.id)}
+                    className={`${styles.cardCompareWrap} ${isSelected ? styles.cardCompareWrapSelected : ''}`}
+                    aria-pressed={isSelected}
+                  >
+                    <span className={`${styles.cardCompareCheckbox} ${isSelected ? styles.cardCompareCheckboxOn : ''}`} aria-hidden="true">
+                      {isSelected ? '✓' : ''}
+                    </span>
+                    <Card
+                      images={p.images}
+                      imageAlt={p.cardTitle}
+                      title={p.cardTitle}
+                      location={p.cardLocation}
+                      price={p.cardPrice}
+                      features={p.cardFeatures}
+                      badge={<Badge variant="ia" color={getMatchColor(score)}>{getMatchLabel(score)}</Badge>}
+                    />
+                  </button>
+                );
+              }
+              return (
+                <Card
+                  key={p.id}
+                  images={p.images}
+                  imageAlt={p.cardTitle}
+                  title={p.cardTitle}
+                  location={p.cardLocation}
+                  price={p.cardPrice}
+                  features={p.cardFeatures}
+                  badge={<Badge variant="ia" color={getMatchColor(score)}>{getMatchLabel(score)}</Badge>}
+                  href={`/annonce/${p.id}`}
+                />
+              );
+            })}
+          </div>
+
+          {compareMode && compareSet.size >= 2 && (
+            <button
+              className={styles.compareFloatBar}
+              type="button"
+              onClick={() => setCompareOpen(true)}
+            >
+              <span>Comparer {compareSet.size} bien{compareSet.size > 1 ? 's' : ''}</span>
+              <span className={styles.compareFloatArrow} aria-hidden="true">→</span>
+            </button>
+          )}
         </div>{/* end results panel */}
 
       </div>{/* end tabContent */}
+
+      {/* Comparison overlay */}
+      {compareOpen && (
+        <div className={styles.compareOverlay} role="dialog" aria-modal="true" aria-label="Comparaison de biens">
+          <div className={styles.compareOverlayHeader}>
+            <button
+              className={styles.compareClose}
+              type="button"
+              aria-label="Fermer"
+              onClick={() => setCompareOpen(false)}
+            >
+              ✕
+            </button>
+            <h2 className={styles.compareTitle}>Comparer</h2>
+          </div>
+          <div className={styles.compareGrid}>
+            {Array.from(compareSet).map((id) => {
+              const p = [...PROPERTIES, ...RENTALS].find((x) => x.id === id);
+              if (!p) return null;
+              return (
+                <Link key={id} href={`/annonce/${id}`} className={styles.compareColumn}>
+                  <div
+                    className={styles.compareImage}
+                    style={{ backgroundImage: `url('${p.images[0]}')` }}
+                  />
+                  <div className={styles.compareBody}>
+                    <div className={styles.compareCardTitle}>{p.cardTitle}</div>
+                    <div className={styles.compareCardLocation}>{p.cardLocation}</div>
+                    <dl className={styles.compareSpecs}>
+                      <div className={styles.compareSpecRow}>
+                        <dt>Prix</dt>
+                        <dd className={styles.compareSpecValue}>{p.price}</dd>
+                      </div>
+                      <div className={styles.compareSpecRow}>
+                        <dt>Prix / m²</dt>
+                        <dd className={styles.compareSpecValue}>{p.pricePerM2}</dd>
+                      </div>
+                      {p.specs.slice(0, 5).map((s, idx) => (
+                        <div key={idx} className={styles.compareSpecRow}>
+                          <dt>{s.label.replace(/^\d+\s*/, '').replace(/^[A-Z]/, (c) => c)}</dt>
+                          <dd className={styles.compareSpecValue}>{s.label}</dd>
+                        </div>
+                      ))}
+                      <div className={styles.compareSpecRow}>
+                        <dt>DPE</dt>
+                        <dd className={styles.compareSpecValue}>
+                          <span className={`${styles.dpeBadge} ${styles[`dpe${p.dpe.grade}`] ?? ''}`}>
+                            {p.dpe.grade}
+                          </span>
+                          {' '}{p.dpe.value} kWh
+                        </dd>
+                      </div>
+                    </dl>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
