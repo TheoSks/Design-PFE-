@@ -53,3 +53,23 @@ input {
     transform: translateY(0) scale(1);
   }
 }
+
+/* ── Fluid responsive utilities ─────────────────────────────
+   Used across page wrappers to cap content width on large screens
+   and provide fluid horizontal padding that scales 16px → 64px. */
+.appContainer,
+[data-app-container] {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding-x);
+}
+
+/* Auto-fit grid for property cards: 1 column on phones, 2-3-4 columns
+   automatically as the viewport widens — no breakpoints needed. */
+.cardsGridFluid,
+[data-cards-grid-fluid] {
+  display: grid;
+  grid-template-columns: var(--grid-cards-fluid);
+  gap: clamp(16px, 2vw, 28px);
+}

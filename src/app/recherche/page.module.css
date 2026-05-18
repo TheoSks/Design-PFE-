@@ -77,10 +77,13 @@
 
 /* ── Hero ─────────────────────────────────────────────────── */
 .hero {
-  padding: var(--layout-padding-xl) var(--layout-padding-xl) var(--layout-padding-md);
+  padding: clamp(12px, 1.6vw, 28px) var(--container-padding-x) var(--layout-padding-md);
   display: flex;
   flex-direction: column;
   gap: var(--layout-gap-xs);
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
 }
 
 .heroTitle {
@@ -400,13 +403,23 @@
   transform: translateX(-50%) translateY(0) scale(0.96);
 }
 
-/* ── Grid ─────────────────────────────────────────────────── */
+/* ── Grid (fluid auto-fit) ───────────────────────────────────
+   1 col on mobile, 2/3/4 cols on tablet+desktop, no breakpoints. */
 .grid {
-  display: flex;
-  flex-direction: column;
-  gap: var(--layout-gap-xl);
-  padding: var(--layout-padding-lg) var(--layout-padding-xl) var(--layout-padding-xl);
+  display: grid;
+  grid-template-columns: var(--grid-cards-fluid);
+  gap: clamp(16px, 2vw, 28px);
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding: clamp(12px, 1.5vw, 24px) var(--container-padding-x) clamp(16px, 2vw, 32px);
   flex: 1;
+  justify-items: stretch;
+}
+
+.grid > * {
+  width: 100%;
+  max-width: none;
 }
 
 /* ── Empty state ──────────────────────────────────────────── */

@@ -1,13 +1,16 @@
 .footer {
   background-color: var(--background-brand-bolder-default);
   color: var(--text-base-lighter);
-  padding: var(--layout-padding-4xl) var(--layout-padding-xl) var(--layout-padding-2xl);
+  padding: clamp(32px, 4vw, 64px) var(--container-padding-x) var(--layout-padding-2xl);
 }
 
 .inner {
   display: flex;
   flex-direction: column;
   gap: var(--layout-gap-3xl);
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
 }
 
 .logoSection {

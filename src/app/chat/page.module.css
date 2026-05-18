@@ -152,10 +152,11 @@
 .resultsList {
   flex: 1;
   overflow-y: auto;
-  padding: var(--layout-padding-xl);
-  display: flex;
-  flex-direction: column;
-  gap: var(--layout-gap-xl);
+  padding: clamp(16px, 2vw, 32px) var(--container-padding-x);
+  display: grid;
+  grid-template-columns: var(--grid-cards-fluid);
+  gap: clamp(16px, 2vw, 28px);
+  align-content: start;
   background: linear-gradient(180deg, #ffffff 0%, #eef4ff 100%);
 }
 
@@ -163,10 +164,16 @@
 .main {
   flex: 1;
   overflow-y: auto;
-  padding: var(--layout-padding-xl);
+  padding: clamp(16px, 2vw, 32px) var(--container-padding-x);
   display: flex;
   flex-direction: column;
   background: linear-gradient(180deg, #ffffff 0%, #eef4ff 100%);
+}
+
+.main > * {
+  width: 100%;
+  max-width: 760px;
+  margin-inline: auto;
 }
 
 .emptyState {
@@ -577,9 +584,15 @@
   display: flex;
   flex-direction: column;
   gap: var(--layout-gap-md);
-  padding: var(--layout-padding-md) var(--layout-padding-xl) var(--layout-padding-2xl);
+  padding: var(--layout-padding-md) var(--container-padding-x) var(--layout-padding-2xl);
   background: var(--background-elevated);
   border-top: var(--layout-border-thin) solid var(--border-default);
+}
+
+.bottom > * {
+  width: 100%;
+  max-width: 760px;
+  margin-inline: auto;
 }
 
 /* Chips */
