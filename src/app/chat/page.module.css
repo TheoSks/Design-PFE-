@@ -645,6 +645,44 @@
   cursor: not-allowed;
 }
 
+/* ── Mic button (voice input) ──────────────────────────────── */
+.micButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--layout-radius-full);
+  border: 1px solid var(--border-default);
+  background: var(--background-elevated);
+  color: var(--text-base-bolder);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 150ms ease, color 150ms ease, transform 120ms ease;
+  position: relative;
+}
+
+.micButton:hover {
+  background: var(--background-neutral-faint-default);
+  color: var(--text-base-strong);
+}
+
+.micButtonActive {
+  background: #ef4444;
+  color: #ffffff;
+  border-color: #ef4444;
+  animation: micPulse 1200ms ease-in-out infinite;
+}
+
+@keyframes micPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+}
+
 /* ── Card wrapper (clickable, no href) ───────────────────── */
 .cardWrapper {
   cursor: pointer;

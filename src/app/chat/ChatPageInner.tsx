@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/Badge';
 import { BurgerMenu } from '@/components/ui/BurgerMenu';
 import { PropertyMap } from '@/components/ui/Map';
 import { IconSparkle, IconSend, IconMenu } from '@/components/icons';
+import { useVoiceInput } from './useVoiceInput';
 import { PROPERTIES, type PropertyData } from '@/lib/properties';
 import { RENTALS } from '@/lib/rentals';
 
@@ -378,6 +379,7 @@ export default function ChatPageInner() {
   const [streamingIdx, setStreamingIdx] = useState<number | null>(null);
   const [streamedLen, setStreamedLen] = useState(0);
   const [hydrated, setHydrated] = useState(false);
+  const voice = useVoiceInput('fr-FR');
   const criteriaRef = useRef<SearchCriteria>({ features: [] });
   const msgCountRef = useRef(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -535,6 +537,21 @@ export default function ChatPageInner() {
     setInput('');
     try { window.localStorage.removeItem(STORAGE_KEY); } catch {}
   }
+
+  // Voice → fill input live + auto-send when listening ends
+  useEffect(() => {
+    if (voice.transcript) setInput(voice.transcript);
+  }, [voice.transcript]);
+
+  const lastVoiceListening = useRef(false);
+  useEffect(() => {
+    if (lastVoiceListening.current && !voice.listening && voice.transcript.trim()) {
+      // Just stopped — auto-send the captured speech
+      sendMessage(voice.transcript);
+    }
+    lastVoiceListening.current = voice.listening;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [voice.listening]);
 
   // Has any active criterion?
   const hasActiveCriteria =
@@ -811,12 +828,28 @@ export default function ChatPageInner() {
             ref={inputRef}
             className={styles.input}
             type="text"
-            placeholder="Affiner mes critères"
+            placeholder={voice.listening ? 'Je vous écoute…' : 'Affiner mes critères'}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             autoComplete="off"
           />
+          {voice.supported && (
+            <button
+              className={`${styles.micButton} ${voice.listening ? styles.micButtonActive : ''}`}
+              type="button"
+              onClick={() => (voice.listening ? voice.stop() : voice.start())}
+              aria-label={voice.listening ? 'Arrêter l\'enregistrement' : 'Dicter votre recherche'}
+              title={voice.listening ? 'Arrêter' : 'Dicter'}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <rect x="9" y="2" width="6" height="12" rx="3" />
+                <path d="M5 10a7 7 0 0 0 14 0" />
+                <path d="M12 17v4" />
+                <path d="M8 21h8" />
+              </svg>
+            </button>
+          )}
           <button className={styles.sendButton} type="submit" disabled={!input.trim()} aria-label="Envoyer">
             <IconSend size={18} />
           </button>
