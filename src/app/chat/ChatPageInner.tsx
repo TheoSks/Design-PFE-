@@ -21,7 +21,17 @@ interface Message {
   text: string;
   showResultsLink?: boolean;
   mapResults?: PropertyData[];
+  previewProperties?: PropertyData[];
 }
+
+const EXAMPLE_PROMPTS: string[] = [
+  'Appartement 3 pièces lumineux à Paris',
+  'Maison avec jardin proche Bordeaux',
+  'Studio meublé à Lyon, 700 €/mois',
+  'Villa vue mer à Nice',
+];
+
+const STORAGE_KEY = 'chat-state-v1';
 
 interface SearchCriteria {
   transaction?: 'achat' | 'location'; // acheter ou louer
@@ -34,10 +44,75 @@ interface SearchCriteria {
   neighborhood?: string;
 }
 
+// ── Negation / removal handling ──────────────────────────────
+const REMOVAL_RE = /(?:pas\s+(?:de|d['’])?|sans\s+(?:de|d['’])?|retire(?:r)?|enl[èe]ve(?:r)?|oublie(?:r)?|annule(?:r)?|supprime(?:r)?|plus\s+de)\s+([\w'’éèêâîôûç-]+(?:\s+[\w'’éèêâîôûç-]+){0,2})/g;
+
+function applyRemovals(text: string, existing: SearchCriteria): SearchCriteria {
+  const lower = text.toLowerCase();
+  const out: SearchCriteria = { ...existing, features: [...existing.features] };
+
+  // Hard reset commands
+  if (/^(reset|recommence|recommencer|efface tout|tout effacer|annule tout|repart de z[ée]ro)\b/.test(lower.trim())) {
+    return { features: [] };
+  }
+
+  // Match all "pas X / sans X / oublie X" tokens
+  for (const match of lower.matchAll(REMOVAL_RE)) {
+    const target = match[1];
+    if (!target) continue;
+
+    // Features
+    const featureKeywords: Record<string, string> = {
+      balcon: 'balcon', terrasse: 'terrasse', jardin: 'jardin', piscine: 'piscine',
+      parking: 'parking', garage: 'garage', cave: 'cave', ascenseur: 'ascenseur',
+      'vue mer': 'vue mer', meubl: 'meublé', luminos: 'luminosité', lumineux: 'luminosité',
+      calme: 'quartier calme', neuf: 'neuf', renov: 'rénové',
+    };
+    for (const [kw, feat] of Object.entries(featureKeywords)) {
+      if (target.includes(kw)) {
+        out.features = out.features.filter((f) => !f.includes(feat));
+      }
+    }
+
+    // Cities
+    const cities = ['paris', 'lyon', 'marseille', 'bordeaux', 'toulouse', 'nantes', 'nice', 'lille', 'strasbourg', 'rennes'];
+    for (const c of cities) {
+      if (target.includes(c) && out.city?.toLowerCase() === c) out.city = undefined;
+    }
+
+    // Generic field removals
+    if (/budget|prix/.test(target)) out.budget = undefined;
+    if (/surface|m[²2]/.test(target)) out.area = undefined;
+    if (/pi[eè]ce/.test(target)) out.rooms = undefined;
+    if (/ville/.test(target)) out.city = undefined;
+    if (/quartier|arrondissement/.test(target)) out.neighborhood = undefined;
+    if (/appartement|maison|studio|loft|villa/.test(target) && target.includes(out.type ?? '___')) {
+      out.type = undefined;
+    }
+  }
+
+  // Replacement intent: "plutôt X" / "finalement X"
+  const replMatch = lower.match(/(?:plut[oô]t|finalement|en\s+fait)\s+([a-zé-]+)/);
+  if (replMatch) {
+    const word = replMatch[1];
+    const cities = ['paris', 'lyon', 'marseille', 'bordeaux', 'toulouse', 'nantes', 'nice', 'lille', 'strasbourg', 'rennes'];
+    if (cities.includes(word)) out.city = word.charAt(0).toUpperCase() + word.slice(1);
+    const types = ['appartement', 'maison', 'studio', 'loft', 'villa'];
+    if (types.includes(word)) out.type = word;
+  }
+
+  return out;
+}
+
 // ── Keyword extraction ───────────────────────────────────────
 function extractCriteria(text: string, existing: SearchCriteria): SearchCriteria {
+  // First, handle removals/replacements so additions don't overwrite a remove
+  const base = applyRemovals(text, existing);
   const lower = text.toLowerCase();
-  const criteria = { ...existing, features: [...existing.features] };
+  const criteria = { ...base, features: [...base.features] };
+
+  // Skip additions if the text was purely a removal command (heuristic: starts with negation keyword)
+  const isPureRemoval = /^(pas\s+|sans\s+|retire|enl[èe]ve|oublie|annule|supprime|plus\s+de|reset|recommence|efface)/i.test(text.trim());
 
   // Transaction
   if (lower.match(/\blouer\b|\blocation\b|\bà louer\b|\ben location\b|\bloue\b|\blouer$/)) criteria.transaction = 'location';
@@ -45,6 +120,8 @@ function extractCriteria(text: string, existing: SearchCriteria): SearchCriteria
   // Chips shortcuts
   if (lower === 'louer') criteria.transaction = 'location';
   if (lower === 'acheter') criteria.transaction = 'achat';
+
+  if (isPureRemoval) return criteria;
 
   // Type de bien
   if (lower.match(/appartement/)) criteria.type = 'appartement';
@@ -298,23 +375,86 @@ export default function ChatPageInner() {
   const [isTyping, setIsTyping] = useState(false);
   const [hasResults, setHasResults] = useState(false);
   const [criteriaSnapshot, setCriteriaSnapshot] = useState<SearchCriteria>({ features: [] });
+  const [streamingIdx, setStreamingIdx] = useState<number | null>(null);
+  const [streamedLen, setStreamedLen] = useState(0);
+  const [hydrated, setHydrated] = useState(false);
   const criteriaRef = useRef<SearchCriteria>({ features: [] });
   const msgCountRef = useRef(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const hasInitialized = useRef(false);
 
+  // ── Persistence: load on mount ─────────────────────────────
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isTyping]);
+    try {
+      const raw = typeof window !== 'undefined' ? window.localStorage.getItem(STORAGE_KEY) : null;
+      if (raw) {
+        const data = JSON.parse(raw) as {
+          messages?: Message[];
+          criteria?: SearchCriteria;
+          msgCount?: number;
+          hasResults?: boolean;
+        };
+        if (data.messages) setMessages(data.messages);
+        if (data.criteria) {
+          criteriaRef.current = { ...data.criteria, features: data.criteria.features ?? [] };
+          setCriteriaSnapshot(criteriaRef.current);
+        }
+        if (data.msgCount) msgCountRef.current = data.msgCount;
+        if (data.hasResults) setHasResults(true);
+      }
+    } catch {}
+    setHydrated(true);
+  }, []);
+
+  // ── Persistence: save on change ────────────────────────────
+  useEffect(() => {
+    if (!hydrated) return;
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        messages,
+        criteria: criteriaSnapshot,
+        msgCount: msgCountRef.current,
+        hasResults,
+      }));
+    } catch {}
+  }, [hydrated, messages, criteriaSnapshot, hasResults]);
+
+  // ── Streaming text effect ──────────────────────────────────
+  useEffect(() => {
+    if (streamingIdx === null) return;
+    const fullText = messages[streamingIdx]?.text ?? '';
+    if (!fullText) {
+      setStreamingIdx(null);
+      return;
+    }
+    setStreamedLen(0);
+    let current = 0;
+    const interval = setInterval(() => {
+      // Reveal 3 chars per tick of 16ms ≈ ~190 chars/sec, comparable to LLM streaming
+      current += 3;
+      if (current >= fullText.length) {
+        setStreamedLen(fullText.length);
+        clearInterval(interval);
+        setStreamingIdx(null);
+      } else {
+        setStreamedLen(current);
+      }
+    }, 16);
+    return () => clearInterval(interval);
+  }, [streamingIdx, messages]);
 
   useEffect(() => {
-    if (initialQuery && !hasInitialized.current) {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, isTyping, streamedLen]);
+
+  useEffect(() => {
+    if (initialQuery && !hasInitialized.current && hydrated) {
       hasInitialized.current = true;
       sendMessage(initialQuery);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialQuery]);
+  }, [initialQuery, hydrated]);
 
   function sendMessage(text: string) {
     if (!text.trim()) return;
@@ -344,13 +484,68 @@ export default function ChatPageInner() {
         if (scored.length > 0) mapResults = scored;
       }
 
-      setMessages((prev) => [...prev, { role: 'ai', text: response.text, showResultsLink: response.showResultsLink, mapResults }]);
+      // Top-3 inline preview cards when results are ready
+      let previewProperties: PropertyData[] | undefined;
+      if (response.showResultsLink) {
+        const src = criteriaRef.current.transaction === 'location' ? RENTALS : PROPERTIES;
+        previewProperties = src
+          .map((p) => ({ p, score: computeMatchScore(p, criteriaRef.current) }))
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 3)
+          .map((x) => x.p);
+      }
+
+      setMessages((prev) => {
+        const next = [...prev, { role: 'ai' as const, text: response.text, showResultsLink: response.showResultsLink, mapResults, previewProperties }];
+        // Trigger streaming for the message we just added
+        setStreamingIdx(next.length - 1);
+        return next;
+      });
       setChips(response.chips);
       setCriteriaSnapshot({ ...criteriaRef.current, features: [...criteriaRef.current.features] });
       if (response.showResultsLink) setHasResults(true);
       setIsTyping(false);
-    }, 900);
+    }, 600);
   }
+
+  function removeCriterion(key: keyof SearchCriteria | 'feature', value?: string) {
+    let next: SearchCriteria;
+    if (key === 'feature' && value) {
+      next = {
+        ...criteriaRef.current,
+        features: criteriaRef.current.features.filter((f) => f !== value),
+      };
+    } else if (key !== 'feature') {
+      next = { ...criteriaRef.current, [key]: undefined } as SearchCriteria;
+    } else {
+      return;
+    }
+    criteriaRef.current = next;
+    setCriteriaSnapshot({ ...next, features: [...next.features] });
+  }
+
+  function resetChat() {
+    criteriaRef.current = { features: [] };
+    msgCountRef.current = 0;
+    setMessages([]);
+    setCriteriaSnapshot({ features: [] });
+    setHasResults(false);
+    setActiveTab('chat');
+    setChips(['Acheter', 'Louer', 'Paris', 'Appartement']);
+    setInput('');
+    try { window.localStorage.removeItem(STORAGE_KEY); } catch {}
+  }
+
+  // Has any active criterion?
+  const hasActiveCriteria =
+    !!criteriaSnapshot.transaction ||
+    !!criteriaSnapshot.type ||
+    !!criteriaSnapshot.city ||
+    !!criteriaSnapshot.area ||
+    !!criteriaSnapshot.budget ||
+    !!criteriaSnapshot.rooms ||
+    !!criteriaSnapshot.neighborhood ||
+    (criteriaSnapshot.features?.length ?? 0) > 0;
 
   // Compute matched & sorted results
   const source = criteriaSnapshot.transaction === 'location' ? RENTALS : PROPERTIES;
@@ -382,6 +577,22 @@ export default function ChatPageInner() {
           <Logo size="sm" />
         </Link>
         <div className={styles.headerActions}>
+          {messages.length > 0 && (
+            <button
+              className={styles.resetButton}
+              type="button"
+              aria-label="Nouvelle recherche"
+              onClick={resetChat}
+              title="Nouvelle recherche"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+                <path d="M21 3v5h-5"/>
+                <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+                <path d="M3 21v-5h5"/>
+              </svg>
+            </button>
+          )}
           <button className={styles.menuButton} type="button" aria-label="Menu" onClick={() => setMenuOpen(true)}>
             <IconMenu size={20} />
           </button>
@@ -420,12 +631,78 @@ export default function ChatPageInner() {
 
         {/* Chat panel */}
         <div className={`${styles.panel} ${activeTab === 'chat' ? styles.panelActive : styles.panelLeft}`}>
+          {/* Active criteria bar */}
+          {hasActiveCriteria && (
+            <div className={styles.criteriaBar} aria-label="Critères actifs">
+              {criteriaSnapshot.transaction && (
+                <button className={styles.criterionChip} onClick={() => removeCriterion('transaction')} type="button">
+                  {criteriaSnapshot.transaction === 'achat' ? 'Achat' : 'Location'}
+                  <span className={styles.criterionX}>✕</span>
+                </button>
+              )}
+              {criteriaSnapshot.type && (
+                <button className={styles.criterionChip} onClick={() => removeCriterion('type')} type="button">
+                  {criteriaSnapshot.type.charAt(0).toUpperCase() + criteriaSnapshot.type.slice(1)}
+                  <span className={styles.criterionX}>✕</span>
+                </button>
+              )}
+              {criteriaSnapshot.city && (
+                <button className={styles.criterionChip} onClick={() => removeCriterion('city')} type="button">
+                  {criteriaSnapshot.city}
+                  <span className={styles.criterionX}>✕</span>
+                </button>
+              )}
+              {criteriaSnapshot.neighborhood && (
+                <button className={styles.criterionChip} onClick={() => removeCriterion('neighborhood')} type="button">
+                  {criteriaSnapshot.neighborhood}
+                  <span className={styles.criterionX}>✕</span>
+                </button>
+              )}
+              {criteriaSnapshot.rooms && (
+                <button className={styles.criterionChip} onClick={() => removeCriterion('rooms')} type="button">
+                  {criteriaSnapshot.rooms}
+                  <span className={styles.criterionX}>✕</span>
+                </button>
+              )}
+              {criteriaSnapshot.area && (
+                <button className={styles.criterionChip} onClick={() => removeCriterion('area')} type="button">
+                  {criteriaSnapshot.area}
+                  <span className={styles.criterionX}>✕</span>
+                </button>
+              )}
+              {criteriaSnapshot.budget && (
+                <button className={styles.criterionChip} onClick={() => removeCriterion('budget')} type="button">
+                  {criteriaSnapshot.budget}
+                  <span className={styles.criterionX}>✕</span>
+                </button>
+              )}
+              {criteriaSnapshot.features.map((f) => (
+                <button key={f} className={styles.criterionChip} onClick={() => removeCriterion('feature', f)} type="button">
+                  {f}
+                  <span className={styles.criterionX}>✕</span>
+                </button>
+              ))}
+            </div>
+          )}
+
           {/* Chat area */}
           <main className={styles.main}>
         {messages.length === 0 && !isTyping && (
           <div className={styles.emptyState}>
             <IconSparkle size={32} />
             <p>Décrivez le bien que vous recherchez…</p>
+            <div className={styles.examplePrompts}>
+              {EXAMPLE_PROMPTS.map((prompt) => (
+                <button
+                  key={prompt}
+                  className={styles.examplePrompt}
+                  onClick={() => sendMessage(prompt)}
+                  type="button"
+                >
+                  {prompt}
+                </button>
+              ))}
+            </div>
           </div>
         )}
 
@@ -439,14 +716,44 @@ export default function ChatPageInner() {
                 <div className={styles.userBubble}>{msg.text}</div>
               ) : (
                 <div className={styles.aiBubble}>
-                  {msg.text.split('\n').map((line, j) =>
-                    line ? (
-                      <p key={j} className={line.startsWith('·') ? styles.aiPoint : styles.aiText}>
-                        {line}
-                      </p>
-                    ) : null
+                  {(() => {
+                    const displayText = i === streamingIdx ? msg.text.slice(0, streamedLen) : msg.text;
+                    const isStreaming = i === streamingIdx;
+                    return displayText.split('\n').map((line, j) =>
+                      line ? (
+                        <p key={j} className={line.startsWith('·') ? styles.aiPoint : styles.aiText}>
+                          {line}
+                          {isStreaming && j === displayText.split('\n').length - 1 && (
+                            <span className={styles.streamCaret} aria-hidden="true" />
+                          )}
+                        </p>
+                      ) : null
+                    );
+                  })()}
+                  {i !== streamingIdx && msg.previewProperties && msg.previewProperties.length > 0 && (
+                    <div className={styles.previewCards} role="list">
+                      {msg.previewProperties.map((p) => (
+                        <Link
+                          key={p.id}
+                          href={`/annonce/${p.id}`}
+                          className={styles.previewCard}
+                          role="listitem"
+                        >
+                          <div
+                            className={styles.previewCardImage}
+                            style={{ backgroundImage: `url('${p.images[0]}')` }}
+                            aria-hidden="true"
+                          />
+                          <div className={styles.previewCardBody}>
+                            <div className={styles.previewCardTitle}>{p.cardTitle}</div>
+                            <div className={styles.previewCardLocation}>{p.cardLocation}</div>
+                            <div className={styles.previewCardPrice}>{p.cardPrice}</div>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
                   )}
-                  {msg.mapResults && msg.mapResults.length > 0 && (
+                  {i !== streamingIdx && msg.mapResults && msg.mapResults.length > 0 && (
                     <div className={styles.inlineMap}>
                       <PropertyMap properties={msg.mapResults} />
                       <button
@@ -459,7 +766,7 @@ export default function ChatPageInner() {
                       </button>
                     </div>
                   )}
-                  {msg.showResultsLink && (
+                  {i !== streamingIdx && msg.showResultsLink && (
                     <button
                       className={styles.resultsLink}
                       onClick={() => setActiveTab('results')}
