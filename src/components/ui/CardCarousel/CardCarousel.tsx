@@ -2,6 +2,7 @@ import styles from './CardCarousel.module.css';
 import { cn } from '@/lib/cn';
 import { Button } from '@/components/ui/Button';
 import { IconChevronRight } from '@/components/icons';
+import { CardProvider } from '@/components/ui/Card/CardContext';
 
 interface CardCarouselProps {
   title: string;
@@ -33,7 +34,11 @@ export function CardCarousel({
       </div>
       <div className={styles.scrollArea}>
         <div className={styles.scrollInner}>
-          {children}
+          {/* Cards inside a horizontal carousel use vertical swipe for image change
+              to avoid conflict with the carousel's native horizontal scroll. */}
+          <CardProvider swipeDirection="vertical">
+            {children}
+          </CardProvider>
         </div>
       </div>
     </section>
