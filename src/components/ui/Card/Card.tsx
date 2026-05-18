@@ -335,12 +335,6 @@ export function Card({
                 {f.label}
               </span>
             ))}
-            {primaryLifestyle && (
-              <span className={styles.lifestyleBadge} aria-label={`Style de vie: ${LIFESTYLE[primaryLifestyle].label}`}>
-                <span className={styles.lifestyleEmoji} aria-hidden="true">{LIFESTYLE[primaryLifestyle].emoji}</span>
-                {LIFESTYLE[primaryLifestyle].short}
-              </span>
-            )}
           </div>
         )}
       </div>
