@@ -129,3 +129,99 @@
   height: 100% !important;
   border-radius: 0 !important;
 }
+
+/* ── Zone drawing controls ────────────────────────────────── */
+.zoneControls {
+  position: absolute;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
+  transform: translateX(-50%);
+  z-index: 40;
+  display: flex;
+  gap: 8px;
+}
+
+.zoneButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 18px;
+  border-radius: 9999px;
+  border: none;
+  background: var(--text-base-strong, #0a0a0a);
+  color: var(--text-base-lighter, #ffffff);
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-feature);
+  font-weight: var(--font-weight-emphasis, 600);
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
+  transition: transform 150ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.zoneButton:hover { transform: translateY(-2px); }
+
+.zoneDrawing {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px 10px 18px;
+  border-radius: 9999px;
+  background: var(--background-elevated, #ffffff);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+}
+
+.zoneHint {
+  font-family: var(--font-family-content);
+  font-size: 13px;
+  color: var(--text-base-strong);
+  font-weight: var(--font-weight-accent);
+}
+
+.zoneButtonCancel {
+  border: none;
+  background: var(--background-neutral-faint-default);
+  color: var(--text-base-strong);
+  font-family: var(--font-family-content);
+  font-size: 13px;
+  font-weight: var(--font-weight-accent);
+  padding: 6px 12px;
+  border-radius: 9999px;
+  cursor: pointer;
+}
+
+.zoneActive {
+  display: inline-flex;
+  gap: 8px;
+  background: var(--background-elevated);
+  padding: 6px;
+  border-radius: 9999px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+}
+
+.zoneButtonGhost {
+  border: none;
+  background: transparent;
+  color: var(--text-base-strong);
+  font-family: var(--font-family-content);
+  font-size: 13px;
+  font-weight: var(--font-weight-accent);
+  padding: 8px 14px;
+  border-radius: 9999px;
+  cursor: pointer;
+}
+
+.zoneButtonGhost:hover {
+  background: var(--background-neutral-faint-default);
+}
+
+.zoneButtonClear {
+  border: none;
+  background: var(--text-base-strong);
+  color: var(--text-base-lighter);
+  font-family: var(--font-family-content);
+  font-size: 13px;
+  font-weight: var(--font-weight-emphasis, 600);
+  padding: 8px 14px;
+  border-radius: 9999px;
+  cursor: pointer;
+}

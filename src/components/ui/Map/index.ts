@@ -1,1 +1,1 @@
-export { PropertyMap } from './PropertyMap';
+export { PropertyMap, type DrawnZone } from './PropertyMap';
