@@ -104,7 +104,7 @@ export default function AnnoncePage() {
 
           {/* Promo Feature List */}
           <FeatureList
-            title="Pourquoi acheter avec Label ?"
+            title="Pourquoi acheter avec Homely ?"
             items={[
               { icon: <IconCheck size={24} />, label: 'Des biens contrôlés et certifiés' },
               { icon: <IconSearch size={24} />, label: 'Un accompagnement personnalisé' },
@@ -313,7 +313,7 @@ export default function AnnoncePage() {
         <section className={styles.promoBanner}>
           <h2 className={styles.promoTitle}>Vous vendez votre bien ?</h2>
           <p className={styles.promoSubtitle}>
-            {`Label s'occupe de tout, à vous d'imaginer la suite !`}
+            {`Homely s&apos;occupe de tout, à vous d'imaginer la suite !`}
           </p>
           <p className={styles.promoText}>
             Démarrez votre projet en quelques clics et projetez vous sereinement dans votre nouvelle vie.

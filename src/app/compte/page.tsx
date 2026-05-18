@@ -54,7 +54,7 @@ export default function ComptePage() {
 
       <div className={styles.content}>
 
-        <h2 className={styles.welcome}>Bienvenue sur Label Immo</h2>
+        <h2 className={styles.welcome}>Bienvenue sur Homely</h2>
 
         <form className={styles.form} onSubmit={handleContinue} noValidate>
 

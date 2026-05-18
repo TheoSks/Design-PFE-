@@ -2,8 +2,8 @@ import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Label — Recherche immobilière',
-    short_name: 'Label',
+    name: 'Homely — Recherche immobilière',
+    short_name: 'Homely',
     description: 'Recherche immobilière augmentée par l\'IA',
     start_url: '/',
     display: 'standalone',

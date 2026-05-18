@@ -134,7 +134,7 @@ export default function InscriptionStep1() {
         <p className={styles.terms}>
           En sélectionnant <strong>Accepter et continuer</strong>, j&apos;accepte les{' '}
           <Link href="#" className={styles.termsLink}>Conditions d&apos;utilisation</Link>{' '}
-          de Label Immo et je reconnais la{' '}
+          de Homely et je reconnais la{' '}
           <Link href="#" className={styles.termsLink}>Politique de confidentialité</Link>.
         </p>
 
@@ -144,7 +144,7 @@ export default function InscriptionStep1() {
 
         <div className={styles.marketingBlock}>
           <p className={styles.marketingText}>
-            Label vous enverra des offres réservées aux membres, de l&apos;inspiration et des e-mails marketing.
+            Homely vous enverra des offres réservées aux membres, de l&apos;inspiration et des e-mails marketing.
             Vous pouvez vous désinscrire à tout moment dans les paramètres de votre compte.
           </p>
           <label className={styles.checkboxRow}>

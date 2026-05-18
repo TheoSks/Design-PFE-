@@ -91,7 +91,7 @@ export function BurgerMenu({ open, onClose }: BurgerMenuProps) {
         </div>
 
         <div className={styles.drawerFooter}>
-          <p className={styles.drawerFooterText}>© 2026 Immo.ai</p>
+          <p className={styles.drawerFooterText}>© 2026 Homely</p>
         </div>
       </nav>
     </>

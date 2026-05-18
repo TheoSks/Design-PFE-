@@ -15,7 +15,7 @@ export default function CommunautePage() {
       <div className={styles.content}>
         <Image
           src="/logo.svg"
-          alt="Label Immo"
+          alt="Homely"
           width={80}
           height={80}
           className={styles.logo}
@@ -24,7 +24,7 @@ export default function CommunautePage() {
 
         <p className={styles.eyebrow}>Notre engagement communautaire</p>
         <h1 className={styles.title}>
-          Label Immo est une communauté où chacun a sa place
+          Homely est une communauté où chacun a sa place
         </h1>
 
         <p className={styles.lead}>
@@ -32,7 +32,7 @@ export default function CommunautePage() {
         </p>
 
         <p className={styles.body}>
-          Je m&apos;engage à traiter chaque membre de la communauté Label Immo avec respect — sans aucun jugement
+          Je m&apos;engage à traiter chaque membre de la communauté Homely avec respect — sans aucun jugement
           ni préjugé — quelle que soit sa race, sa religion, son origine, son ethnie, sa couleur de peau, son
           handicap, son sexe, son identité de genre, son orientation sexuelle ou son âge.
         </p>

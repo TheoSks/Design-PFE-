@@ -11,11 +11,11 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: 'Label — Recherche immobilière',
+  title: 'Homely — Recherche immobilière',
   description: 'Recherche immobilière augmentée par l\'IA',
   appleWebApp: {
     capable: true,
-    title: 'Label',
+    title: 'Homely',
     statusBarStyle: 'black-translucent',
   },
   formatDetection: {
