@@ -22,6 +22,7 @@ import {
 } from '@/components/icons';
 import { getPropertyById, PROPERTIES } from '@/lib/properties';
 import { RENTALS } from '@/lib/rentals';
+import { LIFESTYLE, categorizeEnvironnement, computeLifestyleScores } from '@/lib/lifestyle';
 import styles from './page.module.css';
 
 export default function AnnoncePage() {
@@ -155,11 +156,95 @@ export default function AnnoncePage() {
             />
           </section>
 
-          {/* Environnement */}
-          <SpecList
-            title="Environnement"
-            items={property.environnement}
-          />
+          {/* Vivre ici — quality of life */}
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>Vivre ici</h2>
+
+            {/* Lifestyle tags */}
+            {property.lifestyle && property.lifestyle.length > 0 && (
+              <div className={styles.lifestyleTags}>
+                {property.lifestyle.map((tag) => (
+                  <span key={tag} className={styles.lifestyleTag}>
+                    <span className={styles.lifestyleTagEmoji} aria-hidden="true">{LIFESTYLE[tag].emoji}</span>
+                    {LIFESTYLE[tag].label}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* Scores */}
+            {(() => {
+              const scores = computeLifestyleScores(property.lifestyle, property.environnement);
+              const items: { key: keyof typeof scores; label: string; emoji: string }[] = [
+                { key: 'family',    label: 'Familles',    emoji: '👨‍👩‍👧' },
+                { key: 'calm',      label: 'Calme',       emoji: '🌿' },
+                { key: 'connected', label: 'Transports',  emoji: '🚇' },
+                { key: 'green',     label: 'Espaces verts', emoji: '🌳' },
+                { key: 'social',    label: 'Vie sociale', emoji: '🍽️' },
+              ];
+              return (
+                <div className={styles.scoresGrid}>
+                  {items.map((it) => {
+                    const val = scores[it.key];
+                    return (
+                      <div key={it.key} className={styles.scoreCell}>
+                        <span className={styles.scoreEmoji} aria-hidden="true">{it.emoji}</span>
+                        <span className={styles.scoreLabel}>{it.label}</span>
+                        <div className={styles.scoreBar} aria-hidden="true">
+                          <div className={styles.scoreBarFill} style={{ width: `${val * 10}%` }} />
+                        </div>
+                        <span className={styles.scoreValue}>{val.toFixed(1)}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })()}
+
+            {/* Categorized environnement */}
+            <div className={styles.envCategories}>
+              {categorizeEnvironnement(property.environnement).map((cat) => (
+                <div key={cat.key} className={styles.envCategory}>
+                  <h3 className={styles.envCategoryTitle}>
+                    <span className={styles.envCategoryEmoji} aria-hidden="true">{cat.emoji}</span>
+                    {cat.label}
+                  </h3>
+                  <ul className={styles.envCategoryItems}>
+                    {cat.items.map((it) => (
+                      <li key={it} className={styles.envCategoryItem}>{it}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+
+            {/* Une journée ici — narrative timeline */}
+            <div className={styles.dayTimeline}>
+              <h3 className={styles.dayTimelineTitle}>Une journée ici</h3>
+              <ul className={styles.dayTimelineList}>
+                <li className={styles.dayTimelineItem}>
+                  <span className={styles.dayTime}>8h</span>
+                  <span className={styles.dayDescription}>Café du coin à 3 min à pied</span>
+                </li>
+                <li className={styles.dayTimelineItem}>
+                  <span className={styles.dayTime}>12h</span>
+                  <span className={styles.dayDescription}>Déjeuner sur le pouce au marché ou en terrasse</span>
+                </li>
+                <li className={styles.dayTimelineItem}>
+                  <span className={styles.dayTime}>18h</span>
+                  <span className={styles.dayDescription}>
+                    {property.environnement.find((e) => /parc|jardin|plage/i.test(e))
+                      ? `Pause détente au ${property.environnement.find((e) => /parc|jardin|plage/i.test(e))}`
+                      : 'Balade dans le quartier après le travail'}
+                  </span>
+                </li>
+                <li className={styles.dayTimelineItem}>
+                  <span className={styles.dayTime}>20h</span>
+                  <span className={styles.dayDescription}>Restaurants et bars à proximité pour finir la soirée</span>
+                </li>
+              </ul>
+            </div>
+          </section>
 
           {/* Détails du prix */}
           <section className={styles.section}>

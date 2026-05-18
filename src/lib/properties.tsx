@@ -7,6 +7,7 @@ import {
   IconBath,
 } from '@/components/icons';
 import React from 'react';
+import type { LifestyleTag } from './lifestyle';
 
 export interface PropertyData {
   id: string;
@@ -34,6 +35,7 @@ export interface PropertyData {
   cardFeatures: { label: string }[];
   badgeLabel?: string;
   badgeColor?: 'blue' | 'green' | 'orange' | 'amber' | 'purple';
+  lifestyle?: LifestyleTag[];
 }
 
 export const PROPERTIES: PropertyData[] = [
@@ -93,6 +95,7 @@ export const PROPERTIES: PropertyData[] = [
     cardFeatures: [{ label: '4 pièces' }, { label: '77 m²' }],
     badgeLabel: 'Coup de cœur',
     badgeColor: 'blue',
+    lifestyle: ['family', 'connected', 'green'],
   },
   {
     id: 'maison-familiale-versailles',
@@ -148,6 +151,7 @@ export const PROPERTIES: PropertyData[] = [
     cardFeatures: [{ label: '5 pièces' }, { label: '120 m²' }],
     badgeLabel: 'Pépite rare',
     badgeColor: 'purple',
+    lifestyle: ['family', 'quiet', 'green'],
   },
   {
     id: 'villa-vue-mer-nice',
@@ -206,6 +210,7 @@ export const PROPERTIES: PropertyData[] = [
     cardFeatures: [{ label: '7 pièces' }, { label: '280 m²' }],
     badgeLabel: 'Très demandé',
     badgeColor: 'amber',
+    lifestyle: ['view', 'beach', 'connected'],
   },
 ];
 

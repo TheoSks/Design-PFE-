@@ -60,6 +60,7 @@ export const RENTALS: PropertyData[] = [
     cardFeatures: [{ label: '1 pièce' }, { label: '25 m²' }],
     badgeLabel: 'Vient d\'arriver',
     badgeColor: 'green',
+    lifestyle: ['dynamic', 'connected'],
   },
   {
     id: 'appartement-lyon-6',
@@ -111,6 +112,7 @@ export const RENTALS: PropertyData[] = [
     cardFeatures: [{ label: '3 pièces' }, { label: '60 m²' }],
     badgeLabel: 'Coup de cœur',
     badgeColor: 'blue',
+    lifestyle: ['family', 'green', 'connected'],
   },
   {
     id: 'maison-jardin-bordeaux',
@@ -162,6 +164,7 @@ export const RENTALS: PropertyData[] = [
     cardFeatures: [{ label: '4 pièces' }, { label: '90 m²' }],
     badgeLabel: 'Bon plan',
     badgeColor: 'orange',
+    lifestyle: ['family', 'quiet', 'green'],
   },
   {
     id: 't2-nantes-centre',
@@ -212,6 +215,7 @@ export const RENTALS: PropertyData[] = [
     cardFeatures: [{ label: '2 pièces' }, { label: '40 m²' }],
     badgeLabel: 'Vient d\'arriver',
     badgeColor: 'green',
+    lifestyle: ['student', 'connected'],
   },
   {
     id: 'appartement-nice-promenade',
@@ -263,6 +267,7 @@ export const RENTALS: PropertyData[] = [
     cardFeatures: [{ label: '3 pièces' }, { label: '70 m²' }],
     badgeLabel: 'Dernière chance',
     badgeColor: 'amber',
+    lifestyle: ['view', 'beach', 'dynamic'],
   },
   {
     id: 'loft-lille-vauban',
@@ -314,5 +319,6 @@ export const RENTALS: PropertyData[] = [
     cardFeatures: [{ label: '3 pièces' }, { label: '80 m²' }],
     badgeLabel: 'Pépite rare',
     badgeColor: 'purple',
+    lifestyle: ['student', 'dynamic'],
   },
 ];

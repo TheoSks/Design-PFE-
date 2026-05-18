@@ -14,6 +14,7 @@ import { IconSparkle, IconSend, IconMenu } from '@/components/icons';
 import { useVoiceInput } from './useVoiceInput';
 import { PROPERTIES, type PropertyData } from '@/lib/properties';
 import { RENTALS } from '@/lib/rentals';
+import { LIFESTYLE, extractLifestyleTags, type LifestyleTag } from '@/lib/lifestyle';
 
 
 // ── Types ────────────────────────────────────────────────────
@@ -43,6 +44,7 @@ interface SearchCriteria {
   rooms?: string;      // nombre de pièces
   features: string[];  // balcon, jardin, parking, lumineux…
   neighborhood?: string;
+  lifestyle?: LifestyleTag[]; // family / quiet / dynamic / etc.
 }
 
 // ── Negation / removal handling ──────────────────────────────
@@ -123,6 +125,14 @@ function extractCriteria(text: string, existing: SearchCriteria): SearchCriteria
   if (lower === 'acheter') criteria.transaction = 'achat';
 
   if (isPureRemoval) return criteria;
+
+  // Lifestyle tags — merged with existing
+  const detected = extractLifestyleTags(text);
+  if (detected.length > 0) {
+    const set = new Set(criteria.lifestyle ?? []);
+    detected.forEach((t) => set.add(t));
+    criteria.lifestyle = Array.from(set);
+  }
 
   // Type de bien
   if (lower.match(/appartement/)) criteria.type = 'appartement';
@@ -206,6 +216,7 @@ function generateResponse(criteria: SearchCriteria, msgCount: number): { text: s
   if (!criteria.budget) missing.push('budget');
   if (criteria.city && !criteria.neighborhood) missing.push('neighborhood');
   if (criteria.features.length === 0) missing.push('features');
+  if (!criteria.lifestyle || criteria.lifestyle.length === 0) missing.push('lifestyle');
 
   // Random result counts
   const count = 30 + Math.floor(Math.random() * 150);
@@ -256,6 +267,10 @@ function generateResponse(criteria: SearchCriteria, msgCount: number): { text: s
   if (missing.includes('features') && !missing.includes('type')) {
     parts.push(`· Y a-t-il des critères importants pour vous (luminosité, extérieur, étage, parking) ?`);
     chips.push('Avec balcon', 'Lumineux', 'Dernier étage', 'Parking');
+  }
+  if (missing.includes('lifestyle') && !missing.includes('city') && !missing.includes('type')) {
+    parts.push(`· Quel style de vie cherchez-vous : plutôt calme et nature, ou dynamique et urbain ?`);
+    chips.push('Calme et nature', 'Dynamique', 'Familial', 'Étudiant');
   }
 
   // If everything is filled, propose to show results
@@ -340,6 +355,17 @@ function computeMatchScore(property: PropertyData, criteria: SearchCriteria): nu
       if (allText.includes(f.toLowerCase())) featureHits++;
     }
     score += Math.round((featureHits / criteria.features.length) * 10);
+  }
+
+  // Lifestyle match (weight 15) — comparing user lifestyle preferences with property tags
+  if (criteria.lifestyle && criteria.lifestyle.length > 0) {
+    total += 15;
+    const propTags = new Set(property.lifestyle ?? []);
+    let hits = 0;
+    for (const t of criteria.lifestyle) {
+      if (propTags.has(t)) hits++;
+    }
+    score += Math.round((hits / criteria.lifestyle.length) * 15);
   }
 
   // If no criteria at all, give base score
@@ -513,14 +539,19 @@ export default function ChatPageInner() {
     }, 600);
   }
 
-  function removeCriterion(key: keyof SearchCriteria | 'feature', value?: string) {
+  function removeCriterion(key: keyof SearchCriteria | 'feature' | 'lifestyle', value?: string) {
     let next: SearchCriteria;
     if (key === 'feature' && value) {
       next = {
         ...criteriaRef.current,
         features: criteriaRef.current.features.filter((f) => f !== value),
       };
-    } else if (key !== 'feature') {
+    } else if (key === 'lifestyle' && value) {
+      next = {
+        ...criteriaRef.current,
+        lifestyle: (criteriaRef.current.lifestyle ?? []).filter((t) => t !== value),
+      };
+    } else if (key !== 'feature' && key !== 'lifestyle') {
       next = { ...criteriaRef.current, [key]: undefined } as SearchCriteria;
     } else {
       return;
@@ -574,7 +605,8 @@ export default function ChatPageInner() {
     !!criteriaSnapshot.budget ||
     !!criteriaSnapshot.rooms ||
     !!criteriaSnapshot.neighborhood ||
-    (criteriaSnapshot.features?.length ?? 0) > 0;
+    (criteriaSnapshot.features?.length ?? 0) > 0 ||
+    (criteriaSnapshot.lifestyle?.length ?? 0) > 0;
 
   // Compute matched & sorted results
   const source = criteriaSnapshot.transaction === 'location' ? RENTALS : PROPERTIES;
@@ -708,6 +740,18 @@ export default function ChatPageInner() {
               {criteriaSnapshot.features.map((f) => (
                 <button key={f} className={styles.criterionChip} onClick={() => removeCriterion('feature', f)} type="button">
                   {f}
+                  <span className={styles.criterionX}>✕</span>
+                </button>
+              ))}
+              {(criteriaSnapshot.lifestyle ?? []).map((t) => (
+                <button
+                  key={`life-${t}`}
+                  className={`${styles.criterionChip} ${styles.criterionChipLifestyle}`}
+                  onClick={() => removeCriterion('lifestyle', t)}
+                  type="button"
+                >
+                  <span aria-hidden="true">{LIFESTYLE[t].emoji}</span>
+                  {LIFESTYLE[t].short}
                   <span className={styles.criterionX}>✕</span>
                 </button>
               ))}
@@ -907,6 +951,7 @@ export default function ChatPageInner() {
                       location={p.cardLocation}
                       price={p.cardPrice}
                       features={p.cardFeatures}
+                  lifestyle={p.lifestyle}
                       badge={<Badge variant="ia" color={getMatchColor(score)}>{getMatchLabel(score)}</Badge>}
                     />
                   </button>
@@ -921,6 +966,7 @@ export default function ChatPageInner() {
                   location={p.cardLocation}
                   price={p.cardPrice}
                   features={p.cardFeatures}
+                  lifestyle={p.lifestyle}
                   badge={<Badge variant="ia" color={getMatchColor(score)}>{getMatchLabel(score)}</Badge>}
                   href={`/annonce/${p.id}`}
                 />

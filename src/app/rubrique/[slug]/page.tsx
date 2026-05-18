@@ -55,6 +55,7 @@ export default function RubriquePage() {
                 location={property.cardLocation}
                 price={property.cardPrice}
                 features={property.cardFeatures}
+                lifestyle={property.lifestyle}
                 href={`/annonce/${property.id}`}
               />
             ))}

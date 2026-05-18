@@ -189,6 +189,29 @@
   color: var(--text-base-lighter);
 }
 
+.lifestyleBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  font-family: var(--font-family-content);
+  font-size: 12px;
+  font-weight: var(--font-weight-emphasis, 600);
+  color: var(--text-base-lighter);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.lifestyleEmoji {
+  font-size: 14px;
+  line-height: 1;
+}
+
 .feature svg {
   flex-shrink: 0;
   opacity: 0.95;

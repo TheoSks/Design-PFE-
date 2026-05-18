@@ -40,6 +40,7 @@ export default function Home() {
                 location={property.cardLocation}
                 price={property.cardPrice}
                 features={property.cardFeatures}
+                lifestyle={property.lifestyle}
                 href={`/annonce/${property.id}`}
               />
             ))}

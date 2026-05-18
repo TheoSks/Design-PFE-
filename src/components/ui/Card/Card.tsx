@@ -6,6 +6,7 @@ import styles from './Card.module.css';
 import { cn } from '@/lib/cn';
 import { useDominantColor } from './useDominantColor';
 import { useCardContext } from './CardContext';
+import { LIFESTYLE, type LifestyleTag } from '@/lib/lifestyle';
 import {
   IconHeart,
   IconLocation,
@@ -45,6 +46,7 @@ interface CardProps {
   location: string;
   price: string;
   features?: CardFeature[];
+  lifestyle?: LifestyleTag[];
   href?: string;
   className?: string;
 }
@@ -67,9 +69,11 @@ export function Card({
   location,
   price,
   features,
+  lifestyle,
   href,
   className,
 }: CardProps) {
+  const primaryLifestyle = lifestyle && lifestyle.length > 0 ? lifestyle[0] : undefined;
   const { swipeDirection } = useCardContext();
   const [current, setCurrent] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
@@ -331,6 +335,12 @@ export function Card({
                 {f.label}
               </span>
             ))}
+            {primaryLifestyle && (
+              <span className={styles.lifestyleBadge} aria-label={`Style de vie: ${LIFESTYLE[primaryLifestyle].label}`}>
+                <span className={styles.lifestyleEmoji} aria-hidden="true">{LIFESTYLE[primaryLifestyle].emoji}</span>
+                {LIFESTYLE[primaryLifestyle].short}
+              </span>
+            )}
           </div>
         )}
       </div>

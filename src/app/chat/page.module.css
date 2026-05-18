@@ -280,6 +280,12 @@
   background: rgba(0, 0, 0, 0.06);
 }
 
+.criterionChipLifestyle {
+  background: #fef3c7;
+  border-color: #fcd34d;
+  color: #92400e;
+}
+
 /* ── Reset button in header ───────────────────────────────── */
 .resetButton {
   display: inline-flex;

@@ -289,3 +289,205 @@
 .promoButton:hover {
   background: var(--background-neutral-faint-hover);
 }
+
+/* ── Vivre ici — quality of life ───────────────────────────── */
+.lifestyleTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 var(--layout-gap-xl);
+}
+
+.lifestyleTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  background: var(--background-brand-faint-default, #eff6ff);
+  border: 1px solid var(--border-brand-moderate, #bedbff);
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-feature);
+  font-weight: var(--font-weight-emphasis, 600);
+  color: var(--text-brand-bolder, #1447e6);
+}
+
+.lifestyleTagEmoji {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.scoresGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: var(--layout-gap-2xl);
+}
+
+.scoreCell {
+  display: grid;
+  grid-template-columns: 26px 110px 1fr 34px;
+  align-items: center;
+  gap: 10px;
+}
+
+.scoreEmoji {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.scoreLabel {
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-feature);
+  color: var(--text-base-strong);
+  font-weight: var(--font-weight-accent);
+}
+
+.scoreBar {
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--background-neutral-lighter-default, #f5f5f5);
+  overflow: hidden;
+}
+
+.scoreBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--background-brand-bolder-default, #2b7fff), var(--background-brand-strong-default, #155dfc));
+  border-radius: 9999px;
+  transition: width 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scoreValue {
+  font-family: var(--font-family-content);
+  font-size: 13px;
+  font-weight: var(--font-weight-emphasis, 600);
+  color: var(--text-base-strong);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.envCategories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--layout-gap-lg);
+  margin-bottom: var(--layout-gap-2xl);
+}
+
+.envCategory {
+  background: var(--background-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--layout-radius-xl);
+  padding: var(--layout-padding-lg);
+}
+
+.envCategoryTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-feature);
+  font-weight: var(--font-weight-emphasis, 600);
+  color: var(--text-base-strong);
+  margin: 0 0 10px;
+}
+
+.envCategoryEmoji {
+  font-size: 16px;
+}
+
+.envCategoryItems {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.envCategoryItem {
+  font-family: var(--font-family-content);
+  font-size: 13px;
+  color: var(--text-base-bolder);
+  padding-left: 12px;
+  position: relative;
+}
+
+.envCategoryItem::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--background-brand-bolder-default, #2b7fff);
+}
+
+.dayTimeline {
+  background: var(--background-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--layout-radius-2xl);
+  padding: var(--layout-padding-xl);
+}
+
+.dayTimelineTitle {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-content-body);
+  font-weight: var(--font-weight-emphasis, 600);
+  color: var(--text-base-strong);
+  margin: 0 0 var(--layout-gap-md);
+}
+
+.dayTimelineList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dayTimelineItem {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  align-items: baseline;
+  gap: 16px;
+  padding-left: 14px;
+  position: relative;
+}
+
+.dayTimelineItem::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--background-brand-bolder-default, #2b7fff);
+}
+
+.dayTimelineItem:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 16px;
+  bottom: -14px;
+  width: 2px;
+  background: var(--border-default);
+}
+
+.dayTime {
+  font-family: var(--font-family-heading);
+  font-size: 14px;
+  font-weight: var(--font-weight-emphasis, 600);
+  color: var(--text-brand-bolder, #1447e6);
+}
+
+.dayDescription {
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-content-feature);
+  color: var(--text-base-strong);
+  line-height: 1.5;
+}

@@ -310,6 +310,7 @@ function RechercheInner() {
                     location={property.cardLocation}
                     price={property.cardPrice}
                     features={property.cardFeatures}
+                lifestyle={property.lifestyle}
                     href={`/annonce/${property.id}`}
                   />
                 ))
@@ -334,6 +335,7 @@ function RechercheInner() {
               location={property.cardLocation}
               price={property.cardPrice}
               features={property.cardFeatures}
+                lifestyle={property.lifestyle}
               href={`/annonce/${property.id}`}
             />
           ))}
