@@ -212,7 +212,7 @@ export default function Landing() {
       <section className={styles.hero}>
         <Pill icon={IconSparkle}>Cherchez · Trouvez · Emménagez</Pill>
         <h1 className={styles.heroTitle}>
-          Cherchez. <IconSparkle size={44} className={styles.heroTitleIcon} /> Trouvez.
+          Cherchez. <img src="/logo.svg" alt="" width={44} height={44} className={styles.heroTitleIcon} /> Trouvez.
           <br />Emménagez.
         </h1>
         <p className={styles.heroSubtitle}>
