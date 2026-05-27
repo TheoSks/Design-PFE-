@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import styles from './Footer.module.css';
 import { Logo } from '@/components/ui/Logo';
 import { Input } from '@/components/ui/Input';
@@ -69,6 +70,9 @@ export function Footer() {
           <div className={styles.linkColumn}>
             <h4 className={styles.linkHeading}>Découvrir</h4>
             <ul className={styles.linkList}>
+              <li>
+                <Link href="/landing" className={styles.link}>Découvrir l&apos;app</Link>
+              </li>
               {footerLinks.discover.map((link) => (
                 <li key={link}>
                   <a href="#" className={styles.link}>{link}</a>
