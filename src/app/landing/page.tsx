@@ -16,6 +16,7 @@ import {
   IconCheck,
   IconPlus,
   IconArrowRight,
+  IconChevronLeft,
   IconStar,
 } from '@/components/icons';
 
@@ -223,25 +224,35 @@ export default function Landing() {
         </p>
 
         <div className={styles.heroShowcase}>
-          {/* Carte gauche */}
-          <div className={`${styles.showcaseCard} ${styles.showcaseCardLeft}`}>
-            <div className={styles.showcaseBg} />
-            <div className={styles.showcaseCardBody}>
-              <h3>On sait ce que<br />vous cherchez</h3>
-              <p>Des recommandations sur-mesure dès votre première recherche, partout en France.</p>
-              <Link href="/" className={styles.darkBtn}>Commencer gratuitement</Link>
+          {/* Bloc gauche — carte blanche */}
+          <div className={styles.heroLeftCard}>
+            <h3 className={styles.heroLeftTitle}>On sait ce que vous cherchez</h3>
+            <div className={styles.heroAvatars}>
+              <span /><span /><span /><span />
+              <em>+25K</em>
             </div>
+            <p className={styles.heroLeftText}>
+              Notre IA apprend de vos critères et affine chaque recherche pour vous proposer
+              les biens qui vous correspondent, partout en France.
+            </p>
+            <Link href="/" className={styles.darkBtn}>Commencer gratuitement</Link>
           </div>
 
           {/* Téléphone centre */}
           <PhoneMockup className={styles.showcasePhone} />
 
-          {/* Carte droite */}
-          <div className={`${styles.showcaseCard} ${styles.showcaseCardRight}`}>
-            <div className={`${styles.showcaseBg} ${styles.showcaseBgWarm}`} />
-            <div className={styles.showcaseCardBody}>
-              <h3>Partout en France</h3>
-              <p>Des annonces vérifiées de nos partenaires, mises à jour en temps réel.</p>
+          {/* Bloc droit — image + texte + flèches */}
+          <div className={styles.heroRightCard}>
+            <div className={styles.heroRightImage}>
+              <div className={`${styles.bentoBg} ${styles.bentoBgWarm}`} />
+            </div>
+            <h3 className={styles.heroRightTitle}>Partout en France</h3>
+            <p className={styles.heroRightText}>
+              Des annonces vérifiées, mises à jour en temps réel.
+            </p>
+            <div className={styles.heroArrows}>
+              <button type="button" aria-label="Précédent"><IconChevronLeft size={18} /></button>
+              <button type="button" aria-label="Suivant"><IconArrowRight size={18} /></button>
             </div>
           </div>
         </div>

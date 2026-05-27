@@ -176,52 +176,105 @@
 }
 @media (max-width: 880px) {
   .heroShowcase { grid-template-columns: 1fr; max-width: 380px; }
-  .showcaseCardLeft, .showcaseCardRight { display: none; }
+  .heroLeftCard, .heroRightCard { display: none; }
 }
 
-.showcaseCard {
-  position: relative;
-  border-radius: var(--lp-radius);
-  overflow: hidden;
-  min-height: 360px;
+/* ── Bloc gauche — carte blanche ──────────────────────────── */
+.heroLeftCard {
+  align-self: center;
+  text-align: left;
   display: flex;
-  align-items: flex-end;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
 }
-.showcaseCardLeft { align-self: center; }
-.showcaseBg {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.55) 100%),
-    linear-gradient(160deg, #aee1ff 0%, #6dbf7f 55%, #3f9d57 100%);
-}
-.showcaseBgWarm {
-  background:
-    linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.55) 100%),
-    linear-gradient(160deg, #ffd9a8 0%, #f7a072 55%, #e07a4d 100%);
-}
-.showcaseCardBody {
-  position: relative;
-  padding: 24px;
-  color: var(--color-base-white);
-}
-.showcaseCardBody h3 {
-  font-size: 22px;
+.heroLeftTitle {
+  font-size: clamp(24px, 2vw, 30px);
   font-weight: var(--font-weight-600);
   line-height: 1.15;
-  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+  margin: 0;
 }
-.showcaseCardBody p {
+.heroAvatars {
+  display: flex;
+  align-items: center;
+}
+.heroAvatars span {
+  width: 38px; height: 38px;
+  border-radius: 999px;
+  border: 2px solid var(--color-base-white);
+  margin-left: -10px;
+  background: linear-gradient(135deg, #aee1ff, #6dbf7f);
+}
+.heroAvatars span:first-child { margin-left: 0; }
+.heroAvatars span:nth-child(2) { background: linear-gradient(135deg, #ffd9a8, #f7a072); }
+.heroAvatars span:nth-child(3) { background: linear-gradient(135deg, #cfe3ff, #8fb4e0); }
+.heroAvatars span:nth-child(4) { background: linear-gradient(135deg, #f4a06f, #d9624b); }
+.heroAvatars em {
+  margin-left: -10px;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 2px solid var(--color-base-white);
+  background: var(--color-base-white);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+  color: var(--lp-ink);
+  font-style: normal;
+  font-size: 13px;
+  font-weight: var(--font-weight-600);
+  display: inline-flex;
+  align-items: center;
+}
+.heroLeftText {
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  color: var(--lp-muted);
+  margin: 0;
+}
+
+/* ── Bloc droit — image + texte + flèches ─────────────────── */
+.heroRightCard {
+  align-self: center;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.heroRightImage {
+  position: relative;
+  height: 190px;
+  border-radius: var(--lp-radius);
+  overflow: hidden;
+}
+.heroRightTitle {
+  font-size: 18px;
+  font-weight: var(--font-weight-600);
+  margin: 4px 0 0;
+}
+.heroRightText {
   font-size: var(--font-size-sm);
   line-height: 1.5;
-  opacity: 0.92;
-  margin: 0 0 16px;
+  color: var(--lp-muted);
+  margin: 0;
 }
-.showcaseCardBody .darkBtn {
+.heroArrows {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+.heroArrows button {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--border-default);
   background: var(--color-base-white);
   color: var(--lp-ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 120ms ease;
 }
+.heroArrows button:hover { background: var(--color-neutral-050); }
 
 /* ── Maquette téléphone ──────────────────────────────────── */
 .phone {
