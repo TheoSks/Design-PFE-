@@ -213,7 +213,7 @@ export default function Landing() {
         <Pill icon={IconSparkle}>Cherchez · Trouvez · Emménagez</Pill>
         <h1 className={styles.heroTitle}>
           <span className={styles.heroTitleLine}>
-            Cherchez.&nbsp;<img src="/logo.svg" alt="" width={44} height={44} className={styles.heroTitleIcon} />&nbsp;Trouvez.
+            Cherchez.<img src="/logo.svg" alt="" className={styles.heroTitleIcon} />Trouvez.
           </span>
           <span className={styles.heroTitleLine}>Emménagez.</span>
         </h1>
