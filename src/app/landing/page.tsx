@@ -212,8 +212,10 @@ export default function Landing() {
       <section className={styles.hero}>
         <Pill icon={IconSparkle}>Cherchez · Trouvez · Emménagez</Pill>
         <h1 className={styles.heroTitle}>
-          Cherchez. <img src="/logo.svg" alt="" width={44} height={44} className={styles.heroTitleIcon} /> Trouvez.
-          <br />Emménagez.
+          <span className={styles.heroTitleLine}>
+            Cherchez.&nbsp;<img src="/logo.svg" alt="" width={44} height={44} className={styles.heroTitleIcon} />&nbsp;Trouvez.
+          </span>
+          <span className={styles.heroTitleLine}>Emménagez.</span>
         </h1>
         <p className={styles.heroSubtitle}>
           Décrivez le logement de vos rêves : notre IA parcourt des milliers d&apos;annonces
