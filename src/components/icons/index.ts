@@ -30,3 +30,4 @@ export { default as IconShare } from "./IconShare";
 export { default as IconPhone } from "./IconPhone";
 export { default as IconBell } from "./IconBell";
 export { default as IconX } from "./IconX";
+export { default as IconStar } from "./IconStar";
