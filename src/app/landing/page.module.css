@@ -150,12 +150,12 @@
 }
 .heroTitleIcon {
   display: inline-block;
-  width: 0.92em;
-  height: 0.92em;
-  margin: 0 0.12em;
+  width: 1.5em;
+  height: 1.5em;
+  margin: 0 -0.18em;
   vertical-align: middle;
   position: relative;
-  top: -0.04em;
+  top: -0.02em;
   flex-shrink: 0;
 }
 .heroSubtitle {
