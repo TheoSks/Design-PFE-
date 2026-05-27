@@ -241,8 +241,8 @@ export default function Landing() {
             <Link href="/" className={styles.darkBtn}>Commencer gratuitement</Link>
           </div>
 
-          {/* Téléphone centre */}
-          <PhoneMockup className={styles.showcasePhone} />
+          {/* Téléphone centre — asset iPhone (app Homely) */}
+          <img src="/landing/iphone-mockup.png" alt="Application Homely" className={styles.showcasePhoneImg} />
 
           {/* Bloc droit — image + texte + flèches */}
           <div className={styles.heroRightCard}>

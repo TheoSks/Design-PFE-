@@ -180,7 +180,7 @@
     max-width: 420px;
     gap: 28px;
   }
-  .showcasePhone { order: -1; max-width: 280px; }
+  .showcasePhoneImg { order: -1; max-width: 300px; }
   .heroLeftCard,
   .heroRightCard {
     align-self: stretch;
@@ -301,6 +301,14 @@
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.22);
 }
 .showcasePhone { z-index: 2; justify-self: center; width: 100%; max-width: 300px; }
+.showcasePhoneImg {
+  z-index: 2;
+  justify-self: center;
+  width: 100%;
+  max-width: 340px;
+  height: auto;
+  filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.22));
+}
 .phoneNotch {
   position: absolute;
   top: 16px; left: 50%;
