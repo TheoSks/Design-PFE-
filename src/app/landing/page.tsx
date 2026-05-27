@@ -228,7 +228,10 @@ export default function Landing() {
           <div className={styles.heroLeftCard}>
             <h3 className={styles.heroLeftTitle}>On sait ce que vous cherchez</h3>
             <div className={styles.heroAvatars}>
-              <span /><span /><span /><span />
+              <img src="/landing/av1.png" alt="" />
+              <img src="/landing/av2.png" alt="" />
+              <img src="/landing/av3.png" alt="" />
+              <img src="/landing/av4.png" alt="" />
               <em>+25K</em>
             </div>
             <p className={styles.heroLeftText}>
@@ -244,7 +247,7 @@ export default function Landing() {
           {/* Bloc droit — image + texte + flèches */}
           <div className={styles.heroRightCard}>
             <div className={styles.heroRightImage}>
-              <div className={`${styles.bentoBg} ${styles.bentoBgWarm}`} />
+              <img src="/landing/hero-right.png" alt="Recherche immobilière depuis mobile" />
             </div>
             <h3 className={styles.heroRightTitle}>Partout en France</h3>
             <p className={styles.heroRightText}>
