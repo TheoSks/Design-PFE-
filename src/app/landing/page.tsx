@@ -249,10 +249,12 @@ export default function Landing() {
 
       {/* ── Logos ───────────────────────────────────────── */}
       <section className={styles.logos}>
-        <div className={styles.logosRow}>
-          {PARTNERS.map((p) => (
-            <span key={p} className={styles.logoItem}>{p}</span>
-          ))}
+        <div className={styles.logosViewport}>
+          <div className={styles.logosTrack}>
+            {[...PARTNERS, ...PARTNERS].map((p, i) => (
+              <span key={`${p}-${i}`} className={styles.logoItem} aria-hidden={i >= PARTNERS.length}>{p}</span>
+            ))}
+          </div>
         </div>
         <p className={styles.logosCaption}>Adopté par 50 000+ chercheurs de logement partout en France</p>
       </section>
