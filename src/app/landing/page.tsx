@@ -9,6 +9,8 @@ import { Preloader, PRELOADER_MS } from './_components/Preloader';
 import { Reveal } from './_components/Reveal';
 import { CountUp } from './_components/CountUp';
 import { Magnetic } from './_components/Magnetic';
+import { PhoneMockup } from './_components/PhoneMockup';
+import { ScrollProgress } from './_components/ScrollProgress';
 import {
   IconSparkle,
   IconSearch,
@@ -169,33 +171,6 @@ function Pill({ icon: Icon, children }: { icon: React.ComponentType<{ size?: num
   );
 }
 
-/* Maquette de téléphone reproduisant l'app Homely */
-function PhoneMockup({ className }: { className?: string }) {
-  return (
-    <div className={`${styles.phone} ${className ?? ''}`}>
-      <div className={styles.phoneNotch} />
-      <div className={styles.phoneScreen}>
-        <div className={styles.phoneTabs}>
-          <span className={`${styles.phoneTab} ${styles.phoneTabActive}`}>
-            <IconSparkle size={12} /> Filtrer avec IA
-          </span>
-          <span className={styles.phoneTab}>Résultats</span>
-        </div>
-        <div className={styles.phoneCardTitle}>Belle luminosité</div>
-        <div className={styles.phoneImage}>
-          <span className={styles.phoneBadge}>
-            <IconSparkle size={10} /> Coup de cœur
-          </span>
-        </div>
-        <div className={styles.phoneMeta}>
-          <span>3 pièces · 68 m²</span>
-          <strong>249 000 €</strong>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* ── Page ────────────────────────────────────────────────── */
 
 export default function Landing() {
@@ -229,6 +204,7 @@ export default function Landing() {
   return (
     <div className={styles.page}>
       <Preloader />
+      <ScrollProgress />
 
       {/* ── Nav ─────────────────────────────────────────── */}
       <header className={styles.nav}>
@@ -450,15 +426,31 @@ export default function Landing() {
                 className={`${styles.tabRow} ${i === activeTab ? styles.tabRowActive : ''}`}
                 onClick={() => setActiveTab(i)}
               >
+                {i === activeTab && (
+                  <motion.span
+                    layoutId="tabHighlight"
+                    className={styles.tabHL}
+                    transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                  />
+                )}
                 <span className={styles.tabIcon}><IconSparkle size={16} /></span>
                 <span className={styles.tabText}>
                   <strong>{t.title}</strong>
-                  {i === activeTab && <span className={styles.tabDesc}>{t.text}</span>}
+                  {i === activeTab && (
+                    <motion.span
+                      className={styles.tabDesc}
+                      initial={reduce ? false : { opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      {t.text}
+                    </motion.span>
+                  )}
                 </span>
               </button>
             ))}
           </div>
-          <PhoneMockup className={styles.tabsPhone} />
+          <PhoneMockup className={styles.tabsPhone} activeTab={activeTab} />
         </Reveal>
       </section>
 

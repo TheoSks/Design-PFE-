@@ -1,0 +1,260 @@
+.wrap {
+  position: relative;
+  perspective: 1300px;
+  width: 100%;
+}
+.floater {
+  width: 100%;
+  transform-style: preserve-3d;
+}
+
+/* ── Châssis (titane) ─────────────────────────────────────── */
+.phone {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 19.3;
+  border-radius: 46px;
+  padding: 4px;
+  transform-style: preserve-3d;
+  background:
+    linear-gradient(135deg,
+      #7d7f85 0%, #2c2e33 16%, #4a4c52 33%, #1f2125 50%,
+      #41434a 68%, #16181b 84%, #5a5c62 100%);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.4),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.5),
+    0 2px 6px rgba(8, 16, 40, 0.25),
+    0 50px 90px -22px rgba(8, 16, 40, 0.5),
+    0 24px 48px -18px rgba(8, 16, 40, 0.4);
+}
+
+/* Boutons latéraux */
+.btnPower,
+.btnVolUp,
+.btnVolDown,
+.btnSilent {
+  position: absolute;
+  z-index: 1;
+  background: linear-gradient(90deg, #16181b, #45474d);
+}
+.btnPower {
+  right: -2px;
+  top: 30%;
+  width: 3px;
+  height: 16%;
+  border-radius: 0 3px 3px 0;
+  background: linear-gradient(270deg, #16181b, #45474d);
+}
+.btnSilent { left: -2px; top: 17%; width: 3px; height: 5%; border-radius: 3px 0 0 3px; }
+.btnVolUp  { left: -2px; top: 25%; width: 3px; height: 9%; border-radius: 3px 0 0 3px; }
+.btnVolDown{ left: -2px; top: 36%; width: 3px; height: 9%; border-radius: 3px 0 0 3px; }
+
+/* Bordure noire interne */
+.bezel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 42px;
+  background: #050608;
+  padding: 7px;
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.9);
+}
+
+/* ── Écran ────────────────────────────────────────────────── */
+.screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 36px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #f3f6fc 0%, #fafafa 40%);
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 40px 12px 12px;
+}
+
+.island {
+  position: absolute;
+  top: 11px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36%;
+  min-width: 80px;
+  height: 23px;
+  background: #000;
+  border-radius: 999px;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 9px;
+}
+.islandCam {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #38507d 0%, #0a0f1c 70%);
+  box-shadow: inset 0 0 2px rgba(120, 160, 255, 0.7);
+}
+.gloss {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  border-radius: 36px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0) 26%,
+    rgba(255, 255, 255, 0) 72%,
+    rgba(255, 255, 255, 0.08) 100%);
+}
+
+/* Barre d'état */
+.statusbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px;
+}
+.time { font-size: 11px; font-weight: var(--font-weight-700); color: var(--lp-ink); }
+.statusIcons { display: inline-flex; align-items: center; gap: 5px; }
+.bars {
+  width: 16px; height: 9px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--lp-ink) 70%, rgba(10,10,10,0.25) 70%);
+  -webkit-mask: repeating-linear-gradient(90deg, #000 0 3px, transparent 3px 4px);
+          mask: repeating-linear-gradient(90deg, #000 0 3px, transparent 3px 4px);
+}
+.battery {
+  width: 18px; height: 9px;
+  border: 1px solid rgba(10,10,10,0.5);
+  border-radius: 3px;
+  position: relative;
+  background: linear-gradient(90deg, var(--lp-ink) 75%, transparent 75%);
+}
+
+/* En-tête app */
+.appHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 4px;
+}
+.appLogo { width: 18px; height: 18px; display: block; }
+.appHeader strong { font-size: 13px; font-weight: var(--font-weight-700); letter-spacing: -0.02em; }
+.appBell {
+  margin-left: auto;
+  display: inline-flex;
+  width: 26px; height: 26px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: var(--color-neutral-100);
+  color: var(--lp-ink);
+}
+
+/* Requête IA */
+.query {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--color-base-white);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  padding: 9px 11px;
+  box-shadow: 0 4px 14px rgba(43, 127, 255, 0.10);
+  min-height: 38px;
+}
+.queryIcon {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  background: var(--color-brand-050);
+  color: var(--lp-brand);
+}
+.queryText { font-size: 11px; line-height: 1.3; color: var(--lp-ink); font-weight: var(--font-weight-500); }
+
+/* Carte annonce */
+.card {
+  background: var(--color-base-white);
+  border: 1px solid var(--border-default);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 22px rgba(8, 16, 40, 0.08);
+}
+.cardImg {
+  position: relative;
+  height: 116px;
+  background-image:
+    linear-gradient(180deg, rgba(8,16,40,0) 50%, rgba(8,16,40,0.28) 100%),
+    url('/landing/bento-summary.jpg');
+  background-size: cover;
+  background-position: center;
+}
+.badge {
+  position: absolute;
+  top: 9px; left: 9px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--lp-ink);
+  font-size: 9px;
+  font-weight: var(--font-weight-600);
+  padding: 4px 8px;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+}
+.badge svg { color: var(--lp-brand); }
+.match {
+  position: absolute;
+  bottom: 9px; right: 9px;
+  background: var(--lp-brand);
+  color: #fff;
+  font-size: 9px;
+  font-weight: var(--font-weight-700);
+  padding: 4px 8px;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(43, 127, 255, 0.45);
+}
+.cardBody { padding: 10px 11px 12px; display: flex; flex-direction: column; gap: 5px; }
+.cardTitle { font-size: 12px; font-weight: var(--font-weight-700); }
+.meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--lp-muted);
+}
+.meta strong { color: var(--lp-brand); font-size: 12px; font-weight: var(--font-weight-700); }
+
+/* Barre de navigation */
+.tabbar {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: var(--color-base-white);
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
+  padding: 8px 6px;
+  box-shadow: 0 6px 18px rgba(8, 16, 40, 0.08);
+}
+.navItem {
+  display: inline-flex;
+  width: 30px; height: 26px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: var(--color-neutral-400);
+}
+.navActive { background: var(--color-brand-050); color: var(--lp-brand); }
+
+@media (prefers-reduced-motion: reduce) {
+  .floater { animation: none; }
+}
