@@ -98,6 +98,14 @@ const TABS = [
   },
 ];
 
+/* Vrais écrans de l'app Homely, alignés sur l'ordre des onglets ci-dessus. */
+const APP_SHOTS = [
+  '/landing/app-chat.jpg',    // Recherche conversationnelle
+  '/landing/app-achat.jpg',   // Filtres intelligents
+  '/landing/app-annonce.jpg', // Estimation de prix
+  '/landing/app-carte.jpg',   // Quartiers & points d'intérêt
+];
+
 const PLAN_FEATURES = [
   'Annonces illimitées',
   'Recherche par IA',
@@ -450,7 +458,7 @@ export default function Landing() {
               </button>
             ))}
           </div>
-          <PhoneMockup className={styles.tabsPhone} activeTab={activeTab} />
+          <PhoneMockup className={styles.tabsPhone} screens={APP_SHOTS} activeTab={activeTab} />
         </Reveal>
       </section>
 
@@ -465,21 +473,32 @@ export default function Landing() {
         </Reveal>
 
         <div className={styles.testiGrid}>
-          <motion.div className={styles.testiFeatured} {...reveal()}>
-            <img src="/landing/face-1.jpg" alt="" className={styles.testiAvatar} />
-            <h4>Sarah Caron</h4>
-            <p>« Homely a complètement changé ma recherche. J&apos;ai trouvé mon appartement en une semaine, sans visiter dix biens pour rien. »</p>
-            <div className={styles.stars}><Stars /></div>
-          </motion.div>
+          {/* Avis vedette */}
+          <motion.figure className={styles.testiFeatured} {...reveal()}>
+            <span className={styles.quoteMark} aria-hidden>&ldquo;</span>
+            <blockquote className={styles.testiFeaturedQuote}>
+              Homely a complètement changé ma recherche. J&apos;ai trouvé mon
+              appartement en une semaine, sans visiter dix biens pour rien.
+            </blockquote>
+            <figcaption className={styles.testiPerson}>
+              <img src="/landing/face-1.jpg" alt="Sarah Caron" className={styles.testiAvatar} />
+              <span className={styles.testiName}>
+                <strong>Sarah Caron <span className={styles.verified}><IconCheck size={11} /></span></strong>
+                <span>Locataire à Lyon</span>
+              </span>
+              <span className={styles.starsSmall}><Stars /></span>
+            </figcaption>
+          </motion.figure>
 
+          {/* Note & statistiques Homely */}
           <motion.div className={styles.testiMid} {...reveal(0.08)}>
             <div className={styles.testiRating}>
-              <span className={styles.testiStoreIcon}><IconHome size={20} /></span>
-              <div>
-                <strong><CountUp to={4.9} decimals={1} /> / 5</strong>
-                <span>12K+ avis sur les stores</span>
-                <div className={styles.starsSmall}><Stars /></div>
+              <div className={styles.testiRatingTop}>
+                <strong><CountUp to={4.9} decimals={1} /></strong>
+                <span className={styles.stars}><Stars /></span>
               </div>
+              <span className={styles.testiRatingLabel}>Note moyenne · App&nbsp;Store &amp; Google&nbsp;Play</span>
+              <span className={styles.testiRatingSub}>Plus de 12&nbsp;000 avis sur Homely</span>
             </div>
             <div className={styles.testiStats}>
               <div className={styles.testiStat}>
@@ -492,28 +511,39 @@ export default function Landing() {
               </div>
             </div>
             <div className={styles.testiMini}>
-              <img src="/landing/face-2.jpg" alt="" className={styles.testiMiniAvatar} />
+              <img src="/landing/face-2.jpg" alt="Lilly Mercier" className={styles.testiMiniAvatar} />
               <div>
                 <strong>Lilly Mercier</strong>
-                <span>M&apos;a fait gagner des heures.</span>
+                <span>Primo-accédante, Rouen</span>
               </div>
+              <span className={styles.starsSmall}><Stars /></span>
             </div>
           </motion.div>
 
+          {/* Avis secondaires */}
           <motion.div className={styles.testiCol} {...reveal(0.16)}>
-            <div className={styles.testiMini}>
-              <img src="/landing/face-3.jpg" alt="" className={styles.testiMiniAvatar} />
-              <div>
-                <strong>Léna Ohayon</strong>
-                <span>Je ne pourrais plus m&apos;en passer.</span>
-              </div>
-            </div>
-            <div className={styles.testiSide}>
-              <img src="/landing/face-4.jpg" alt="" className={styles.testiMiniAvatar} />
-              <strong>Marie-Jeanne Wagner</strong>
-              <p>« J&apos;ai déniché un bien rare dans mon quartier avant même qu&apos;il ne sorte sur les autres sites. »</p>
-              <div className={styles.starsSmall}><Stars /></div>
-            </div>
+            <figure className={styles.testiSide}>
+              <figcaption className={styles.testiPerson}>
+                <img src="/landing/face-3.jpg" alt="Léna Ohayon" className={styles.testiMiniAvatar} />
+                <span className={styles.testiName}>
+                  <strong>Léna Ohayon</strong>
+                  <span>A acheté à Nantes</span>
+                </span>
+              </figcaption>
+              <blockquote>Je ne pourrais plus m&apos;en passer : l&apos;IA comprend vraiment ce que je cherche.</blockquote>
+              <span className={styles.starsSmall}><Stars /></span>
+            </figure>
+            <figure className={styles.testiSide}>
+              <figcaption className={styles.testiPerson}>
+                <img src="/landing/face-4.jpg" alt="Marie-Jeanne Wagner" className={styles.testiMiniAvatar} />
+                <span className={styles.testiName}>
+                  <strong>Marie-Jeanne Wagner</strong>
+                  <span>Propriétaire, Bordeaux</span>
+                </span>
+              </figcaption>
+              <blockquote>J&apos;ai déniché un bien rare dans mon quartier avant même qu&apos;il ne sorte ailleurs.</blockquote>
+              <span className={styles.starsSmall}><Stars /></span>
+            </figure>
           </motion.div>
         </div>
       </section>
@@ -622,7 +652,7 @@ export default function Landing() {
               <Link href="/" className={styles.lightBtn}>Commencer gratuitement</Link>
             </Magnetic>
           </Reveal>
-          <PhoneMockup className={styles.ctaPhone} />
+          <PhoneMockup className={styles.ctaPhone} screen="/landing/app-achat.jpg" />
         </div>
       </section>
 
@@ -638,10 +668,20 @@ export default function Landing() {
 }
 
 function Stars() {
+  const reduce = useReducedMotion();
   return (
     <>
       {Array.from({ length: 5 }).map((_, i) => (
-        <IconStar key={i} size={14} />
+        <motion.span
+          key={i}
+          style={{ display: 'inline-flex' }}
+          initial={reduce ? false : { opacity: 0, scale: 0.3, rotate: -30 }}
+          whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+          viewport={{ once: true, amount: 0.8 }}
+          transition={{ delay: i * 0.08, type: 'spring', stiffness: 380, damping: 14 }}
+        >
+          <IconStar size={14} />
+        </motion.span>
       ))}
     </>
   );
