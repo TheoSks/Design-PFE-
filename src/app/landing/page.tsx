@@ -2,8 +2,15 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { motion, useReducedMotion, type Variants } from 'motion/react';
 import styles from './page.module.css';
 import { Logo } from '@/components/ui/Logo';
+import { Preloader, PRELOADER_MS } from './_components/Preloader';
+import { Reveal } from './_components/Reveal';
+import { CountUp } from './_components/CountUp';
+import { Magnetic } from './_components/Magnetic';
+import { PhoneMockup } from './_components/PhoneMockup';
+import { ScrollProgress } from './_components/ScrollProgress';
 import {
   IconSparkle,
   IconSearch,
@@ -29,16 +36,19 @@ const STEPS = [
     badge: 'Étape 1',
     title: 'Téléchargez l’app',
     text: 'Accédez à des milliers d’annonces vérifiées, partout en France, en temps réel.',
+    img: '/landing/step-1.jpg',
   },
   {
     badge: 'Étape 2',
     title: 'Décrivez votre projet',
     text: 'Dites à notre IA ce que vous cherchez, en langage naturel. Elle fait le reste.',
+    img: '/landing/step-2.jpg',
   },
   {
     badge: 'Étape 3',
     title: 'Trouvez votre chez-vous',
     text: 'Recevez une alerte dès qu’un bien correspond vraiment à vos critères.',
+    img: '/landing/step-3.jpg',
   },
 ];
 
@@ -86,6 +96,14 @@ const TABS = [
     title: 'Quartiers & points d’intérêt',
     text: 'Écoles, commerces, transports : visualisez tout ce qui compte autour du bien avant même de visiter.',
   },
+];
+
+/* Vrais écrans de l'app Homely, alignés sur l'ordre des onglets ci-dessus. */
+const APP_SHOTS = [
+  '/landing/app-chat.jpg',    // Recherche conversationnelle
+  '/landing/app-achat.jpg',   // Filtres intelligents
+  '/landing/app-annonce.jpg', // Estimation de prix
+  '/landing/app-carte.jpg',   // Quartiers & points d'intérêt
 ];
 
 const PLAN_FEATURES = [
@@ -136,14 +154,17 @@ const ARTICLES = [
   {
     title: 'Comment l’IA trouve votre logement sans que vous leviez le petit doigt',
     date: '1 mai 2026',
+    img: '/landing/blog-0.jpg',
   },
   {
     title: 'Bien estimer un logement : la méthode des professionnels',
     date: '20 mars 2026',
+    img: '/landing/blog-1.jpg',
   },
   {
     title: 'Acheter ou louer en 2026 : ce qu’il faut vraiment regarder',
     date: '31 janv. 2026',
+    img: '/landing/blog-2.jpg',
   },
 ];
 
@@ -158,41 +179,41 @@ function Pill({ icon: Icon, children }: { icon: React.ComponentType<{ size?: num
   );
 }
 
-/* Maquette de téléphone reproduisant l'app Homely */
-function PhoneMockup({ className }: { className?: string }) {
-  return (
-    <div className={`${styles.phone} ${className ?? ''}`}>
-      <div className={styles.phoneNotch} />
-      <div className={styles.phoneScreen}>
-        <div className={styles.phoneTabs}>
-          <span className={`${styles.phoneTab} ${styles.phoneTabActive}`}>
-            <IconSparkle size={12} /> Filtrer avec IA
-          </span>
-          <span className={styles.phoneTab}>Résultats</span>
-        </div>
-        <div className={styles.phoneCardTitle}>Belle luminosité</div>
-        <div className={styles.phoneImage}>
-          <span className={styles.phoneBadge}>
-            <IconSparkle size={10} /> Coup de cœur
-          </span>
-        </div>
-        <div className={styles.phoneMeta}>
-          <span>3 pièces · 68 m²</span>
-          <strong>249 000 €</strong>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* ── Page ────────────────────────────────────────────────── */
 
 export default function Landing() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [activeTab, setActiveTab] = useState(0);
+  const reduce = useReducedMotion();
+
+  /* Délai de base : l'entrée du hero s'enchaîne avec la levée du preloader. */
+  const heroBase = reduce ? 0 : PRELOADER_MS / 1000;
+
+  /* Propriétés de révélation au scroll (non-hook, réutilisable dans les .map). */
+  const reveal = (delay = 0) =>
+    reduce
+      ? {}
+      : {
+          initial: { opacity: 0, y: 30 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, amount: 0.2 },
+          transition: { duration: 0.75, delay, ease: [0.16, 1, 0.3, 1] as const },
+        };
+
+  const heroIntro: Variants = {
+    hidden: {},
+    show: { transition: { staggerChildren: 0.12, delayChildren: heroBase } },
+  };
+  const heroItem: Variants = {
+    hidden: { opacity: 0, y: 26 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
+  };
 
   return (
     <div className={styles.page}>
+      <Preloader />
+      <ScrollProgress />
+
       {/* ── Nav ─────────────────────────────────────────── */}
       <header className={styles.nav}>
         <div className={styles.navInner}>
@@ -205,25 +226,38 @@ export default function Landing() {
             <a href="#avis">Avis</a>
             <a href="#blog">Blog</a>
           </nav>
-          <Link href="/" className={styles.navCta}>Commencer gratuitement</Link>
+          <Magnetic strength={0.25}>
+            <Link href="/" className={styles.navCta}>Commencer gratuitement</Link>
+          </Magnetic>
         </div>
       </header>
 
       {/* ── Hero ────────────────────────────────────────── */}
       <section className={styles.hero}>
-        <Pill icon={IconSparkle}>Cherchez · Trouvez · Emménagez</Pill>
-        <h1 className={styles.heroTitle}>
-          <span className={styles.heroTitleLine}>
-            Cherchez.<img src="/logo.svg" alt="" className={styles.heroTitleIcon} />Trouvez.
-          </span>
-          <span className={styles.heroTitleLine}>Emménagez.</span>
-        </h1>
-        <p className={styles.heroSubtitle}>
-          Décrivez le logement de vos rêves : notre IA parcourt des milliers d&apos;annonces
-          et vous présente uniquement celles qui comptent.
-        </p>
+        <div className={styles.heroAura} aria-hidden />
 
-        <div className={styles.heroShowcase}>
+        <motion.div
+          className={styles.heroIntro}
+          variants={heroIntro}
+          initial={reduce ? false : 'hidden'}
+          animate="show"
+        >
+          <motion.div variants={heroItem}>
+            <Pill icon={IconSparkle}>Cherchez · Trouvez · Emménagez</Pill>
+          </motion.div>
+          <motion.h1 className={styles.heroTitle} variants={heroItem}>
+            <span className={styles.heroTitleLine}>
+              Cherchez.<img src="/logo.svg" alt="" className={styles.heroTitleIcon} />Trouvez.
+            </span>
+            <span className={styles.heroTitleLine}>Emménagez.</span>
+          </motion.h1>
+          <motion.p className={styles.heroSubtitle} variants={heroItem}>
+            Décrivez le logement de vos rêves : notre IA parcourt des milliers d&apos;annonces
+            et vous présente uniquement celles qui comptent.
+          </motion.p>
+        </motion.div>
+
+        <Reveal className={styles.heroShowcase} entrance delay={heroBase + 0.45}>
           {/* Bloc gauche — carte blanche */}
           <div className={styles.heroLeftCard}>
             <h3 className={styles.heroLeftTitle}>On sait ce que vous cherchez</h3>
@@ -238,11 +272,13 @@ export default function Landing() {
               Notre IA apprend de vos critères et affine chaque recherche pour vous proposer
               les biens qui vous correspondent, partout en France.
             </p>
-            <Link href="/" className={styles.darkBtn}>Commencer gratuitement</Link>
+            <Magnetic>
+              <Link href="/" className={styles.darkBtn}>Commencer gratuitement</Link>
+            </Magnetic>
           </div>
 
-          {/* Téléphone centre — asset iPhone (app Homely) */}
-          <img src="/landing/iphone-mockup.png" alt="Application Homely" className={styles.showcasePhoneImg} />
+          {/* Téléphone centre — vrai écran de l'app Homely dans un mockup iPhone réaliste */}
+          <PhoneMockup className={styles.heroPhone} screen="/landing/app-home.jpg" />
 
           {/* Bloc droit — image + texte + flèches */}
           <div className={styles.heroRightCard}>
@@ -258,7 +294,7 @@ export default function Landing() {
               <button type="button" aria-label="Suivant"><IconArrowRight size={18} /></button>
             </div>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* ── Logos ───────────────────────────────────────── */}
@@ -276,63 +312,68 @@ export default function Landing() {
       {/* ── About / Bento ───────────────────────────────── */}
       <section className={styles.about}>
         <div className={styles.aboutGrid}>
-          <div className={styles.aboutIntro}>
+          <motion.div className={styles.aboutIntro} {...reveal()}>
             <h2 className={styles.aboutTitle}>L&apos;immobilier, version intelligente</h2>
             <p>
               Une seule application pour chercher, comparer et trouver votre futur logement,
               propulsée par l&apos;intelligence artificielle.
             </p>
-            <Link href="/" className={styles.darkBtn}>Commencer gratuitement</Link>
-          </div>
+            <Magnetic>
+              <Link href="/" className={styles.darkBtn}>Commencer gratuitement</Link>
+            </Magnetic>
+          </motion.div>
 
-          <div className={`${styles.bentoCard} ${styles.bentoLarge}`}>
-            <div className={`${styles.bentoBg} ${styles.bentoBgGreen}`} />
+          <motion.div className={`${styles.bentoCard} ${styles.bentoLarge}`} {...reveal(0.05)}>
+            <img src="/landing/bento-search.jpg" alt="Intérieur lumineux d’un appartement" className={styles.bentoImg} />
+            <div className={`${styles.bentoScrim} ${styles.scrimBrand}`} />
             <div className={styles.bentoOverlay}>
               <h3>Recherche intelligente</h3>
               <p>Décrivez vos critères en langage naturel, notre IA trouve les biens qui correspondent.</p>
             </div>
-          </div>
+          </motion.div>
 
-          <div className={`${styles.bentoCard} ${styles.bentoSmall}`}>
-            <div className={`${styles.bentoBg} ${styles.bentoBgWarm}`} />
+          <motion.div className={`${styles.bentoCard} ${styles.bentoSmall}`} {...reveal(0.12)}>
+            <img src="/landing/bento-summary.jpg" alt="Salon chaleureux" className={styles.bentoImg} />
+            <div className={styles.bentoScrim} />
             <div className={styles.bentoOverlay}>
               <span className={styles.bentoTag}><IconSparkle size={12} /> Résumés IA</span>
               <p>Comprenez chaque annonce d&apos;un coup d&apos;œil grâce aux résumés générés par l&apos;IA.</p>
             </div>
-          </div>
+          </motion.div>
 
-          <div className={`${styles.bentoCard} ${styles.bentoSmall}`}>
-            <div className={`${styles.bentoBg} ${styles.bentoBgDark}`} />
+          <motion.div className={`${styles.bentoCard} ${styles.bentoSmall}`} {...reveal(0.18)}>
+            <img src="/landing/bento-city.jpg" alt="Immeubles en ville au crépuscule" className={styles.bentoImg} />
+            <div className={styles.bentoScrim} />
             <div className={styles.bentoOverlay}>
-              <span className={styles.bentoStat}>+12K biens</span>
+              <span className={styles.bentoStat}>
+                <CountUp to={12} prefix="+" suffix="K biens" />
+              </span>
               <p>Référencés et mis à jour en temps réel.</p>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* ── How it works ────────────────────────────────── */}
       <section className={styles.how}>
-        <div className={styles.sectionHead}>
+        <Reveal className={styles.sectionHead}>
           <Pill icon={IconSparkle}>Fonctionnement</Pill>
           <h2 className={styles.sectionTitle}>Démarrer est très simple&nbsp;!</h2>
           <p className={styles.sectionSub}>
             Trois étapes suffisent pour trouver votre futur logement avec Homely.
           </p>
-        </div>
+        </Reveal>
 
         <div className={styles.stepsGrid}>
-          {STEPS.map((s) => (
-            <div key={s.title} className={styles.stepCard}>
+          {STEPS.map((s, i) => (
+            <motion.div key={s.title} className={styles.stepCard} {...reveal(i * 0.1)}>
               <div className={styles.stepVisual}>
+                <img src={s.img} alt="" className={styles.stepImg} />
                 <span className={styles.stepBadge}>{s.badge}</span>
-                <div className={styles.stepPhoneHint}>
-                  <Logo size="sm" />
-                </div>
               </div>
               <h3>{s.title}</h3>
               <p>{s.text}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
@@ -340,7 +381,7 @@ export default function Landing() {
       {/* ── Features ────────────────────────────────────── */}
       <section id="fonctionnalites" className={styles.features}>
         <div className={styles.featuresLayout}>
-          <div className={styles.featuresLeft}>
+          <motion.div className={styles.featuresLeft} {...reveal()}>
             <Pill icon={IconSparkle}>Fonctionnalités</Pill>
             <h2 className={styles.sectionTitle}>Tout ce qu&apos;il faut pour trouver votre logement</h2>
             <p className={styles.sectionSub}>
@@ -355,28 +396,30 @@ export default function Landing() {
                 </div>
               ))}
               <div className={styles.featureStat}>
-                <span className={styles.featureStatBg} />
+                <img src="/landing/bento-city.jpg" alt="" className={styles.featureStatImg} />
+                <span className={styles.featureStatScrim} />
                 <div>
-                  <strong>+25K</strong>
+                  <strong><CountUp to={25} prefix="+" suffix="K" /></strong>
                   <span>Utilisateurs conquis</span>
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div className={styles.featuresImage}>
-            <div className={`${styles.bentoBg} ${styles.bentoBgGreen}`} />
+          <motion.div className={styles.featuresImage} {...reveal(0.1)}>
+            <img src="/landing/feat-visit.jpg" alt="Intérieur d’un logement à visiter" className={styles.featuresImageImg} />
+            <div className={styles.featuresImageScrim} />
             <div className={styles.featuresImageOverlay}>
               <h3>Visitez sans vous déplacer</h3>
               <p>Photos, plans et visites immersives : explorez chaque bien depuis votre canapé.</p>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* ── Tabs ────────────────────────────────────────── */}
       <section className={styles.tabs}>
-        <div className={styles.tabsCard}>
+        <Reveal className={styles.tabsCard}>
           <div className={styles.tabsList}>
             {TABS.map((t, i) => (
               <button
@@ -385,110 +428,150 @@ export default function Landing() {
                 className={`${styles.tabRow} ${i === activeTab ? styles.tabRowActive : ''}`}
                 onClick={() => setActiveTab(i)}
               >
+                {i === activeTab && (
+                  <motion.span
+                    layoutId="tabHighlight"
+                    className={styles.tabHL}
+                    transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                  />
+                )}
                 <span className={styles.tabIcon}><IconSparkle size={16} /></span>
                 <span className={styles.tabText}>
                   <strong>{t.title}</strong>
-                  {i === activeTab && <span className={styles.tabDesc}>{t.text}</span>}
+                  {i === activeTab && (
+                    <motion.span
+                      className={styles.tabDesc}
+                      initial={reduce ? false : { opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      {t.text}
+                    </motion.span>
+                  )}
                 </span>
               </button>
             ))}
           </div>
-          <PhoneMockup className={styles.tabsPhone} />
-        </div>
+          <PhoneMockup className={styles.tabsPhone} screens={APP_SHOTS} activeTab={activeTab} />
+        </Reveal>
       </section>
 
       {/* ── Testimonials ────────────────────────────────── */}
       <section id="avis" className={styles.testimonials}>
-        <div className={styles.sectionHead}>
+        <Reveal className={styles.sectionHead}>
           <Pill icon={IconStar}>Avis</Pill>
           <h2 className={styles.sectionTitle}>Ce que disent nos utilisateurs</h2>
           <p className={styles.sectionSub}>
             Des locataires aux primo-accédants : ils ont trouvé leur logement avec Homely.
           </p>
-        </div>
+        </Reveal>
 
         <div className={styles.testiGrid}>
-          <div className={styles.testiFeatured}>
-            <div className={styles.testiAvatar} />
-            <h4>Sarah C.</h4>
-            <p>« Homely a complètement changé ma recherche. J&apos;ai trouvé mon appartement en une semaine, sans visiter dix biens pour rien. »</p>
-            <div className={styles.stars}><Stars /></div>
-          </div>
+          {/* Avis vedette */}
+          <motion.figure className={styles.testiFeatured} {...reveal()}>
+            <span className={styles.quoteMark} aria-hidden>&ldquo;</span>
+            <blockquote className={styles.testiFeaturedQuote}>
+              Homely a complètement changé ma recherche. J&apos;ai trouvé mon
+              appartement en une semaine, sans visiter dix biens pour rien.
+            </blockquote>
+            <figcaption className={styles.testiPerson}>
+              <img src="/landing/face-1.jpg" alt="Sarah Caron" className={styles.testiAvatar} />
+              <span className={styles.testiName}>
+                <strong>Sarah Caron <span className={styles.verified}><IconCheck size={11} /></span></strong>
+                <span>Locataire à Lyon</span>
+              </span>
+              <span className={styles.starsSmall}><Stars /></span>
+            </figcaption>
+          </motion.figure>
 
-          <div className={styles.testiMid}>
+          {/* Note & statistiques Homely */}
+          <motion.div className={styles.testiMid} {...reveal(0.08)}>
             <div className={styles.testiRating}>
-              <span className={styles.testiStoreIcon}><IconHome size={20} /></span>
-              <div>
-                <strong>4,9 / 5</strong>
-                <span>12K+ avis sur les stores</span>
-                <div className={styles.starsSmall}><Stars /></div>
+              <div className={styles.testiRatingTop}>
+                <strong><CountUp to={4.9} decimals={1} /></strong>
+                <span className={styles.stars}><Stars /></span>
               </div>
+              <span className={styles.testiRatingLabel}>Note moyenne · App&nbsp;Store &amp; Google&nbsp;Play</span>
+              <span className={styles.testiRatingSub}>Plus de 12&nbsp;000 avis sur Homely</span>
             </div>
             <div className={styles.testiStats}>
               <div className={styles.testiStat}>
-                <strong>98%</strong>
+                <strong><CountUp to={98} suffix="%" /></strong>
                 <span>Satisfaction</span>
               </div>
               <div className={styles.testiStat}>
-                <strong>+50K</strong>
+                <strong><CountUp to={50} prefix="+" suffix="K" /></strong>
                 <span>Utilisateurs</span>
               </div>
             </div>
             <div className={styles.testiMini}>
-              <div className={styles.testiMiniAvatar} />
+              <img src="/landing/face-2.jpg" alt="Lilly Mercier" className={styles.testiMiniAvatar} />
               <div>
-                <strong>Lilly M.</strong>
-                <span>M&apos;a fait gagner des heures.</span>
+                <strong>Lilly Mercier</strong>
+                <span>Primo-accédante, Rouen</span>
               </div>
+              <span className={styles.starsSmall}><Stars /></span>
             </div>
-          </div>
+          </motion.div>
 
-          <div className={styles.testiCol}>
-            <div className={styles.testiMini}>
-              <div className={styles.testiMiniAvatar} />
-              <div>
-                <strong>Léna O.</strong>
-                <span>Je ne pourrais plus m&apos;en passer.</span>
-              </div>
-            </div>
-            <div className={styles.testiSide}>
-              <div className={styles.testiMiniAvatar} />
-              <strong>Marie-Jeanne W.</strong>
-              <p>« J&apos;ai déniché un bien rare dans mon quartier avant même qu&apos;il ne sorte sur les autres sites. »</p>
-              <div className={styles.starsSmall}><Stars /></div>
-            </div>
-          </div>
+          {/* Avis secondaires */}
+          <motion.div className={styles.testiCol} {...reveal(0.16)}>
+            <figure className={styles.testiSide}>
+              <figcaption className={styles.testiPerson}>
+                <img src="/landing/face-3.jpg" alt="Léna Ohayon" className={styles.testiMiniAvatar} />
+                <span className={styles.testiName}>
+                  <strong>Léna Ohayon</strong>
+                  <span>A acheté à Nantes</span>
+                </span>
+              </figcaption>
+              <blockquote>Je ne pourrais plus m&apos;en passer : l&apos;IA comprend vraiment ce que je cherche.</blockquote>
+              <span className={styles.starsSmall}><Stars /></span>
+            </figure>
+            <figure className={styles.testiSide}>
+              <figcaption className={styles.testiPerson}>
+                <img src="/landing/face-4.jpg" alt="Marie-Jeanne Wagner" className={styles.testiMiniAvatar} />
+                <span className={styles.testiName}>
+                  <strong>Marie-Jeanne Wagner</strong>
+                  <span>Propriétaire, Bordeaux</span>
+                </span>
+              </figcaption>
+              <blockquote>J&apos;ai déniché un bien rare dans mon quartier avant même qu&apos;il ne sorte ailleurs.</blockquote>
+              <span className={styles.starsSmall}><Stars /></span>
+            </figure>
+          </motion.div>
         </div>
       </section>
 
       {/* ── Pricing / FAQ ───────────────────────────────── */}
       <section id="tarifs" className={styles.pricing}>
-        <div className={styles.sectionHead}>
+        <Reveal className={styles.sectionHead}>
           <Pill icon={IconBuilding}>Tarifs</Pill>
           <h2 className={styles.sectionTitle}>Une tarification simple et transparente</h2>
           <p className={styles.sectionSub}>
             Aucun frais caché. Cherchez, comparez et trouvez avec une seule offre.
           </p>
-        </div>
+        </Reveal>
 
         <div className={styles.pricingLayout}>
           <div className={styles.pricingCol}>
-            <div className={styles.planCard}>
+            <motion.div className={styles.planCard} {...reveal()}>
               <div className={styles.planHead}>
                 <span className={styles.planIcon}><IconHome size={20} /></span>
                 <h3>Abonnement</h3>
               </div>
               <p className={styles.planDesc}>Pour celles et ceux qui veulent trouver vite et bien.</p>
               <div className={styles.planPrice}>9 €<span>/mois</span></div>
-              <Link href="/" className={styles.darkBtn}>Essai gratuit</Link>
+              <Magnetic>
+                <Link href="/" className={styles.darkBtn}>Essai gratuit</Link>
+              </Magnetic>
               <ul className={styles.planList}>
                 {PLAN_FEATURES.map((f) => (
                   <li key={f}><IconCheck size={16} /> {f}</li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
 
-            <div className={styles.clubCard}>
+            <motion.div className={styles.clubCard} {...reveal(0.08)}>
               <div>
                 <h4>Rejoignez le Club Homely</h4>
                 <p>Pour les chercheurs les plus exigeants.</p>
@@ -497,7 +580,7 @@ export default function Landing() {
                 <span /><span /><span /><span />
                 <em>+25K</em>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           <div className={styles.faqCol}>
@@ -520,21 +603,23 @@ export default function Landing() {
 
       {/* ── Blog ────────────────────────────────────────── */}
       <section id="blog" className={styles.blog}>
-        <div className={styles.sectionHead}>
+        <Reveal className={styles.sectionHead}>
           <Pill icon={IconChat}>Blog</Pill>
           <h2 className={styles.sectionTitle}>Conseils immo de notre équipe</h2>
           <p className={styles.sectionSub}>
             Guides pratiques, tendances du marché et astuces pour réussir votre projet.
           </p>
-        </div>
+        </Reveal>
 
         <div className={styles.blogGrid}>
           {ARTICLES.map((a, i) => (
-            <article key={a.title} className={styles.blogCard}>
-              <div className={`${styles.blogImage} ${styles[`blogImage${i}` as keyof typeof styles]}`} />
+            <motion.article key={a.title} className={styles.blogCard} {...reveal(i * 0.1)}>
+              <div className={styles.blogImage}>
+                <img src={a.img} alt="" className={styles.blogImg} />
+              </div>
               <h3>{a.title}</h3>
               <span className={styles.blogDate}>{a.date}</span>
-            </article>
+            </motion.article>
           ))}
         </div>
       </section>
@@ -542,15 +627,60 @@ export default function Landing() {
       {/* ── CTA ─────────────────────────────────────────── */}
       <section className={styles.cta}>
         <div className={styles.ctaBg} />
+        <div className={styles.ctaAura} aria-hidden />
         <div className={styles.ctaContent}>
-          <Pill icon={IconSparkle}>Prêt à emménager&nbsp;?</Pill>
-          <h2 className={styles.ctaTitle}>Votre futur chez-vous<br />commence ici.</h2>
-          <p className={styles.ctaSub}>
-            Rejoignez 50 000+ utilisateurs qui font confiance à Homely pour trouver leur logement,
-            plus vite et plus sereinement.
-          </p>
-          <Link href="/" className={styles.lightBtn}>Commencer gratuitement</Link>
-          <PhoneMockup className={styles.ctaPhone} />
+          <Reveal>
+            <Pill icon={IconSparkle}>Prêt à emménager&nbsp;?</Pill>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <h2 className={styles.ctaTitle}>Votre futur chez-vous<br />commence ici.</h2>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <p className={styles.ctaSub}>
+              Rejoignez 50 000+ utilisateurs qui font confiance à Homely pour trouver leur logement,
+              plus vite et plus sereinement.
+            </p>
+          </Reveal>
+          <Reveal delay={0.24}>
+            <Magnetic>
+              <Link href="/" className={styles.lightBtn}>Commencer gratuitement</Link>
+            </Magnetic>
+          </Reveal>
+
+          <div className={styles.ctaStage}>
+            {/* Annonces réelles flottantes autour du téléphone */}
+            <Reveal className={`${styles.ctaCardPos} ${styles.ctaCardLeft}`} delay={0.3}>
+              <motion.div
+                className={styles.ctaCard}
+                animate={reduce ? undefined : { y: [0, -12, 0] }}
+                transition={reduce ? undefined : { duration: 5.5, ease: 'easeInOut', repeat: Infinity }}
+              >
+                <img src="/landing/feat-visit.jpg" alt="Appartement à Lyon" />
+                <div className={styles.ctaCardBody}>
+                  <strong>Appartement lumineux</strong>
+                  <span>Lyon 6e · 3 pièces</span>
+                  <em>329 000 €</em>
+                </div>
+              </motion.div>
+            </Reveal>
+
+            <PhoneMockup className={styles.ctaPhone} screen="/landing/app-achat.jpg" />
+
+            <Reveal className={`${styles.ctaCardPos} ${styles.ctaCardRight}`} delay={0.42}>
+              <motion.div
+                className={styles.ctaCard}
+                animate={reduce ? undefined : { y: [0, -16, 0] }}
+                transition={reduce ? undefined : { duration: 6.5, ease: 'easeInOut', repeat: Infinity, delay: 0.4 }}
+              >
+                <img src="/landing/bento-summary.jpg" alt="Studio dans le Marais" />
+                <div className={styles.ctaCardBody}>
+                  <strong>Studio rénové</strong>
+                  <span>Paris 4e · Le Marais</span>
+                  <em>1 150 €/mois</em>
+                </div>
+              </motion.div>
+            </Reveal>
+          </div>
         </div>
       </section>
 
@@ -566,10 +696,20 @@ export default function Landing() {
 }
 
 function Stars() {
+  const reduce = useReducedMotion();
   return (
     <>
       {Array.from({ length: 5 }).map((_, i) => (
-        <IconStar key={i} size={14} />
+        <motion.span
+          key={i}
+          style={{ display: 'inline-flex' }}
+          initial={reduce ? false : { opacity: 0, scale: 0.3, rotate: -30 }}
+          whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+          viewport={{ once: true, amount: 0.8 }}
+          transition={{ delay: i * 0.08, type: 'spring', stiffness: 380, damping: 14 }}
+        >
+          <IconStar size={14} />
+        </motion.span>
       ))}
     </>
   );
