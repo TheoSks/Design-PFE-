@@ -277,14 +277,8 @@ export default function Landing() {
             </Magnetic>
           </div>
 
-          {/* Téléphone centre — asset iPhone (app Homely) */}
-          <motion.img
-            src="/landing/iphone-mockup.png"
-            alt="Application Homely"
-            className={styles.showcasePhoneImg}
-            animate={reduce ? undefined : { y: [0, -14, 0] }}
-            transition={reduce ? undefined : { duration: 6, ease: 'easeInOut', repeat: Infinity }}
-          />
+          {/* Téléphone centre — vrai écran de l'app Homely dans un mockup iPhone réaliste */}
+          <PhoneMockup className={styles.heroPhone} screen="/landing/app-home.jpg" />
 
           {/* Bloc droit — image + texte + flèches */}
           <div className={styles.heroRightCard}>
@@ -652,7 +646,41 @@ export default function Landing() {
               <Link href="/" className={styles.lightBtn}>Commencer gratuitement</Link>
             </Magnetic>
           </Reveal>
-          <PhoneMockup className={styles.ctaPhone} screen="/landing/app-achat.jpg" />
+
+          <div className={styles.ctaStage}>
+            {/* Annonces réelles flottantes autour du téléphone */}
+            <Reveal className={`${styles.ctaCardPos} ${styles.ctaCardLeft}`} delay={0.3}>
+              <motion.div
+                className={styles.ctaCard}
+                animate={reduce ? undefined : { y: [0, -12, 0] }}
+                transition={reduce ? undefined : { duration: 5.5, ease: 'easeInOut', repeat: Infinity }}
+              >
+                <img src="/landing/feat-visit.jpg" alt="Appartement à Lyon" />
+                <div className={styles.ctaCardBody}>
+                  <strong>Appartement lumineux</strong>
+                  <span>Lyon 6e · 3 pièces</span>
+                  <em>329 000 €</em>
+                </div>
+              </motion.div>
+            </Reveal>
+
+            <PhoneMockup className={styles.ctaPhone} screen="/landing/app-achat.jpg" />
+
+            <Reveal className={`${styles.ctaCardPos} ${styles.ctaCardRight}`} delay={0.42}>
+              <motion.div
+                className={styles.ctaCard}
+                animate={reduce ? undefined : { y: [0, -16, 0] }}
+                transition={reduce ? undefined : { duration: 6.5, ease: 'easeInOut', repeat: Infinity, delay: 0.4 }}
+              >
+                <img src="/landing/bento-summary.jpg" alt="Studio dans le Marais" />
+                <div className={styles.ctaCardBody}>
+                  <strong>Studio rénové</strong>
+                  <span>Paris 4e · Le Marais</span>
+                  <em>1 150 €/mois</em>
+                </div>
+              </motion.div>
+            </Reveal>
+          </div>
         </div>
       </section>
 
