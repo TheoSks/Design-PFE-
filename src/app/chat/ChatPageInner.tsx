@@ -9,7 +9,6 @@ import { Logo } from '@/components/ui/Logo';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { BurgerMenu } from '@/components/ui/BurgerMenu';
-import { PropertyMap } from '@/components/ui/Map';
 import { IconSparkle, IconSend, IconMenu } from '@/components/icons';
 import { useVoiceInput } from './useVoiceInput';
 import { PROPERTIES, type PropertyData } from '@/lib/properties';
@@ -22,7 +21,6 @@ interface Message {
   role: 'user' | 'ai';
   text: string;
   showResultsLink?: boolean;
-  mapResults?: PropertyData[];
   previewProperties?: PropertyData[];
 }
 
@@ -500,34 +498,23 @@ export default function ChatPageInner() {
     setTimeout(() => {
       const response = generateResponse(criteriaRef.current, msgCountRef.current);
 
-      // Inline map: trigger when a geographic intent is set (city) and we can match properties.
-      // We surface the top 5 matched properties so the user instantly sees them on the map.
-      let mapResults: PropertyData[] | undefined;
+      // Propositions d'annonces inline : on présente les meilleurs biens dès
+      // qu'une intention géographique (ville) est posée ou que les résultats
+      // sont prêts, pour que l'utilisateur voie tout de suite des annonces.
+      let previewProperties: PropertyData[] | undefined;
       const wantsMap = /\bcarte\b|\bmap\b|\bo[uù]\s+sont\b|\bo[uù]\s+est\b|\bg[ée]ographique?\b/i.test(text);
-      if (criteriaRef.current.city || wantsMap) {
+      if (response.showResultsLink || criteriaRef.current.city || wantsMap) {
         const src = criteriaRef.current.transaction === 'location' ? RENTALS : PROPERTIES;
         const scored = src
           .map((p) => ({ p, score: computeMatchScore(p, criteriaRef.current) }))
           .sort((a, b) => b.score - a.score)
-          .slice(0, 5)
-          .map((x) => x.p)
-          .filter((p) => !!p.coordinates);
-        if (scored.length > 0) mapResults = scored;
-      }
-
-      // Top-3 inline preview cards when results are ready
-      let previewProperties: PropertyData[] | undefined;
-      if (response.showResultsLink) {
-        const src = criteriaRef.current.transaction === 'location' ? RENTALS : PROPERTIES;
-        previewProperties = src
-          .map((p) => ({ p, score: computeMatchScore(p, criteriaRef.current) }))
-          .sort((a, b) => b.score - a.score)
           .slice(0, 3)
           .map((x) => x.p);
+        if (scored.length > 0) previewProperties = scored;
       }
 
       setMessages((prev) => {
-        const next = [...prev, { role: 'ai' as const, text: response.text, showResultsLink: response.showResultsLink, mapResults, previewProperties }];
+        const next = [...prev, { role: 'ai' as const, text: response.text, showResultsLink: response.showResultsLink, previewProperties }];
         // Trigger streaming for the message we just added
         setStreamingIdx(next.length - 1);
         return next;
@@ -826,20 +813,7 @@ export default function ChatPageInner() {
                       ))}
                     </div>
                   )}
-                  {i !== streamingIdx && msg.mapResults && msg.mapResults.length > 0 && (
-                    <div className={styles.inlineMap}>
-                      <PropertyMap properties={msg.mapResults} />
-                      <button
-                        className={styles.inlineMapExpand}
-                        onClick={() => setActiveTab('results')}
-                        type="button"
-                        aria-label="Voir les biens en plein écran"
-                      >
-                        Voir {msg.mapResults.length} bien{msg.mapResults.length > 1 ? 's' : ''} →
-                      </button>
-                    </div>
-                  )}
-                  {i !== streamingIdx && msg.showResultsLink && (
+                  {i !== streamingIdx && (msg.showResultsLink || (msg.previewProperties && msg.previewProperties.length > 0)) && (
                     <button
                       className={styles.resultsLink}
                       onClick={() => setActiveTab('results')}
